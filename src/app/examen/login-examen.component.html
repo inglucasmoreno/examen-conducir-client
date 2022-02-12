@@ -1,0 +1,15 @@
+<div>
+    <img class="gsap-fondo fixed hidden lg:block inset-0 h-full" style="z-index: -1;" src="assets/img/login/wave.png">
+    <div class="w-screen h-screen flex flex-col justify-center items-center lg:grid lg:grid-cols-2">
+        <img class="hidden gsap-imagen lg:block w-1/2 transform mx-auto" src="assets/img/login/unlock.svg">
+        <div class="gsap-formulario text-center flex flex-col justify-center items-center w-1/2">
+            <img class="w-32" src="assets/img/login/avatar.svg">
+            <h2 class="my-8 font-display font-bold text-3xl text-gray-700 text-center"> Rendir examen </h2>
+            <div class="relative">
+                <input (keyup.enter)="ingresarExamen()" [(ngModel)]="dni" type="text" class="transition-all duration-500 p-3 text-center text-2xl border-2 transform border-gray-400 font-display outline-none focus:outline-none focus:border-primaryColor" placeholder="Ingrese su DNI"
+                />
+            </div>
+            <button (click)="ingresarExamen()" class="py-3 px-20 bg-primaryColor rounded-full text-white font-bold uppercase text-lg mt-8 transform hover:translate-y-1 hover:bg-secondaryColor transition-all duration-500"> Rendir </button>
+        </div>
+    </div>
+</div>

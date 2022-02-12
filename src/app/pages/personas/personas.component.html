@@ -1,0 +1,186 @@
+<!--  Modal: Crear / Editar persona  -->
+<app-modal [showModal]="showModalPersona">
+    <div>
+        <div class="flex items-center justify-between bg-primary-800 p-2 rounded-t">
+            <h1 class="text-white px-2 py-1 rounded-t text-lg"> {{ estadoFormulario == 'crear' ? 'Creando nueva persona' : 'Editando persona' }} </h1>
+            <svg (click)="cerrarModal()" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cursor-pointer feather feather-x text-white mr-2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </div>
+        <div class="p-4">
+            <div class="flex items-center">
+                <div class="w-1/2">
+                    <p class="font-semibold text-gray-800 text-sm"> <span class="text-red-500"> * </span> DNI </p>
+                    <input [(ngModel)]="data.dni" class="p-1 mt-1 border-b-2 tranform duration-500 focus:border-primaryColor appearance-none outline-none w-full text-gray-800 text-sm" placeholder="Ej. 34060398" type="text">
+                </div>
+                <div class="w-1/2 ml-4"></div>
+            </div>
+            <div class="flex items-center mt-4">
+                <div class="w-1/2">
+                    <p class="font-semibold text-gray-800 text-sm"> <span class="text-red-500"> * </span> Apellido </p>
+                    <input [(ngModel)]="data.apellido" class="p-1 mt-1 border-b-2 tranform duration-500 focus:border-primaryColor appearance-none outline-none w-full text-gray-800 text-sm" placeholder="Ej. Moreno" type="text">
+                </div>
+                <div class="w-1/2 ml-4">
+                    <p class="font-semibold text-gray-800 text-sm"> <span class="text-red-500"> * </span> Nombre </p>
+                    <input [(ngModel)]="data.nombre" class="p-1 mt-1 border-b-2 tranform duration-500 focus:border-primaryColor appearance-none outline-none w-full text-gray-800 text-sm" placeholder="Ej. Lucas Omar" type="text">
+                </div>
+            </div>
+            <div class="mt-4">
+                <button *ngIf="estadoFormulario == 'crear'" (click)="nuevaPersona()" class="bg-gray-100 hover:text-secondaryColor shadow text-gray-800 w-full border border-gray-300 font-semibold p-2 rounded mt-4"> Crear persona </button>
+                <button *ngIf="estadoFormulario == 'editar'" (click)="actualizarPersona()" class="bg-gray-100 shadow hover:text-secondaryColor text-gray-800 border border-gray-300 font-semibold w-full p-2 rounded mt-4"> Actualizar persona </button>
+            </div>
+        </div>
+    </div>
+</app-modal>
+
+<!-- Listado de personas -->
+<app-tarjeta-lista>
+    <div class="container mx-auto">
+        <div>
+            <div class="flex items-center justify-between bg-primary-800 text-white px-4 py-3 rounded-t">
+                <div class="ml-2">
+                    <h2 class="text-2xl leading-tight">
+                        Listado de personas
+                    </h2>
+                    <p> Total de personas: {{ personas.length }} </p>
+                </div>
+                <div>
+                    <app-boton-generico title="Nueva persona" (click)="abrirModal('crear')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                          </svg>
+                    </app-boton-generico>
+                </div>
+            </div>
+            <div class="md:flex md:items-center md:justify-between px-4 py-2">
+                <div class="my-2 flex sm:flex-row flex-col">
+                    <div class="flex flex-row mb-1 sm:mb-0">
+                        <div class="relative">
+                            <select #txtActivo (change)="filtrarActivos(txtActivo.value)" class="h-full rounded-r border-t border-l rounded-l sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
+                                <option value='true'> Activos </option>
+                                <option value='false'> Inactivos </option>
+                                <option value=''> Todos </option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <svg class="fill-current h-4 w-4" viewBox="0 0 20 20">
+                                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="block relative">
+                        <span class="h-full absolute inset-y-0 left-0 flex items-center pl-2">
+                            <svg viewBox="0 0 24 24" class="h-4 w-4 fill-current text-gray-500 cursor-pointer hover:text-secondary-500">
+                                <path
+                                    d="M10 4a6 6 0 100 12 6 6 0 000-12zm-8 6a8 8 0 1114.32 4.906l5.387 5.387a1 1 0 01-1.414 1.414l-5.387-5.387A8 8 0 012 10z">
+                                </path>
+                            </svg>
+                        </span>
+                        <input #txtParametro placeholder="Buscar" (keyup)="filtrarParametro(txtParametro.value)" class="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="overflow-x-auto px-4 py-2">
+                <div class="inline-block min-w-full rounded-lg overflow-hidden border border-gray-200">
+                    <table class="min-w-full leading-normal border border-gray-200 rounded">
+                        <thead>
+                            <tr>
+                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <div (click)="ordenarPorColumna('dni')" class="cursor-pointer flex items-center focus:outline-none">
+                                        <span> DNI </span>
+                                        <span class="ml-2 text-gray-600">    
+                                            <svg *ngIf="ordenar.columna == 'dni' && ordenar.direccion == -1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                                            <svg *ngIf="ordenar.columna != 'dni'" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                        </span>
+                                    </div>
+                                </th>
+                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <div (click)="ordenarPorColumna('apellido')" class="cursor-pointer flex items-center focus:outline-none">
+                                        <span> Apellido </span>
+                                        <span class="ml-2 text-gray-600">    
+                                            <svg *ngIf="ordenar.columna == 'apellido' && ordenar.direccion == -1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                                            <svg *ngIf="ordenar.columna != 'apellido'" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                        </span>
+                                    </div>
+                                </th>
+                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <div (click)="ordenarPorColumna('nombre')" class="cursor-pointer flex items-center focus:outline-none">
+                                        <span> Nombre </span>
+                                        <span class="ml-2 text-gray-600">    
+                                            <svg *ngIf="ordenar.columna == 'nombre' && ordenar.direccion == -1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                                            <svg *ngIf="ordenar.columna != 'nombre'" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                        </span>
+                                    </div>
+                                </th>
+                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <div (click)="ordenarPorColumna('createdAt')" class="cursor-pointer w-max flex items-center justify-center focus:outline-none">
+                                        <span>
+                                            Fecha de creación                                                
+                                        </span>
+                                        <span class="ml-2">
+                                            <svg *ngIf="ordenar.columna == 'createdAt' && ordenar.direccion == 1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>                                   
+                                            <svg *ngIf="ordenar.columna == 'createdAt' && ordenar.direccion == -1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                                            <svg *ngIf="ordenar.columna != 'createdAt'" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                        </span>
+                                    </div>
+                                </th>
+                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <div (click)="ordenarPorColumna('activo')" class="cursor-pointer flex items-center focus:outline-none">
+                                        <span>
+                                            Estado                                               
+                                        </span>
+                                        <span class="ml-2">
+                                            <svg *ngIf="ordenar.columna == 'activo' && ordenar.direccion == 1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>                                   
+                                            <svg *ngIf="ordenar.columna == 'activo' && ordenar.direccion == -1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                                            <svg *ngIf="ordenar.columna != 'activo'" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                        </span>
+                                    </div>
+                                </th>
+                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Acción
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="personas">
+                            <tr class="animate__animated animate__fadeIn" *ngFor="let persona of personas | filtroPersonas:filtro.parametro:filtro.activo | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActual}">
+                                <td class="px-5 py-2 border-b border-gray-200 text-xs">
+                                    <p class="text-gray-900 whitespace-no-wrap">
+                                        {{ persona.dni }}
+                                    </p>
+                                </td>
+                                <td class="px-5 py-2 border-b border-gray-200 text-xs capitalize">
+                                    <p class="text-gray-900 whitespace-no-wrap">
+                                        {{ persona.apellido.toLowerCase() }}
+                                    </p>
+                                </td>
+                                <td class="px-5 py-2 border-b border-gray-200 text-xs">
+                                    <p class="text-gray-900 whitespace-no-wrap capitalize">
+                                        {{ persona.nombre.toLowerCase() }}
+                                    </p>
+                                </td>
+                                <td class="px-5 py-2 border-b border-gray-200 text-xs">
+                                    <p class="text-gray-900 whitespace-no-wrap">
+                                        {{ persona.createdAt | fecha }}
+                                    </p>
+                                </td>
+                                <td class="px-5 py-2 border-b border-gray-200 text-xs">
+                                    <app-pastilla-estado [activo]=persona.activo (click)="actualizarEstado(persona)"></app-pastilla-estado>
+                                </td>
+                                <td class="px-5 py-2 border-b border-gray-200 text-xs text-center">
+                                    <p class="flex items-center justify-center text-gray-900 whitespace-no-wrap">
+                                        <app-boton-tabla (click)="abrirModal('editar', persona)" title="Editar persona">
+                                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                                        </app-boton-tabla>
+                                    </p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="px-5 py-5 bg-white border-t flex shadow flex-col xs:flex-row items-center xs:justify-between">
+                        <pagination-controls nextLabel="Siguiente" previousLabel="Anterior" (pageChange)="paginaActual = $event">
+                        </pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-tarjeta-lista>

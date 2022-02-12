@@ -1,0 +1,9 @@
+<div class="h-screen bg-primaryColor">
+    <img class="w-96 mr-auto ml-auto pt-20 gsap-resultado" src="assets/img/examen/logo-examen.png" alt="Logo de la Municipalidad de San Luis">
+    <div class="text-center gsap-resultado">
+        <p class="text-6xl text-white mt-20"> Resultado del examen </p>
+        <!-- <p [ngClass]="{'text-green-700': examen.aprobado, 'text-red-700' : !examen.aprobado}" class="text-4xl mt-10"> {{ examen.aprobado ? 'Aprobado' : 'Desaprobado' }} </p> -->
+        <h1 class="text-6xl text-white mt-5 w-max mr-auto ml-auto p-5"> {{ this.porcentaje | moneda }} % </h1>
+        <button (click)="regresarInicio()" class="bg-secondaryColor transform hover:translate-y-1 duration-200 text-white mt-20 font-semibold focus:outline-none py-5 px-10 text-xl rounded shadow"> Rendir otro examen </button>
+    </div>
+</div>
