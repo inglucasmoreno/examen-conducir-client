@@ -19,6 +19,7 @@ import { ExamenesComponent } from './examenes/examenes.component';
 import { ExamenesDetallesComponent } from './examenes/examenes-detalles.component';
 import { ImagenesComponent } from './imagenes/imagenes.component';
 import { PreguntasEstadisticasComponent } from './preguntas/preguntas-estadisticas.component';
+import { PerfilComponent } from './perfil/perfil.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { PreguntasEstadisticasComponent } from './preguntas/preguntas-estadistic
     ExamenesComponent,
     ExamenesDetallesComponent,
     ImagenesComponent,
-    PreguntasEstadisticasComponent
+    PreguntasEstadisticasComponent,
+    PerfilComponent
   ],
   imports: [
     CommonModule,

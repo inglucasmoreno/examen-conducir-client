@@ -18,6 +18,7 @@ import { ExamenesComponent } from './examenes/examenes.component';
 import { ExamenesDetallesComponent } from './examenes/examenes-detalles.component';
 import { ImagenesComponent } from './imagenes/imagenes.component';
 import { PreguntasEstadisticasComponent } from './preguntas/preguntas-estadisticas.component';
+import { PerfilComponent } from './perfil/perfil.component';
 
 const routes: Routes = [
     {
@@ -35,6 +36,9 @@ const routes: Routes = [
             { path: 'usuarios/editar/:id', canActivate: [AdminGuard], component: EditarUsuarioComponent },
             { path: 'usuarios/password/:id', canActivate: [AdminGuard], component: EditarPasswordComponent },
             
+            // Perfil
+            { path: 'perfil', component: PerfilComponent },
+
             // Personas
             { path: 'personas', component: PersonasComponent },
             
