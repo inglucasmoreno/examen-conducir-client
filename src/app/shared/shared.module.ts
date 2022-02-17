@@ -5,17 +5,21 @@ import { AppRoutingModule } from '../app-routing.module';
 import { StatebarComponent } from './statebar/statebar.component';
 import { PipesModule } from '../pipes/pipes.module';
 import { LoaderComponent } from './loader/loader.component';
+import { ItemsComponent } from './header/components/items/items.component';
+import { DirectivesModule } from '../directives/directives.module';
 
 @NgModule({
   declarations: [
     HeaderComponent,
     StatebarComponent,
-    LoaderComponent
+    LoaderComponent,
+    ItemsComponent
   ],
   imports: [
     CommonModule,
     AppRoutingModule,
-    PipesModule
+    PipesModule,
+    DirectivesModule
   ],
   exports: [
     HeaderComponent,

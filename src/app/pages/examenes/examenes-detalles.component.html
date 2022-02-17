@@ -44,11 +44,11 @@
             <p class="p-1"> <span class="font-semibold"> Fecha: </span> <span class="capitalize"> {{ examen.createdAt | fecha }} </span> </p>
             <div class="flex items-center bg-gray-100">
                 <div>
-                    <p class="p-1"> <span class="font-semibold"> Usuario creador: </span> <span class="capitalize"> {{ examen.usuario.apellido.toLowerCase() }} {{ examen.usuario.nombre.toLowerCase() }} </span> </p>
+                    <p class="p-1"> <span class="font-semibold"> Licencia: </span> Clase {{ examen.tipo_licencia }} </p>
                     <p class="p-1"> <span class="font-semibold"> Lugar: </span> {{ examen.lugar.descripcion }} </p>
                 </div>
                 <div class="ml-4">
-                    <p class="p-1"> <span class="font-semibold"> Licencia: </span> Clase {{ examen.tipo_licencia }} </p>
+                    <p class="p-1"> <span class="font-semibold"> Usuario creador: </span> <span class="capitalize"> {{ examen.usuario.apellido.toLowerCase() }} {{ examen.usuario.nombre.toLowerCase() }} - DNI {{ examen.usuario.dni }} </span> </p>
                     <p class="p-1"> <span class="font-semibold"> Rinde el examen: </span> <span class="capitalize"> {{ examen.persona.apellido.toLowerCase() }} {{ examen.persona.nombre.toLowerCase() }} - DNI {{ examen.persona.dni }} </span> </p>
                 </div>
             </div>

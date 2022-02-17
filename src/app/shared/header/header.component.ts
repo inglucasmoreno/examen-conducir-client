@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
 import { AuthService } from '../../services/auth.service';
+import { items } from './items';
 
 @Component({
   selector: 'app-header',
@@ -10,10 +11,18 @@ import { AuthService } from '../../services/auth.service';
 })
 export class HeaderComponent implements OnInit {
 
+  // Items
+  public items: any[];
+
+  // Permisos para navegacion
+  public permiso_usuarios = true;
+
   constructor( public authService: AuthService,
                public dataService: DataService ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.items = items;
+  }
 
   // Metodo: Cerrar sesion
   logout(): void{ this.authService.logout(); }

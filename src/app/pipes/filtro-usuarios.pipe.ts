@@ -32,6 +32,7 @@ export class FiltroUsuariosPipe implements PipeTransform {
       return filtrados.filter( valor => { 
         return valor.apellido.toLocaleLowerCase().includes(parametro) ||
                valor.nombre.toLocaleLowerCase().includes(parametro) ||
+               valor.dni.toLocaleLowerCase().includes(parametro) ||
                valor.usuario.toLocaleLowerCase().includes(parametro)
       });
     }else{
