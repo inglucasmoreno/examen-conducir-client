@@ -7,6 +7,7 @@ export class UsuarioOnline {
         public apellido: string,
         public role: string,
         public lugar: string,
-        public lugar_descripcion: string
+        public lugar_descripcion: string,
+        public permisos: string[],
     ){}   
 }

@@ -36,8 +36,6 @@ export class PermisosDirective implements OnInit {
     if(this.usuarioLogin && this.usuarioLogin.role !== 'ADMIN_ROLE'){
       
       let tienePermiso = false;
-      console.log('El usuario no es administrador');
-
 
       if(this.usuarioLogin && this.usuarioLogin.permisos){
         
@@ -61,7 +59,6 @@ export class PermisosDirective implements OnInit {
       return tienePermiso;
 
     }else{
-      console.log('Es administrador')
       return true;
     }
   }

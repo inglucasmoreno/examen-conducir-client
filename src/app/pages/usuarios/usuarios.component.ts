@@ -5,6 +5,7 @@ import { AlertService } from '../../services/alert.service';
 import { DataService } from 'src/app/services/data.service';
 
 import { Usuario } from '../../models/usuario.model';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -14,6 +15,9 @@ import { Usuario } from '../../models/usuario.model';
   ]
 })
 export class UsuariosComponent implements OnInit {
+
+  // Permisos de usuarios login
+  public permisos = { all: false };
 
   // Usuarios Listados
   public usuarios: Usuario[];
@@ -40,13 +44,20 @@ export class UsuariosComponent implements OnInit {
   public usuariosReporte = [];
 
   constructor(private usuariosService: UsuariosService,
+              public authService: AuthService,
               private alertService: AlertService,
               private dataService: DataService) { }
 
   ngOnInit(): void {
-    this.dataService.ubicacionActual = 'Dashboard - Usuarios' 
+    this.dataService.ubicacionActual = 'Dashboard - Usuarios';
+    this.permisos.all = this.permisosUsuarioLogin();
     this.alertService.loading();
     this.listarUsuarios(); 
+  }
+
+  // Asignar permisos de usuario login
+  permisosUsuarioLogin(): boolean {
+    return this.authService.usuario.permisos.includes('USUARIOS_ALL') || this.authService.usuario.role === 'ADMIN_ROLE';
   }
 
   // Listar usuarios
@@ -69,19 +80,22 @@ export class UsuariosComponent implements OnInit {
   // Actualizar estado Activo/Inactivo
   actualizarEstado(usuario: Usuario): void {
     const { _id, activo } = usuario;
-      this.alertService.question({ msg: '¿Quieres actualizar el estado?', buttonText: 'Actualizar' })
-          .then(({isConfirmed}) => {  
-            if (isConfirmed) {
+
+    if(!this.permisos.all) return this.alertService.info('Usted no tiene permiso para realizar esta acción');
+
+    this.alertService.question({ msg: '¿Quieres actualizar el estado?', buttonText: 'Actualizar' })
+        .then(({isConfirmed}) => {  
+          if (isConfirmed) {
+            this.alertService.loading();
+            this.usuariosService.actualizarUsuario(_id, {activo: !activo}).subscribe(() => {
               this.alertService.loading();
-              this.usuariosService.actualizarUsuario(_id, {activo: !activo}).subscribe(() => {
-                this.alertService.loading();
-                this.listarUsuarios();
-              }, ({error}) => {
-                this.alertService.close();
-                this.alertService.errorApi(error.message);
-              });
-            }
-          });
+              this.listarUsuarios();
+            }, ({error}) => {
+              this.alertService.close();
+              this.alertService.errorApi(error.message);
+            });
+          }
+        });
   }
   
   // Filtrar Activo/Inactivo

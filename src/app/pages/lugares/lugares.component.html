@@ -23,7 +23,7 @@
                     </h2>
                     <p> Total de lugares: {{ lugares.length }} </p>
                 </div>
-                <div>
+                <div *ngIf="permisos.all">
                     <app-boton-generico title="Nuevo lugar" (click)="abrirModal('crear')">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -104,7 +104,7 @@
                                         </span>
                                     </div>
                                 </th>
-                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <th *ngIf="permisos.all" class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     Acción
                                 </th>
                             </tr>
@@ -127,10 +127,10 @@
                                     </p>
                                 </td>
                                 <td class="px-5 py-2 border-b border-gray-200 text-xs">
-                                    <app-pastilla-estado [activo]=lugar.activo (click)="actualizarEstado(lugar)"></app-pastilla-estado>
+                                    <app-pastilla-estado *ngIf="lugar.descripcion !== 'DIRECCION DE TRANSPORTE'" [activo]=lugar.activo (click)="actualizarEstado(lugar)"></app-pastilla-estado>
                                 </td>
-                                <td class="px-5 py-2 border-b border-gray-200 text-xs text-center">
-                                    <p class="flex items-center justify-center text-gray-900 whitespace-no-wrap">
+                                <td *ngIf="permisos.all" class="px-5 py-2 border-b border-gray-200 text-xs text-center">
+                                    <p *ngIf="lugar.descripcion !== 'DIRECCION DE TRANSPORTE'" class="flex items-center justify-center text-gray-900 whitespace-no-wrap">
                                         <app-boton-tabla (click)="abrirModal('editar', lugar)" title="Editar lugar">
                                             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
                                         </app-boton-tabla>

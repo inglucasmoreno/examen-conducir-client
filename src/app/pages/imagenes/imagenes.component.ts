@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { AuthService } from 'src/app/services/auth.service';
 import { ImagenesService } from 'src/app/services/imagenes.service';
 import { environment } from 'src/environments/environment';
 import { AlertService } from '../../services/alert.service';
@@ -12,6 +13,9 @@ import { DataService } from '../../services/data.service';
   ]
 })
 export class ImagenesComponent implements OnInit {
+
+  // Permisos de usuarios login
+  public permisos = { all: false };
 
   public urlBase = environment.base_url;
   public imagenes;
@@ -42,6 +46,7 @@ export class ImagenesComponent implements OnInit {
   public cantidadItems: number = 10;
 
   constructor(private imagenesService: ImagenesService,
+              private authService: AuthService,
               private dataService: DataService,
               private alertService: AlertService,
               private sanitizer: DomSanitizer
@@ -49,8 +54,14 @@ export class ImagenesComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataService.ubicacionActual = 'Dashboard - Imagenes';
+    this.permisos.all = this.permisosUsuarioLogin();
     this.listarImagenes();
     console.log(this.urlBase);
+  }
+
+  // Asignar permisos de usuario login
+  permisosUsuarioLogin(): boolean {
+    return this.authService.usuario.permisos.includes('IMAGENES_ALL') || this.authService.usuario.role === 'ADMIN_ROLE';
   }
   
   // Se sube una nueva imagen al servidor
@@ -147,6 +158,7 @@ export class ImagenesComponent implements OnInit {
 
   // Abrir detalles de imagen
   detallesImagen(imagen: any): void {
+    if(!this.permisos.all) return this.alertService.info('Usted no tiene permiso para realizar esta acción');
     this.imagenSeleccionada = imagen;
     this.actualizacion.descripcion = imagen.descripcion;
     this.showModal = true;

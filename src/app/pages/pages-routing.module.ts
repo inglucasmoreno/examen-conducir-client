@@ -19,6 +19,7 @@ import { ExamenesDetallesComponent } from './examenes/examenes-detalles.componen
 import { ImagenesComponent } from './imagenes/imagenes.component';
 import { PreguntasEstadisticasComponent } from './preguntas/preguntas-estadisticas.component';
 import { PerfilComponent } from './perfil/perfil.component';
+import { PermisosGuard } from '../guards/permisos.guard';
 
 const routes: Routes = [
     {
@@ -31,30 +32,31 @@ const routes: Routes = [
             { path: 'home', component: HomeComponent },
 
             // Usuarios
-            { path: 'usuarios', canActivate: [AdminGuard], component: UsuariosComponent },
-            { path: 'usuarios/nuevo', canActivate: [AdminGuard], component: NuevoUsuarioComponent },
-            { path: 'usuarios/editar/:id', canActivate: [AdminGuard], component: EditarUsuarioComponent },
-            { path: 'usuarios/password/:id', canActivate: [AdminGuard], component: EditarPasswordComponent },
+            { path: 'usuarios', data: { permisos: 'USUARIOS_NAV' }, canActivate: [ PermisosGuard ], component: UsuariosComponent },
+            { path: 'usuarios/nuevo', data: { permisos: 'USUARIOS_NAV' }, canActivate: [ PermisosGuard ], component: NuevoUsuarioComponent },
+            { path: 'usuarios/editar/:id', data: { permisos: 'USUARIOS_NAV' }, canActivate: [ PermisosGuard ], component: EditarUsuarioComponent },
+            { path: 'usuarios/password/:id', data: { permisos: 'USUARIOS_NAV' }, canActivate: [ PermisosGuard ], component: EditarPasswordComponent },
             
             // Perfil
             { path: 'perfil', component: PerfilComponent },
 
             // Personas
-            { path: 'personas', component: PersonasComponent },
-            
-            // Lugares
-            { path: 'lugares', canActivate: [AdminGuard], component: LugaresComponent },
-            
-            // Preguntas
-            { path: 'preguntas', canActivate: [AdminGuard], component: PreguntasComponent },
-            { path: 'preguntas/estadisticas', canActivate: [AdminGuard], component: PreguntasEstadisticasComponent },
-
-            // Examenes
-            { path: 'examenes', component: ExamenesComponent },
-            { path: 'examenes/detalles/:id', component: ExamenesDetallesComponent },
+            { path: 'personas', data: { permisos: 'PERSONAS_NAV' }, canActivate: [ PermisosGuard ], component: PersonasComponent },
             
             // Imagenes
-            { path: 'imagenes', component: ImagenesComponent },
+            { path: 'imagenes', data: { permisos: 'IMAGENES_NAV' }, canActivate: [ PermisosGuard ], component: ImagenesComponent },
+            
+            // Lugares
+            { path: 'lugares', data: { permisos: 'LUGARES_NAV' }, canActivate: [ PermisosGuard ], component: LugaresComponent },
+            
+            // Preguntas
+            { path: 'preguntas', data: { permisos: 'PREGUNTAS_NAV' }, canActivate: [ PermisosGuard ], component: PreguntasComponent },
+            { path: 'preguntas/estadisticas', data: { permisos: 'PREGUNTAS_NAV' }, canActivate: [ PermisosGuard ], component: PreguntasEstadisticasComponent },
+
+            // Examenes
+            { path: 'examenes', data: { permisos: 'EXAMENES_NAV' }, canActivate: [ PermisosGuard ], component: ExamenesComponent },
+            { path: 'examenes/detalles/:id', data: { permisos: 'EXAMENES_NAV' }, canActivate: [ PermisosGuard ], component: ExamenesDetallesComponent },
+            
         ]
     }
 ];

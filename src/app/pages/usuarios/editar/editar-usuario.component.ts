@@ -16,6 +16,16 @@ import { LugaresService } from 'src/app/services/lugares.service';
 })
 export class EditarUsuarioComponent implements OnInit {
 
+  // Permisos de usuario
+  public permisos = {
+    usuarios: 'USUARIOS_NOT_ACCESS',
+    personas: 'PERSONAS_ALL',
+    imagenes: 'IMAGENES_NOT_ACCESS',
+    lugares: 'LUGARES_NOT_ACCESS',
+    preguntas: 'PREGUNTAS_NOT_ACCESS',
+    examenes: 'EXAMENES_ALL'
+  }
+
   public id: string;
   public usuario: Usuario;
   public lugares = [];
@@ -42,18 +52,24 @@ export class EditarUsuarioComponent implements OnInit {
     this.dataService.ubicacionActual = 'Dashboard - Editando usuario'
     this.alertService.loading();
     this.activatedRoute.params.subscribe(({id}) => { this.id = id; });
+    
+    // Se traen los datos del usuario a editar
     this.usuariosService.getUsuario(this.id).subscribe(usuarioRes => {
-      this.usuario = usuarioRes;
+      
+      // Marcar permisos
+      this.getPermisos(usuarioRes.permisos); // Se obtienen los permisos
+
+      this.usuario = usuarioRes;      
       const {usuario, apellido, nombre, dni, lugar, email, role, activo} = this.usuario;
-      console.log(lugar);
-      this.usuarioForm.setValue({
+      
+      this.usuarioForm.patchValue({
         usuario,
         apellido,
         nombre,
         dni,
         email,
         role,
-        lugar,
+        lugar: role !== 'ADMIN_ROLE' ? lugar : '',
         activo: String(activo)
       });
       this.listarLugares();
@@ -66,7 +82,7 @@ export class EditarUsuarioComponent implements OnInit {
   listarLugares(): void {
     this.lugaresService.listarLugares().subscribe(({ lugares }) => {
       this.alertService.close();
-      this.lugares = lugares;
+      this.lugares = lugares.filter(lugar => lugar.descripcion !== 'DIRECCION DE TRANSPORTE');
     },({error}) => {
       this.alertService.errorApi(error.message);
     });
@@ -95,15 +111,94 @@ export class EditarUsuarioComponent implements OnInit {
       this.alertService.info('Se debe seleccionar un lugar de trabajo');
       return;
     }
+
+    // Se agregan los permisos
+    let data: any = this.usuarioForm.value;
+    
+    if(role !== 'ADMIN_ROLE') data.permisos = this.adicionarPermisos();
+    else data.permisos = [];   
+
     this.alertService.loading();
 
-    this.usuariosService.actualizarUsuario(this.id, this.usuarioForm.value).subscribe(() => {
+    this.usuariosService.actualizarUsuario(this.id, data).subscribe(() => {
       this.alertService.close();
       this.router.navigateByUrl('dashboard/usuarios');
     }, ({error}) => {
       this.alertService.close();
       this.alertService.errorApi(error.message);
     });
+
+  }
+
+  // Se obtienen los permisos
+  getPermisos(permisosFnc: Array<string>): void {
+  
+    permisosFnc.forEach( permiso => {
+    
+      // Usuarios
+      (permiso === 'USUARIOS_ALL' || permiso === 'USUARIOS_READ') ? this.permisos.usuarios = permiso : null;
+
+      // Personas
+      (permiso === 'PERSONAS_ALL' || permiso === 'PERSONAS_READ') ? this.permisos.personas = permiso : null;
+
+      // Imagenes
+      (permiso === 'IMAGENES_ALL' || permiso === 'IMAGENES_READ') ? this.permisos.imagenes = permiso : null;
+
+      // Lugares
+      (permiso === 'LUGARES_ALL' || permiso === 'LUGARES_READ') ? this.permisos.lugares = permiso : null;
+
+      // Preguntas
+      (permiso === 'PREGUNTAS_ALL' || permiso === 'PREGUNTAS_READ') ? this.permisos.preguntas = permiso : null;
+
+      // Examenes
+      (permiso === 'EXAMENES_ALL' || permiso === 'EXAMENES_READ') ? this.permisos.examenes = permiso : null;
+    
+    });
+
+  }
+
+  // Se arma el arreglo de permisos
+  adicionarPermisos(): any {
+    
+    let permisos: any[] = [];
+
+    // Seccion usuarios
+    if(this.permisos.usuarios !== 'USUARIOS_NOT_ACCESS'){
+      permisos.push('USUARIOS_NAV');
+      permisos.push(this.permisos.usuarios);
+    }
+
+    // Seccion personas
+    if(this.permisos.personas !== 'PERSONAS_NOT_ACCESS'){
+      permisos.push('PERSONAS_NAV');
+      permisos.push(this.permisos.personas);
+    }
+
+    // Seccion imagenes
+    if(this.permisos.imagenes !== 'IMAGENES_NOT_ACCESS'){
+      permisos.push('IMAGENES_NAV');
+      permisos.push(this.permisos.imagenes);
+    }
+
+    // Seccion lugares
+    if(this.permisos.lugares !== 'LUGARES_NOT_ACCESS'){
+      permisos.push('LUGARES_NAV');
+      permisos.push(this.permisos.lugares);
+    }
+
+    // Seccion preguntas
+    if(this.permisos.preguntas !== 'PREGUNTAS_NOT_ACCESS'){
+      permisos.push('PREGUNTAS_NAV');
+      permisos.push(this.permisos.preguntas);
+    }
+
+    // Seccion examenes
+    if(this.permisos.examenes !== 'EXAMENES_NOT_ACCESS'){
+      permisos.push('EXAMENES_NAV');
+      permisos.push(this.permisos.examenes);
+    }
+
+    return permisos;
 
   }
 

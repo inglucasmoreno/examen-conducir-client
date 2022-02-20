@@ -64,7 +64,7 @@
             <option value="true"> Activas </option>
             <option value="false"> Inactivas </option>
         </select>
-        <button (click)="modalNuevaImagen()" title="Nueva imagen" class="border rounded border-gray-300 shadow focus:outline-none bg-white p-2 ml-3 hover:text-primaryColor">
+        <button *ngIf="permisos.all" (click)="modalNuevaImagen()" title="Nueva imagen" class="border rounded border-gray-300 shadow focus:outline-none bg-white p-2 ml-3 hover:text-primaryColor">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>

@@ -46,8 +46,8 @@ export class AuthService {
       headers: { Authorization: token }
     }).pipe(
       map( (resp: any) => {
-        const { userId, usuario, apellido, nombre, role, lugar, lugar_descripcion } = resp.usuario;
-        this.usuario = new UsuarioOnline( userId, usuario, nombre, apellido, role, lugar, lugar_descripcion );
+        const { userId, usuario, apellido, nombre, role, lugar, lugar_descripcion, permisos } = resp.usuario;
+        this.usuario = new UsuarioOnline( userId, usuario, nombre, apellido, role, lugar, lugar_descripcion, permisos );
         localStorage.setItem('token', resp.token);
         return true;
       }),

@@ -15,6 +15,16 @@ import { AlertService } from '../../services/alert.service';
 })
 export class NuevoUsuarioComponent implements OnInit {
 
+  // Permisos de usuario
+  public permisos = {
+    usuarios: 'USUARIOS_NOT_ACCESS',
+    personas: 'PERSONAS_ALL',
+    imagenes: 'IMAGENES_NOT_ACCESS',
+    lugares: 'LUGARES_NOT_ACCESS',
+    preguntas: 'PREGUNTAS_NOT_ACCESS',
+    examenes: 'EXAMENES_ALL'
+  }
+
   public loading = false;
   
   // Lugares
@@ -52,7 +62,8 @@ export class NuevoUsuarioComponent implements OnInit {
   listarLugares(): void {
     this.lugaresService.listarLugares().subscribe(({ lugares }) => {
       this.alertService.close();
-      this.lugares = lugares;
+      this.lugares = lugares.filter(lugar => lugar.descripcion.toUpperCase() !== 'DIRECCION DE TRANSPORTE');
+      console.log(this.lugares);
     },({error}) => {
       this.alertService.errorApi(error.message);
     });
@@ -92,10 +103,16 @@ export class NuevoUsuarioComponent implements OnInit {
       return;   
     }
 
+    // Se agregan los permisos
+    let data: any = this.usuarioForm.value;
+    
+    if(role !== 'ADMIN_ROLE') data.permisos = this.adicionarPermisos();
+    else data.permisos = [];   
+
     this.alertService.loading();  // Comienzo de loading
 
     // Se crear el nuevo usuario
-    this.usuariosService.nuevoUsuario(this.usuarioForm.value).subscribe(() => {
+    this.usuariosService.nuevoUsuario(data).subscribe(() => {
       this.alertService.close();  // Finaliza el loading
       this.router.navigateByUrl('dashboard/usuarios');
     },( ({error}) => {
@@ -103,6 +120,51 @@ export class NuevoUsuarioComponent implements OnInit {
       this.alertService.errorApi(error.message);
       return;  
     }));
+
+  }
+
+  // Se arma el arreglo de permisos
+  adicionarPermisos(): any {
+    
+    let permisos: any[] = [];
+
+    // Seccion usuarios
+    if(this.permisos.usuarios !== 'USUARIOS_NOT_ACCESS'){
+      permisos.push('USUARIOS_NAV');
+      permisos.push(this.permisos.usuarios);
+    }
+
+    // Seccion personas
+    if(this.permisos.personas !== 'PERSONAS_NOT_ACCESS'){
+      permisos.push('PERSONAS_NAV');
+      permisos.push(this.permisos.personas);
+    }
+
+    // Seccion imagenes
+    if(this.permisos.imagenes !== 'IMAGENES_NOT_ACCESS'){
+      permisos.push('IMAGENES_NAV');
+      permisos.push(this.permisos.imagenes);
+    }
+
+    // Seccion lugares
+    if(this.permisos.lugares !== 'LUGARES_NOT_ACCESS'){
+      permisos.push('LUGARES_NAV');
+      permisos.push(this.permisos.lugares);
+    }
+
+    // Seccion preguntas
+    if(this.permisos.preguntas !== 'PREGUNTAS_NOT_ACCESS'){
+      permisos.push('PREGUNTAS_NAV');
+      permisos.push(this.permisos.preguntas);
+    }
+
+    // Seccion examenes
+    if(this.permisos.examenes !== 'EXAMENES_NOT_ACCESS'){
+      permisos.push('EXAMENES_NAV');
+      permisos.push(this.permisos.examenes);
+    }
+
+    return permisos;
 
   }
 

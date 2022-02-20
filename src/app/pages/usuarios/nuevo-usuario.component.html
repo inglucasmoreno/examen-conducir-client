@@ -1,6 +1,6 @@
 <div class="lg:flex p-4">
 
-    <div class="w-full lg:w-1/2 bg-white mr-2 shadow rounded border border-gray-200">
+    <div class="w-full h-full lg:w-1/2 bg-white mr-2 shadow rounded border border-gray-200">
 
         <!-- Cuerpo de formulario -->
         <form [formGroup]="usuarioForm" class="">
@@ -110,8 +110,7 @@
             </div>
         </form>
     </div>
-
-    <div class="bg-white mt-2 lg:mt-0 border w-full shadow lg:w-1/2 border-gray-300 p-4 rounded h-full">
+    <div class="bg-white mt-2 w-full lg:w-1/2 h-full lg:mt-0 border shadow border-gray-300 p-4 rounded">
         <div class="flex">
             <div *ngIf="usuarioForm.value.role === 'ADMIN_ROLE'" class="bg-blue-100 flex items-center justify-center w-32 h-32 rounded-full shadow border border-blue-200">
                 <p class="text-6xl font-semibold text-primaryColor"> A </p>
@@ -143,12 +142,90 @@
                 </div>
             </div>
         </div>
-        <div>
-            <div class="w-full mt-2">
-                <app-boton-formulario (click)="nuevoUsuario()">
-                    Crear este usuario
-                </app-boton-formulario>
+        <div class="w-full mt-2">
+            <app-boton-formulario (click)="nuevoUsuario()">
+                Crear este usuario
+            </app-boton-formulario>
+        </div>
+
+        <!-- Permisos de usuario -->
+        <div *ngIf="usuarioForm.value.role === 'USER_ROLE'" class="bg-white border rounded mt-2 p-4 shadow">
+
+            <h1 class="font-semibold text-xl"> Permisos de usuario </h1>
+            <p class="text-gray-500 text-sm"> Seleccione los permisos para el usuario estandar </p>
+
+            <div class="flex mt-4 w-full items-center">
+
+                <!-- Usuarios -->
+                <div class="w-1/2">
+                    <p class="font-semibold"> Usuarios </p>
+                    <select [(ngModel)]="permisos.usuarios" class="p-2 mt-1 w-full shadow bg-white border border-gray-200 rounded focus:outline-none">
+                            <option value="USUARIOS_NOT_ACCESS"> Sin acceso </option>
+                            <option value="USUARIOS_ALL"> Permiso total </option>
+                            <option value="USUARIOS_READ"> Solo lectura </option>
+                        </select>
+                </div>
+
+                <!-- Personas -->
+                <div class="w-1/2 ml-2">
+                    <p class="font-semibold"> Personas </p>
+                    <select [(ngModel)]="permisos.personas" class="p-2 mt-1 w-full shadow bg-white border border-gray-200 rounded focus:outline-none">
+                            <option value="PERSONAS_NOT_ACCESS"> Sin acceso </option>
+                            <option value="PERSONAS_ALL"> Permiso total </option>
+                            <option value="PERSONAS_READ"> Solo lectura </option>
+                        </select>
+                </div>
+
             </div>
+
+            <div class="flex w-full mt-4 items-center">
+
+                <!-- Imagenes -->
+                <div class="w-1/2">
+                    <p class="font-semibold"> Imagenes </p>
+                    <select [(ngModel)]="permisos.imagenes" class="p-2 mt-1 w-full shadow bg-white border border-gray-200 rounded focus:outline-none">
+                        <option value="IMAGENES_NOT_ACCESS"> Sin acceso </option>
+                        <option value="IMAGENES_ALL"> Permiso total </option>
+                        <option value="IMAGENES_READ"> Solo lectura </option>
+                    </select>
+                </div>
+
+                <!-- Lugares -->
+                <div class="w-1/2 ml-2">
+                    <p class="font-semibold"> Lugares </p>
+                    <select [(ngModel)]="permisos.lugares" class="p-2 mt-1 w-full shadow bg-white border border-gray-200 rounded focus:outline-none">
+                        <option value="LUGARES_NOT_ACCESS"> Sin acceso </option>
+                        <option value="LUGARES_ALL"> Permiso total </option>
+                        <option value="LUGARES_READ"> Solo lectura </option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="flex w-full mt-4 items-center">
+
+                <!-- Preguntas -->
+                <div class="w-1/2">
+                    <p class="font-semibold"> Preguntas </p>
+                    <select [(ngModel)]="permisos.preguntas" class="p-2 mt-1 w-full shadow bg-white border border-gray-200 rounded focus:outline-none">
+                        <option value="PREGUNTAS_NOT_ACCESS"> Sin acceso </option>
+                        <option value="PREGUNTAS_ALL"> Permiso total </option>
+                        <option value="PREGUNTAS_READ"> Solo lectura </option>
+                    </select>
+                </div>
+
+                <!-- Examenes -->
+                <div class="w-1/2 ml-2">
+                    <p class="font-semibold"> Examenes </p>
+                    <select [(ngModel)]="permisos.examenes" class="p-2 mt-1 w-full shadow bg-white border border-gray-200 rounded focus:outline-none">
+                        <option value="EXAMENES_NOT_ACCESS"> Sin acceso </option>
+                        <option value="EXAMENES_ALL"> Permiso total </option>
+                        <option value="EXAMENES_READ"> Solo lectura </option>
+                    </select>
+                </div>
+
+            </div>
+
         </div>
     </div>
 </div>

@@ -50,7 +50,7 @@
                 <input formControlName="repetir" type="password" placeholder="Repite la contraseña" [ngClass]="{'focus:border-orange-500' : usuarioLogin.role !== 'ADMIN_ROLE'}" class="p-2 border-b-2 transform outline-none duration-500 focus:border-primaryColor focus:outline-none w-full">
             </div>
             <button [disabled]="!passwordForm.valid || (passwordForm.value.password.trim() !== passwordForm.value.repetir.trim())" [ngClass]="{'text-gray-600 hover:text-secondaryColor' : !(!passwordForm.valid || (passwordForm.value.password.trim() !== passwordForm.value.repetir.trim())), 'text-gray-400' : '!passwordForm.valid || (passwordForm.value.password.trim() !== passwordForm.value.repetir.trim())'}"
-                class="p-2 font-semibold text-gray-600 bg-gray-100 focus:outline-none border border-gray-300 w-full mt-3 rounded shadow" class="border font-semibold w-full shadow rounded p-2 bg-gray-100 hover:text-secondaryColor">
+                class="p-2 font-semibold text-gray-600 bg-gray-100 outline-none focus:outline-none border border-gray-300 w-full mt-3 rounded shadow" class="border font-semibold w-full shadow rounded p-2 bg-gray-100 hover:text-secondaryColor">
                Actualizar contraseña 
             </button>
             <!-- <app-boton-formulario [deshabilitado]="!passwordForm.valid || (passwordForm.value.password.trim() !== passwordForm.value.repetir.trim())" texto="Actualizar contraseña"></app-boton-formulario> -->

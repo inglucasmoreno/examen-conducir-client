@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Lugar } from 'src/app/models/lugar.model';
 import { AlertService } from 'src/app/services/alert.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
 import { LugaresService } from 'src/app/services/lugares.service';
 
@@ -12,6 +13,9 @@ import { LugaresService } from 'src/app/services/lugares.service';
 })
 export class LugaresComponent implements OnInit {
   
+  // Permisos de usuarios login
+  public permisos = { all: false };
+
   // Modal
   public showModalLugar = false;
 
@@ -40,13 +44,20 @@ export class LugaresComponent implements OnInit {
   }
 
   constructor(private lugaresService: LugaresService,
+              private authService: AuthService,
               private alertService: AlertService,
               private dataService: DataService) { }
 
   ngOnInit(): void {
     this.dataService.ubicacionActual = 'Dashboard - Lugares'; 
+    this.permisos.all = this.permisosUsuarioLogin();
     this.alertService.loading();
     this.listarLugares(); 
+  }
+
+  // Asignar permisos de usuario login
+  permisosUsuarioLogin(): boolean {
+    return this.authService.usuario.permisos.includes('LUGARES_ALL') || this.authService.usuario.role === 'ADMIN_ROLE';
   }
 
   // Abrir modal
@@ -123,20 +134,24 @@ export class LugaresComponent implements OnInit {
 
   // Actualizar estado Activo/Inactivo
   actualizarEstado(lugar: Lugar): void {
+    
     const { _id, activo } = lugar;
-      this.alertService.question({ msg: '¿Quieres actualizar el estado?', buttonText: 'Actualizar' })
-          .then(({isConfirmed}) => {  
-            if (isConfirmed) {
+    
+    if(!this.permisos.all) return this.alertService.info('Usted no tiene permiso para realizar esta acción');
+
+    this.alertService.question({ msg: '¿Quieres actualizar el estado?', buttonText: 'Actualizar' })
+        .then(({isConfirmed}) => {  
+          if (isConfirmed) {
+            this.alertService.loading();
+            this.lugaresService.actualizarLugares(_id, {activo: !activo}).subscribe(() => {
               this.alertService.loading();
-              this.lugaresService.actualizarLugares(_id, {activo: !activo}).subscribe(() => {
-                this.alertService.loading();
-                this.listarLugares();
-              }, ({error}) => {
-                this.alertService.close();
-                this.alertService.errorApi(error.msg);
-              });
-            }
-          });
+              this.listarLugares();
+            }, ({error}) => {
+              this.alertService.close();
+              this.alertService.errorApi(error.msg);
+            });
+          }
+        });
   }
 
   // Reiniciando formulario

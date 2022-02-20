@@ -18,6 +18,9 @@ import { SocketService } from '../../services/socket.service';
 })
 export class ExamenesComponent implements OnInit {
 
+  // Permisos de usuarios login
+  public permisos = { all: false };
+
   // Obervables
   public timerSubscribe;
 
@@ -88,6 +91,7 @@ export class ExamenesComponent implements OnInit {
     this.dataService.ubicacionActual = 'Dashboard - Examenes';
     this.data.usuario = this.authService.usuario.userId;
     this.data.lugar = this.authService.usuario.lugar;
+    this.permisos.all = this.permisosUsuarioLogin();
     this.alertService.loading();
     
     // Probando observables
@@ -101,6 +105,11 @@ export class ExamenesComponent implements OnInit {
       (this.authService.usuario.lugar === data.lugar || this.authService.usuario.role === 'ADMIN_ROLE') ? this.listarExamenes('modal') : null;
     });    
 
+  }
+
+  // Asignar permisos de usuario login
+  permisosUsuarioLogin(): boolean {
+    return this.authService.usuario.permisos.includes('EXAMENES_ALL') || this.authService.usuario.role === 'ADMIN_ROLE';
   }
 
   ngOnDestroy(): void {

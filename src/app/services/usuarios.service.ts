@@ -42,6 +42,7 @@ export class UsuariosService {
 
   // Nuevo usuario
   nuevoUsuario(data: any): Observable<any>{
+    console.log(data);
     return this.http.post(`${base_url}/usuarios`, data, {
       headers: {
         'Authorization': localStorage.getItem('token')
