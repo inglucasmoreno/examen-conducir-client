@@ -5,7 +5,7 @@
             <h1 class="text-white px-2 py-1 rounded-t text-lg"> {{ estadoFormulario == 'crear' ? 'Creando nueva persona' : 'Editando persona' }} </h1>
             <svg (click)="cerrarModal()" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cursor-pointer feather feather-x text-white mr-2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </div>
-        <div class="p-4">
+        <div (keyup.enter)="estadoFormulario === 'crear' ? nuevaPersona() : actualizarPersona()" class="p-4">
             <div class="flex items-center">
                 <div class="w-1/2">
                     <p class="font-semibold text-gray-800 text-sm"> <span class="text-red-500"> * </span> DNI </p>

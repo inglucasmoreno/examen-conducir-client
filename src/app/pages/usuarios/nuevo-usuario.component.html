@@ -1,9 +1,9 @@
-<div class="lg:flex p-4">
+<div class="lg:flex p-4" (submit)="nuevoUsuario">
 
-    <div class="w-full h-full lg:w-1/2 bg-white mr-2 shadow rounded border border-gray-200">
+    <div (keyup.enter)="nuevoUsuario()" class="w-full h-full lg:w-1/2 bg-white mr-2 shadow rounded border border-gray-200">
 
         <!-- Cuerpo de formulario -->
-        <form [formGroup]="usuarioForm" class="">
+        <div [formGroup]="usuarioForm">
             <div class="flex items-center p-2 bg-primary-800 rounded-t">
                 <app-boton-regresar routerLink="/dashboard/usuarios"></app-boton-regresar>
                 <h1 class="ml-2 text-2xl text-white"> Formulario de creación </h1>
@@ -108,7 +108,7 @@
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
     <div class="bg-white mt-2 w-full lg:w-1/2 h-full lg:mt-0 border shadow border-gray-300 p-4 rounded">
         <div class="flex">
@@ -223,9 +223,7 @@
                         <option value="EXAMENES_READ"> Solo lectura </option>
                     </select>
                 </div>
-
             </div>
-
         </div>
     </div>
 </div>

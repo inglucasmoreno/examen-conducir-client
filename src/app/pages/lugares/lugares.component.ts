@@ -111,7 +111,7 @@ export class LugaresComponent implements OnInit {
     this.lugaresService.nuevoLugar({ descripcion: this.descripcion }).subscribe(() => {
       this.listarLugares();
     },({error})=>{
-      this.alertService.errorApi(error);  
+      this.alertService.errorApi(error.message);  
     });
   }
 
@@ -125,10 +125,10 @@ export class LugaresComponent implements OnInit {
     }
 
     this.alertService.loading();
-    this.lugaresService.actualizarLugares(this.idLugar, {descripcion: this.descripcion}).subscribe(() => {
+    this.lugaresService.actualizarLugares(this.idLugar, { descripcion: this.descripcion.toLocaleUpperCase() }).subscribe(() => {
       this.listarLugares();
     },({error})=>{
-      this.alertService.errorApi(error);
+      this.alertService.errorApi(error.message);
     });
   }
 
@@ -148,7 +148,7 @@ export class LugaresComponent implements OnInit {
               this.listarLugares();
             }, ({error}) => {
               this.alertService.close();
-              this.alertService.errorApi(error.msg);
+              this.alertService.errorApi(error.message);
             });
           }
         });

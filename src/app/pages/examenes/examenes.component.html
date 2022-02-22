@@ -96,7 +96,7 @@
             <p *ngIf="authService.usuario.role === 'ADMIN_ROLE'" class="font-semibold mt-3"> <span class="text-red-500"> * </span> Lugar </p>
             <select *ngIf="authService.usuario.role === 'ADMIN_ROLE'" [(ngModel)]="data.lugar" class="shadow bg-white border border-gray-300 p-2 focus:outline-none text-sm rounded w-full mt-2">
                 <option value=""> Seleccionar lugar </option>
-                <option *ngFor="let lugar of lugares" [value]="lugar._id"> {{ lugar.descripcion }} </option>
+                <option *ngFor="let lugar of lugaresSelector" [value]="lugar._id"> {{ lugar.descripcion }} </option>
             </select>
             <button *ngIf="estadoFormulario == 'crear'" (click)="nuevoExamen()" class="bg-gray-100 focus:outline-none hover:text-secondaryColor shadow text-gray-800 w-full border border-gray-300 font-semibold p-2 rounded mt-4"> Crear examen </button>
             <button *ngIf="estadoFormulario == 'editar'" (click)="actualizarExamenes()" class="bg-gray-100 focus:outline-none hover:text-secondaryColor shadow text-gray-800 w-full border border-gray-300 font-semibold p-2 rounded mt-4"> Actualizar examen </button>

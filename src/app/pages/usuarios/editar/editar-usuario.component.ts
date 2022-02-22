@@ -82,7 +82,7 @@ export class EditarUsuarioComponent implements OnInit {
   listarLugares(): void {
     this.lugaresService.listarLugares().subscribe(({ lugares }) => {
       this.alertService.close();
-      this.lugares = lugares.filter(lugar => lugar.descripcion !== 'DIRECCION DE TRANSPORTE');
+      this.lugares = lugares.filter(lugar => (lugar.descripcion !== 'DIRECCION DE TRANSPORTE' && lugar.activo));
     },({error}) => {
       this.alertService.errorApi(error.message);
     });

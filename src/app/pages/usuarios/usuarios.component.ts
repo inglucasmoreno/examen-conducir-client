@@ -68,6 +68,7 @@ export class UsuariosComponent implements OnInit {
       )
     .subscribe( resp => {
       const { usuarios, total } = resp;
+      console.log(usuarios);
       this.usuarios = usuarios;
       this.total = total;
       this.alertService.close();

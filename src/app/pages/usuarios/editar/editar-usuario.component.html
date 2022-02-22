@@ -1,5 +1,5 @@
 <div class="lg:flex p-4">
-    <div class="w-full h-full lg:w-1/2 bg-white mr-2 shadow rounded border border-gray-200">
+    <div (keyup.enter)="editarUsuario()" class="w-full h-full lg:w-1/2 bg-white mr-2 shadow rounded border border-gray-200">
         <div class="flex items-center pb-2 py-2 px-2 bg-primary-800 rounded-t">
             <app-boton-regresar routerLink="/dashboard/usuarios"></app-boton-regresar>
             <h1 class="mt-1 ml-2 text-2xl text-white"> Formulario de edición </h1>

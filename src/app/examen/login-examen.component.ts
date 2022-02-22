@@ -35,10 +35,10 @@ export class LoginExamenComponent implements OnInit {
 
   ingresarExamen(): void {
     
+    if(this.dni === '') return this.alertService.info('Debes ingresar tu DNI');
+    
     this.alertService.loading();
 
-    if(this.dni === '') return this.alertService.info('Debes ingresar tu DNI');
-  
     // Se obtienen datos los datos del examen
     this.examenesService.getExamenDni(this.dni).subscribe( ({ examen }) => {
 

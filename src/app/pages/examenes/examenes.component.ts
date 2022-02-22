@@ -45,6 +45,7 @@ export class ExamenesComponent implements OnInit {
 
   // Lugares
   public lugares: any[] = [];
+  public lugaresSelector: any[] = [];
   public queryLugar: string = '';
 
   // Data
@@ -136,13 +137,23 @@ export class ExamenesComponent implements OnInit {
   buscarPersona(): void {
     this.loadingPersona = true;
     this.personasService.getPersonaDNI(this.dni).subscribe( ({ persona }) => {
-      this.persona = persona;
+   
+      // La persona esta registrada?
       if(!persona){
         this.dataNuevaPersona.dni = this.dni;
         this.personaNoEncontrada = true;
       }
+     
+      if(persona && !persona.activo){
+        this.loadingPersona = false;
+        return this.alertService.info('La persona esta registrada pero inactiva');
+      }
+      
+      this.persona = persona;
+
       this.dni = '';     
       this.loadingPersona = false;
+    
     },({error}) => {
       this.dni = '';
       this.loadingPersona = false;
@@ -190,6 +201,7 @@ export class ExamenesComponent implements OnInit {
   listarLugares(): void {
     this.lugaresService.listarLugares().subscribe(({lugares}) => {
       this.lugares = lugares.filter(lugar => lugar.descripcion !== 'DIRECCION DE TRANSPORTE');
+      this.lugaresSelector = lugares.filter(lugar => (lugar.descripcion !== 'DIRECCION DE TRANSPORTE' && lugar.activo));
       this.alertService.close();
     },({error})=>{
       this.alertService.errorApi(error.message);
