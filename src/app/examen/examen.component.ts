@@ -142,6 +142,8 @@ export class ExamenComponent implements OnInit {
     .then(({isConfirmed}) => {  
       if (isConfirmed) {
 
+        this.alertService.loading();
+
         this.examen.preguntas = this.preguntas;
         this.examen.activo = false;
     
@@ -149,6 +151,7 @@ export class ExamenComponent implements OnInit {
         this.examenesService.actualizarExamen(this.examen._id, data).subscribe(() => {
           this.respuestaSeleccionada = '';
           localStorage.removeItem('examen');
+          this.alertService.close();
           this.router.navigateByUrl('examen-resultado/' + this.examen._id.toString());
         },(error)=>{
           console.log({error});

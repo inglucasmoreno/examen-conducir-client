@@ -275,9 +275,9 @@ export class ExamenesComponent implements OnInit {
     
     // Comunicacion con el back
     this.examenesService.nuevoExamen(this.data).subscribe(() => {
-      this.alertService.success('El examen fue creado correctamente');
       this.socketService.listarExamenes({ lugar: this.data.lugar });
       this.eliminarPersonaSeleccionada();
+      this.alertService.success('El examen fue creado correctamente');
     },({error})=>{
       this.alertService.errorApi(error.message);
     });
@@ -305,19 +305,19 @@ export class ExamenesComponent implements OnInit {
   // Actualizar estado Activo/Inactivo
   actualizarEstado(examen: any): void {
     const { _id, activo } = examen;
-      this.alertService.question({ msg: '¿Quieres actualizar el estado?', buttonText: 'Actualizar' })
-          .then(({isConfirmed}) => {  
-            if (isConfirmed) {
+    this.alertService.question({ msg: '¿Quieres actualizar el estado?', buttonText: 'Actualizar' })
+        .then(({isConfirmed}) => {  
+          if (isConfirmed) {
+            this.alertService.loading();
+            this.examenesService.actualizarExamen(_id, {activo: !activo}).subscribe(() => {
               this.alertService.loading();
-              this.examenesService.actualizarExamen(_id, {activo: !activo}).subscribe(() => {
-                this.alertService.loading();
-                this.listarExamenes();
-              }, ({error}) => {
-                this.alertService.close();
-                this.alertService.errorApi(error.message);
-              });
-            }
-          });
+              this.listarExamenes();
+            }, ({error}) => {
+              this.alertService.close();
+              this.alertService.errorApi(error.message);
+            });
+          }
+        });
   }
 
   // Finalizar examen
