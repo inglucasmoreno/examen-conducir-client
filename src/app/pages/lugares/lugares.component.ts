@@ -74,9 +74,11 @@ export class LugaresComponent implements OnInit {
 
   // Traer datos de lugar
   getLugar(lugares: any): void {
+    this.alertService.loading();
     this.idLugar = lugares._id;
     this.lugaresService.getLugares(lugares._id).subscribe(({lugar}) => {
       this.descripcion = lugar.descripcion;
+      this.alertService.close();
       this.showModalLugar = true;
     },({error})=>{
       this.alertService.errorApi(error);
@@ -113,6 +115,7 @@ export class LugaresComponent implements OnInit {
     },({error})=>{
       this.alertService.errorApi(error.message);  
     });
+    
   }
 
   // Actualizar lugares
@@ -152,6 +155,7 @@ export class LugaresComponent implements OnInit {
             });
           }
         });
+
   }
 
   // Reiniciando formulario

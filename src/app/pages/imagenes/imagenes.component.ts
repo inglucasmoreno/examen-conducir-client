@@ -143,6 +143,7 @@ export class ImagenesComponent implements OnInit {
     else if(accion == 'Baja') data = { activo: false }; 
     else if(accion == 'Alta') data = { activo: true };
   
+    this.alertService.loading();
     this.imagenesService.actualizarImagen(this.imagenSeleccionada._id, data).subscribe( () => {
       this.listarImagenes();
       this.showModal = false;  

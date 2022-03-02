@@ -86,6 +86,7 @@ export class PersonasComponent implements OnInit {
   
   // Traer datos de persona
   getPersona(persona: any): void {
+    this.alertService.loading();
     this.idPersona = persona._id;
     this.personasService.getPersona(persona._id).subscribe(({persona}) => {
     this.data = {
@@ -93,6 +94,7 @@ export class PersonasComponent implements OnInit {
       apellido: persona.apellido,
       nombre: persona.nombre,
     };
+    this.alertService.close();
     this.showModalPersona = true;
   },({error})=>{
     this.alertService.errorApi(error.message);
