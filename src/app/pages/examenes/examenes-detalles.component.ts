@@ -19,11 +19,13 @@ export class ExamenesDetallesComponent implements OnInit {
 
   // Modal
   public showModal = false;
+  public showModalReactivacion = false;
 
   // Examen
   public idExamen: string = '';
   public examen: any;
   public tiempo: string;
+  public reactivaciones: any[];
 
   // Pregunta seleccionada
   public preguntaSeleccionada: any;
@@ -60,7 +62,19 @@ export class ExamenesDetallesComponent implements OnInit {
     this.alertService.loading();
     this.examenesService.getExamen(this.idExamen).subscribe( ({examen}) => {
       this.examen = examen;
-      this.calcularTiempo();
+      
+      if(examen.reactivado){
+        this.examenesService.listarReactivaciones(examen._id).subscribe(({reactivaciones})=>{
+          this.reactivaciones = reactivaciones;
+          console.log(reactivaciones);
+          this.calcularTiempo();
+        },({error}) => {
+          this.alertService.errorApi(error.message);
+        });
+      }else{
+        this.calcularTiempo();
+      }
+
     },({error}) => {
       this.alertService.errorApi(error.message);
     });    

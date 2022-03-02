@@ -26,15 +26,21 @@ export class ExamenesComponent implements OnInit {
 
   // Modal
   public showModalExamen = false;
+  public showModalReactivar = false;
 
-  // Estado formulario 
+  // Estado formulario
   public estadoFormulario = 'crear';
 
   // Examenes
   public idExamen: string = '';
   public examenes: any = [];
   public examenesTmp: any = [];
+  public examenReactivar: any;
   public descripcion: string = '';
+  public reactivar = {
+    motivo: '',
+    tiempo: 5
+  }
 
   // Personas
   public dni: string = '';
@@ -88,23 +94,23 @@ export class ExamenesComponent implements OnInit {
               private dataService: DataService) { }
 
   ngOnInit(): void {
-        
+  
     this.dataService.ubicacionActual = 'Dashboard - Examenes';
     this.data.usuario = this.authService.usuario.userId;
     this.data.lugar = this.authService.usuario.lugar;
     this.permisos.all = this.permisosUsuarioLogin();
     this.alertService.loading();
-    
+
     // Probando observables
     const timer = interval(5000); // Cada 5 segundos
     this.timerSubscribe = timer.subscribe((n) => { this.filtradoExamenes(); });
 
     this.listarExamenesInicial();
-    
+
     // Examen iniciado
     this.socketService.getListarExamenes().subscribe( data => {
       (this.authService.usuario.lugar === data.lugar || this.authService.usuario.role === 'ADMIN_ROLE') ? this.listarExamenes('modal') : null;
-    });    
+    });
 
   }
 
@@ -117,7 +123,7 @@ export class ExamenesComponent implements OnInit {
     this.timerSubscribe.unsubscribe(); // Se cancela la subscripcion al observable timer
   }
 
-  // Abrir modal
+  // Abrir modal - Nuevo examen
   abrirModal(estado: string, examen: any = null): void {
     this.reiniciarFormulario();
     this.personaNoEncontrada = false;
@@ -126,34 +132,44 @@ export class ExamenesComponent implements OnInit {
     this.dni = '';
     this.descripcion = '';
     this.idExamen = '';
-    
+
     if(estado === 'editar') this.getExamen(examen);
     else this.showModalExamen = true;
 
-    this.estadoFormulario = estado;  
+    this.estadoFormulario = estado;
+  }
+
+  // Abrir modal - reactivar examen
+  abrirModalReactivar(examen: any): void {
+    this.reactivar = { motivo: '', tiempo: 5 };
+    this.examenReactivar = examen;
+    console.log(this.examenReactivar);
+    this.showModalReactivar = true;
   }
 
   // Buscar personas
   buscarPersona(): void {
     this.loadingPersona = true;
     this.personasService.getPersonaDNI(this.dni).subscribe( ({ persona }) => {
-   
+
       // La persona esta registrada?
       if(!persona){
         this.dataNuevaPersona.dni = this.dni;
         this.personaNoEncontrada = true;
       }
-     
+
       if(persona && !persona.activo){
         this.loadingPersona = false;
         return this.alertService.info('La persona esta registrada pero inactiva');
       }
-      
-      this.persona = persona;
 
-      this.dni = '';     
+      this.persona = persona;
+            
+      this.dni = '';
       this.loadingPersona = false;
-    
+      
+      this.seleccionarPersona();
+
     },({error}) => {
       this.dni = '';
       this.loadingPersona = false;
@@ -163,11 +179,11 @@ export class ExamenesComponent implements OnInit {
 
   // Crear nueva persona
   nuevaPersona(): void {
-    
+
     const verificacion = this.dataNuevaPersona.apellido.trim() === '' ||
                          this.dataNuevaPersona.nombre.trim() === '' ||
                          this.dataNuevaPersona.dni.trim() === ''
-    
+
     if(verificacion) return this.alertService.info('Debes completar todos los campos');
 
     this.alertService.loading();
@@ -188,7 +204,7 @@ export class ExamenesComponent implements OnInit {
 
   // Eliminar persona seleccionada
   eliminarPersonaSeleccionada(): void {
-    this.personaSeleccionada = null;  
+    this.personaSeleccionada = null;
     this.persona = null;
   }
 
@@ -225,16 +241,16 @@ export class ExamenesComponent implements OnInit {
       this.queryLugar = '';
     }else{
       this.queryLugar = this.authService.usuario.lugar;
-    } 
-    
-    this.examenesService.listarExamenes( 
+    }
+
+    this.examenesService.listarExamenes(
       this.ordenar.direccion,
       this.ordenar.columna,
       this.queryLugar
       )
     .subscribe( ({ examenes }) => {
       this.examenes = examenes;
-      this.examenesTmp = examenes;     
+      this.examenesTmp = examenes;
       this.showModalExamen = false;
       this.filtradoExamenes();
       this.listarLugares();
@@ -245,16 +261,16 @@ export class ExamenesComponent implements OnInit {
 
   // Listar examens
   listarExamenes(tipo: string = 'normal'): void {
-    this.examenesService.listarExamenes( 
+    this.examenesService.listarExamenes(
       this.ordenar.direccion,
       this.ordenar.columna,
       this.queryLugar
       )
     .subscribe( ({ examenes }) => {
       this.examenes = examenes;
-      this.examenesTmp = examenes;  
+      this.examenesTmp = examenes;
       this.filtradoExamenes();
-      tipo === 'modal' ? this.showModalExamen = false : null;
+      // tipo === 'modal' ? this.showModalExamen = false : null;
       this.alertService.close();
     }, (({error}) => {
       this.alertService.errorApi(error.message);
@@ -263,25 +279,63 @@ export class ExamenesComponent implements OnInit {
 
   // Nuevo examen
   nuevoExamen(): void {
-    
-    // Verificaciones
-    if(!this.personaSeleccionada) return this.alertService.info('Debe seleccionar una persona');
+
+    // Verificaciones de datos de examen
+    if(!this.personaSeleccionada && !this.personaNoEncontrada) return this.alertService.info('Debe seleccionar una persona');
     if(this.data.lugar == '' && this.authService.usuario.role === 'ADMIN_ROLE') return this.alertService.info('Debe seleccionar un lugar');
     if(this.authService.usuario.role === 'USER_ROLE') this.data.lugar = this.authService.usuario.lugar;
-    
-    this.data.persona = this.personaSeleccionada._id; // Se guarda en data el ID de la persona
+     
+    if(this.personaNoEncontrada){ // La persona no esta registrada
+      
+      const verificacionPersona = this.dataNuevaPersona.apellido.trim() === '' ||
+                                  this.dataNuevaPersona.nombre.trim() === '' ||
+                                  this.dataNuevaPersona.dni.trim() === ''
 
-    this.alertService.loading();
-    
-    // Comunicacion con el back
-    this.examenesService.nuevoExamen(this.data).subscribe(() => {
-      this.alertService.success('El examen fue creado correctamente');
-      this.socketService.listarExamenes({ lugar: this.data.lugar });
-      this.eliminarPersonaSeleccionada();
-    },({error})=>{
-      this.alertService.errorApi(error.message);
-    });
+      if(verificacionPersona){
+        this.alertService.close();
+        return this.alertService.info('Datos de persona incompletos');     
+      } 
+      
+      this.alertService.loading();
 
+      this.personasService.nuevaPersona(this.dataNuevaPersona).subscribe( ({ persona }) => {
+      
+        this.personaSeleccionada = persona;
+        this.data.persona = this.personaSeleccionada._id; // Se guarda en data el ID de la persona
+        
+        // Se crea el nuevo examen
+        this.examenesService.nuevoExamen(this.data).subscribe(() => {
+          this.showModalExamen = false;
+          this.alertService.close();
+          this.listarExamenes();
+          this.socketService.listarExamenes({ lugar: this.data.lugar });
+          this.eliminarPersonaSeleccionada();
+        },({error})=>{
+          this.alertService.errorApi(error.message);
+        });
+      
+      },({error}) => {
+        this.alertService.errorApi(error.message);
+      })
+
+    }else{ // La persona esta registrada
+   
+      this.data.persona = this.personaSeleccionada._id; // Se guarda en data el ID de la persona
+     
+      this.alertService.loading();
+
+      // Se crea el nuevo examen
+      this.examenesService.nuevoExamen(this.data).subscribe(() => {
+        this.showModalExamen = false;
+        this.socketService.listarExamenes({ lugar: this.data.lugar });
+        this.listarExamenes();
+        this.eliminarPersonaSeleccionada();
+      },({error})=>{
+        this.alertService.errorApi(error.message);
+      });
+    
+    }
+  
   }
 
   // Actualizar examenes
@@ -306,7 +360,7 @@ export class ExamenesComponent implements OnInit {
   actualizarEstado(examen: any): void {
     const { _id, activo } = examen;
       this.alertService.question({ msg: '¿Quieres actualizar el estado?', buttonText: 'Actualizar' })
-          .then(({isConfirmed}) => {  
+          .then(({isConfirmed}) => {
             if (isConfirmed) {
               this.alertService.loading();
               this.examenesService.actualizarExamen(_id, {activo: !activo}).subscribe(() => {
@@ -323,11 +377,11 @@ export class ExamenesComponent implements OnInit {
   // Finalizar examen
   finalizarExamen(idExamen: string): void {
     this.alertService.question({ msg: '¿Quieres finalizar este examen?', buttonText: 'Finalizar' })
-    .then(({isConfirmed}) => {  
+    .then(({isConfirmed}) => {
       if (isConfirmed) {
         this.socketService.finalizarExamen({ examen: idExamen });
         // this.alertService.loading();
-        // this.listarExamenes();       
+        // this.listarExamenes();
       }
     });
   }
@@ -335,17 +389,44 @@ export class ExamenesComponent implements OnInit {
   // Eliminar examen
   eliminarExamen(examen: any): void {
     this.alertService.question({ msg: '¿Quieres eliminar este examen?', buttonText: 'Eliminar' })
-    .then(({isConfirmed}) => {  
+    .then(({isConfirmed}) => {
       if (isConfirmed) {
         this.alertService.loading();
         this.examenesService.eliminarExamen(examen._id).subscribe(() => {
-          this.alertService.success('Examen eliminado correctamente');
+          this.showModalExamen = false;
+          this.listarExamenes();
           this.socketService.listarExamenes({ lugar: examen.lugar._id });
         },({error}) => {
           this.alertService.errorApi(error.message);
         });
       }
     });
+  }
+
+  // Reactivar examen
+  reactivarExamen(): void {
+    if(this.reactivar.motivo.trim() === '') return this.alertService.info('Debes colocar un motivo');
+    
+    const { motivo, tiempo } = this.reactivar;
+    
+    const data = {
+      reactivado: true,
+      estado: 'Creado',
+      usuario: this.authService.usuario.userId,
+      activo: true,
+      motivo,
+      tiempo  
+    }
+    
+    this.alertService.loading();
+
+    this.examenesService.reactivarExamen(this.examenReactivar._id, data).subscribe(() => {
+      this.showModalReactivar = false;
+      this.listarExamenes();
+    },({error}) => {
+      this.alertService.errorApi(error.message);
+    })
+    
   }
 
   // Cancelar nueva persona
@@ -399,7 +480,7 @@ export class ExamenesComponent implements OnInit {
   // Ordenar por columna
   ordenarPorColumna(columna: string){
     this.ordenar.columna = columna;
-    this.ordenar.direccion = this.ordenar.direccion == 1 ? -1 : 1; 
+    this.ordenar.direccion = this.ordenar.direccion == 1 ? -1 : 1;
     this.alertService.loading();
     this.listarExamenes();
   }

@@ -52,6 +52,18 @@ export class ExamenesService {
     return this.http.put(`${base_url}/examenes/${id}`, data);
   }
 
+  // Listar reactivaciones de examen
+  listarReactivaciones(id: string): Observable<any> {
+    return this.http.get(`${base_url}/examenes/reactivar/${id}`,{
+      headers: {'Authorization': localStorage.getItem('token') }   
+    });
+  }
+
+  // Reactivar examen
+  reactivarExamen(id: string, data: any): Observable<any> {
+    return this.http.put(`${base_url}/examenes/reactivar/${id}`, data);
+  }
+
   // Eliminar examen
   eliminarExamen(id: string): Observable<any> {
     return this.http.delete(`${base_url}/examenes/${id}`, {

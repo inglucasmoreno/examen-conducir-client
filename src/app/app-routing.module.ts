@@ -15,9 +15,11 @@ import { ExamenResultadoComponent } from './examen/examen-resultado.component';
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'dashboard/home' },
   { path: 'init', component: InicializacionComponent },
+  
   { path: 'examen', component: LoginExamenComponent },
   { path: 'examen-resolucion', component: ExamenComponent },
   { path: 'examen-resultado/:id', component: ExamenResultadoComponent },
+  
   { path: '**', component: ErrorPageComponent }       
 ];
 

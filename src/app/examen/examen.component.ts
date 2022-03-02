@@ -5,7 +5,7 @@ import { ExamenesService } from '../services/examenes.service';
 import { environment } from '../../environments/environment';
 import { interval } from 'rxjs';
 import gsap from 'gsap';
-import { formatDistance } from 'date-fns';
+import { compareAsc, formatDistanceToNowStrict } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { SocketService } from '../services/socket.service';
  
@@ -17,16 +17,22 @@ import { SocketService } from '../services/socket.service';
 })
 export class ExamenComponent implements OnInit {
 
+  // Tiempo
+  public cerrandoExamen = false;
+  public estadoTiempo = 'Mucho'; // Mucho | Medio | Poco
+
+  // Variables - WebSocket
   public urlBase = environment.base_url;
+
+  // Variables - Tiempo
   public timerSubscripcion;
-
   public tiempo;
-
-  public respuestaSeleccionada = ''; // A | B | C
-
+  
+  // Variables - Examen
   public nroPregunta: number = 0;
   public examen: any = {};
   public preguntas: any = [];
+  public respuestaSeleccionada = ''; // A | B | C
   public mostrarRespuestas: any = {
     a: {
       descripcion: '',
@@ -51,56 +57,79 @@ export class ExamenComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit(): void {
-    
-    // Verificacion: Si hay examen activo se redirecciona al examen
-    if(!localStorage.getItem('examen')){
-    
-      localStorage.removeItem('nro');
-      localStorage.removeItem('examen');
-      this.router.navigateByUrl('examen');
-    
-    }else{
+    // Verificacion: Hay examen activo?
+    if(!localStorage.getItem('examen')) this.redireccionLogin();  
+    else this.inicializacion();      
+  }
+  
+  // Redireccionar al Login
+  redireccionLogin(): void {
+    localStorage.removeItem('nro');
+    localStorage.removeItem('examen');
+    this.router.navigateByUrl('examen');
+  }
 
-      const timer = interval(5000);
+  // Inicializacion normal
+  inicializacion(): void {
+    
+    const timer = interval(1000);
 
-      this.timerSubscripcion = timer.subscribe( () => { this.calcularTiempo(); });
-  
-      // Se recupera informacion desde el localstorage
-      this.nroPregunta = Number(localStorage.getItem('nro'));
-      this.examen = JSON.parse(localStorage.getItem('examen'));
-  
-      this.alertService.loading();
-      
-      // Verificacion: Si el examen no esta activo se redirecciona al login-examen
-      this.examenesService.getExamen(this.examen._id, 'true').subscribe(({examen}) => {
-        this.alertService.close();
-      },({error}) => {
-        // Si el examen no existe - Se redirecciona a la pantalla de login
-        if(error.message === 'El examen no existe'){
-          localStorage.removeItem('nro');
-          localStorage.removeItem('examen');
-          this.alertService.close();
-          this.router.navigateByUrl('examen');
-        }
-      });
-  
-      // Finalizar examen - WebSocket
-      this.socketService.getFinalizar().subscribe( data => {
-        if(data.examen === this.examen._id) this.finalizarExamenRemoto();
-      });
-  
-      // Efectos GSAP
-      var tl = gsap.timeline({ defaults: { duration: 0.1 } });
-      tl.from('.gsap-pregunta', { y:100, opacity: 0, duration: .5 })
-        .from('.gsap-respuestas', { y:100, opacity: 0, duration: .5 })
-  
-      this.preguntas = this.examen.preguntas;
-      this.respuestasAleatorias();
-  
+    this.timerSubscripcion = timer.subscribe( () => { 
       this.calcularTiempo();
+      this.verificarCierreExamen(); 
+    });
 
+    // Se recupera informacion desde el localstorage
+    this.nroPregunta = Number(localStorage.getItem('nro'));
+    this.examen = JSON.parse(localStorage.getItem('examen'));
+
+    this.alertService.loading();
+    
+    // Verificacion: Si el examen no esta activo se redirecciona al login-examen
+    this.examenesService.getExamen(this.examen._id, 'true').subscribe(({examen}) => {
+      this.alertService.close();
+    },({error}) => {
+      // Si el examen no existe - Se redirecciona a la pantalla de login
+      if(error.message === 'El examen no existe'){
+        localStorage.removeItem('nro');
+        localStorage.removeItem('examen');
+        this.alertService.close();
+        this.router.navigateByUrl('examen');
+      }
+    });
+
+    this.wbFinalizarExamen();
+    this.animacionInicial();
+    this.preguntas = this.examen.preguntas;
+    this.respuestasAleatorias();
+    this.calcularTiempo();
+
+  }
+
+  // Verificar cierre de examen
+  verificarCierreExamen(): void {
+    if(this.examen.fecha_finalizacion){
+      const finalizar = compareAsc(new Date(), new Date(this.examen.fecha_finalizacion));
+      if(finalizar != -1){
+        this.cerrandoExamen = true;
+        this.finalizarExamenRemoto();   
+      } 
+      
     }
+  }
 
+  // WB - Finalizacion de examen remoto - Desde administracion
+  wbFinalizarExamen(): void {
+    this.socketService.getFinalizar().subscribe( data => {
+      if(data.examen === this.examen._id) this.finalizarExamenRemoto();
+    });
+  }
+
+  // GSAP - Animacion inicial
+  animacionInicial(): void {
+    var tl = gsap.timeline({ defaults: { duration: 0.1 } });
+    tl.from('.gsap-pregunta', { y:100, opacity: 0, duration: .5 })
+      .from('.gsap-respuestas', { y:100, opacity: 0, duration: .5 })
   }
 
   ngOnDestroy(): void {
@@ -118,14 +147,12 @@ export class ExamenComponent implements OnInit {
 
     // pregunta anterior
     if(tipo === 'dec' && this.nroPregunta != 0){
-      console.log('dec');
       this.nroPregunta -= 1;
       this.respuestasAleatorias();
     }
     
     // Proxima pregunta
     if(tipo === 'inc' && this.nroPregunta != (this.preguntas.length - 1)){
-      console.log('inc');
       this.nroPregunta += 1;
       this.respuestasAleatorias();
     }
@@ -150,8 +177,7 @@ export class ExamenComponent implements OnInit {
           this.respuestaSeleccionada = '';
           localStorage.removeItem('examen');
           this.router.navigateByUrl('examen-resultado/' + this.examen._id.toString());
-        },(error)=>{
-          console.log({error});
+        },()=>{
           this.alertService.errorApi('Error al finalizar el examen');
         })        
 
@@ -169,15 +195,29 @@ export class ExamenComponent implements OnInit {
       this.respuestaSeleccionada = '';
       localStorage.removeItem('examen');
       this.router.navigateByUrl('examen-resultado/' + this.examen._id.toString());
-    },(error)=>{
-      console.log({error});
+    },()=>{
       this.alertService.errorApi('Error al finalizar el examen');
     })        
   }
 
+  // Calculo de tiempo para muestra
   calcularTiempo(): void {
-    const creacion = new Date(this.examen.fecha_rindiendo);
-    this.tiempo = formatDistance(new Date(), creacion, { locale: es });
+    const creacion = new Date(this.examen.fecha_finalizacion);
+    this.tiempo = formatDistanceToNowStrict(creacion, { locale: es });    
+    this.estilosTiempo(this.tiempo);
+  }
+
+  // Estado de tiempo - Para estilos
+  estilosTiempo(tiempo: string): void {
+
+    const tiempoSplit = tiempo.split(' ');
+
+    // Poco tiempo para cierre
+    if(tiempoSplit[1] === 'segundos' || tiempoSplit[1] === 'segundo') this.estadoTiempo = 'Poco'
+
+    // Tiempo medio para cierre
+    else if(Number(tiempoSplit[0]) <= 3 && ( tiempoSplit[1] === 'minuto' || tiempoSplit[1] === 'minutos' )) this.estadoTiempo = 'Medio'
+  
   }
 
   // Orden aleatorio para las respuestas

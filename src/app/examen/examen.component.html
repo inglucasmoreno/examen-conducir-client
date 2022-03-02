@@ -3,9 +3,11 @@
         <div class="w-11/12 mr-auto ml-auto py-4 text-center flex items-center justify-between">
             <img src="assets/img/examen/logo-examen.png">
             <div class="text-white p-2">
-                <p> Tiempo en examen </p>
+                <p> El exámen se cerrará en </p>
                 <div class="text-center w-max mr-auto ml-auto font-semibold px-2">
-                    <p class="font-semibold text-lg"> {{ this.tiempo }} </p>
+                    <p [ngClass]="{'text-red-400 animate-pulse-fast':estadoTiempo === 'Poco', 'text-orange-300 animate-pulse':estadoTiempo === 'Medio' ,'text-white':estadoTiempo === 'Mucho'}" class="font-semibold text-lg">
+                        {{ cerrandoExamen ? 'Cerrando examen' : tiempo }}
+                    </p>
                 </div>
             </div>
         </div>

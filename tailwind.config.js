@@ -21,6 +21,9 @@ module.exports = {
                 orange: colors.orange,
                 secondary: colors.blue,
             },
+            animation: {
+                'pulse-fast': 'pulse 0.5s linear infinite',
+            }
         },
         fontFamily: {
             display: ["Nunito", "sans-serif"],
