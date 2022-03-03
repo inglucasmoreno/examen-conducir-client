@@ -411,10 +411,11 @@ export class ExamenesComponent implements OnInit {
     if(this.reactivar.motivo.trim() === '') return this.alertService.info('Debes colocar un motivo');
     
     const { motivo, tiempo } = this.reactivar;
-    
+
     const data = {
       reactivado: true,
       estado: 'Creado',
+      persona: this.examenReactivar.persona._id,
       usuario: this.authService.usuario.userId,
       activo: true,
       motivo,
