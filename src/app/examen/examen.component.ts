@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertService } from '../services/alert.service';
 import { ExamenesService } from '../services/examenes.service';
 import { environment } from '../../environments/environment';
-import { interval } from 'rxjs';
+import { interval, Observable, Subscription } from 'rxjs';
 import gsap from 'gsap';
 import { compareAsc, formatDistanceToNowStrict } from 'date-fns';
 import { es } from 'date-fns/locale';
@@ -15,7 +15,10 @@ import { SocketService } from '../services/socket.service';
   styles: [
   ]
 })
-export class ExamenComponent implements OnInit {
+export class ExamenComponent implements OnInit, OnDestroy {
+  
+  // Subscripciones
+  public wbFinalizar: Subscription;
 
   // Tiempo
   public cerrandoExamen = false;
@@ -61,7 +64,11 @@ export class ExamenComponent implements OnInit {
     if(!localStorage.getItem('examen')) this.redireccionLogin();  
     else this.inicializacion();      
   }
-  
+  ngOnDestroy(): void {
+    this.wbFinalizar.unsubscribe();        // Websocket - Se finaliza la suscripcion al canal de finalizacion de examen
+    this.timerSubscripcion?.unsubscribe(); // Si existe la suscripcion se cancela la suscripcion
+  }
+
   // Redireccionar al Login
   redireccionLogin(): void {
     localStorage.removeItem('nro');
@@ -72,6 +79,8 @@ export class ExamenComponent implements OnInit {
   // Inicializacion normal
   inicializacion(): void {
     
+    this.wbFinalizarExamen();        // Websocket - Suscripcion al canal de finalizacion de examen
+
     const timer = interval(1000);
 
     this.timerSubscripcion = timer.subscribe( () => { 
@@ -97,10 +106,9 @@ export class ExamenComponent implements OnInit {
         this.router.navigateByUrl('examen');
       }
     });
-
-    this.wbFinalizarExamen();
-    this.animacionInicial();
+    
     this.preguntas = this.examen.preguntas;
+    this.animacionInicial();
     this.respuestasAleatorias();
     this.calcularTiempo();
 
@@ -113,14 +121,13 @@ export class ExamenComponent implements OnInit {
       if(finalizar != -1){
         this.cerrandoExamen = true;
         this.finalizarExamenRemoto();   
-      } 
-      
+      }  
     }
   }
 
-  // WB - Finalizacion de examen remoto - Desde administracion
+  // WB - Conexion a canal de finalizacion de examen de forma remota
   wbFinalizarExamen(): void {
-    this.socketService.getFinalizar().subscribe( data => {
+    this.wbFinalizar = this.socketService.getFinalizar().subscribe( data => {
       if(data.examen === this.examen._id) this.finalizarExamenRemoto();
     });
   }
@@ -130,10 +137,6 @@ export class ExamenComponent implements OnInit {
     var tl = gsap.timeline({ defaults: { duration: 0.1 } });
     tl.from('.gsap-pregunta', { y:100, opacity: 0, duration: .5 })
       .from('.gsap-respuestas', { y:100, opacity: 0, duration: .5 })
-  }
-
-  ngOnDestroy(): void {
-    this.timerSubscripcion?.unsubscribe(); // Si existe la suscripcion se cancela la suscripcion
   }
 
   // Pregunta anterior / Proxima pregunta
@@ -173,8 +176,9 @@ export class ExamenComponent implements OnInit {
 
         this.examen.preguntas = this.preguntas;
         this.examen.activo = false;
-    
+      
         const data = { preguntas: this.preguntas, activo: false };
+
         this.examenesService.actualizarExamen(this.examen._id, data).subscribe(() => {
           this.respuestaSeleccionada = '';
           localStorage.removeItem('examen');
@@ -190,10 +194,12 @@ export class ExamenComponent implements OnInit {
   
   // Finalizar examen - Desde la seccion de administracion
   finalizarExamenRemoto(): void {
+    
     this.examen.preguntas = this.preguntas;
     this.examen.activo = false;
 
     const data = { preguntas: this.preguntas, activo: false };
+
     this.examenesService.actualizarExamen(this.examen._id, data).subscribe(() => {
       this.respuestaSeleccionada = '';
       localStorage.removeItem('examen');

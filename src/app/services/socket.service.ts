@@ -19,6 +19,11 @@ export class SocketService {
     this.socket.emit('listar-examenes', data); 
   }
 
+  // Emision - Examen finalizado
+  examenFinalizado(data: any): void {
+    this.socket.emit('examen-finalizado', data);
+  }
+
   // Recepcion - Actualizar lista de examenes por razones generales
   getListarExamenes(): Observable<any> {
     return this.socket.fromEvent<string>('listar-examenes'); 
@@ -27,11 +32,6 @@ export class SocketService {
   // Recepcion - Mensaje para finalizar examen
   getFinalizar(): Observable<any> {
     return this.socket.fromEvent<string>('r-finalizar-examen');
-  }
-
-  // Envio - Examen finalizado
-  examenFinalizado(data: any): void {
-    this.socket.emit('examen-finalizado', data);
   }
 
   // Recepcion - Examen finalizado

@@ -66,7 +66,6 @@ export class ExamenesDetallesComponent implements OnInit {
       if(examen.reactivado){
         this.examenesService.listarReactivaciones(examen._id).subscribe(({reactivaciones})=>{
           this.reactivaciones = reactivaciones;
-          console.log(reactivaciones);
           this.calcularTiempo();
         },({error}) => {
           this.alertService.errorApi(error.message);

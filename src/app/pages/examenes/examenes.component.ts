@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { formatDistance } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { interval } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 import { AlertService } from 'src/app/services/alert.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
@@ -17,6 +17,9 @@ import { SocketService } from '../../services/socket.service';
   ]
 })
 export class ExamenesComponent implements OnInit {
+
+  // Suscripciones
+  public wbListarExamenes: Subscription;
 
   // Permisos de usuarios login
   public permisos = { all: false };
@@ -107,20 +110,21 @@ export class ExamenesComponent implements OnInit {
 
     this.listarExamenesInicial();
 
-    // Examen iniciado
-    this.socketService.getListarExamenes().subscribe( data => {
+    // WB - Actualizar lista de examenes
+    this.wbListarExamenes = this.socketService.getListarExamenes().subscribe( data => {
       (this.authService.usuario.lugar === data.lugar || this.authService.usuario.role === 'ADMIN_ROLE') ? this.listarExamenes('modal') : null;
     });
 
   }
 
+  ngOnDestroy(): void {
+    this.wbListarExamenes.unsubscribe();  // Se cancela la suscripcion al canal listar-examenes
+    this.timerSubscribe.unsubscribe();    // Se cancela la subscripcion al observable timer
+  }
+
   // Asignar permisos de usuario login
   permisosUsuarioLogin(): boolean {
     return this.authService.usuario.permisos.includes('EXAMENES_ALL') || this.authService.usuario.role === 'ADMIN_ROLE';
-  }
-
-  ngOnDestroy(): void {
-    this.timerSubscribe.unsubscribe(); // Se cancela la subscripcion al observable timer
   }
 
   // Abrir modal - Nuevo examen
@@ -143,7 +147,6 @@ export class ExamenesComponent implements OnInit {
   abrirModalReactivar(examen: any): void {
     this.reactivar = { motivo: '', tiempo: 5 };
     this.examenReactivar = examen;
-    console.log(this.examenReactivar);
     this.showModalReactivar = true;
   }
 
