@@ -62,6 +62,7 @@ export class LugaresComponent implements OnInit {
 
   // Abrir modal
   abrirModal(estado: string, lugar: any = null): void {
+    window.scrollTo(0,0);
     this.reiniciarFormulario();
     this.descripcion = '';
     this.idLugar = '';

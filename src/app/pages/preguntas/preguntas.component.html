@@ -5,10 +5,18 @@
             <h1> Agregando imagen </h1>
             <svg (click)="cerrarModalImagenes()" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
+            </svg>
         </div>
-        <div class="bg-white p-2">
-            <input [(ngModel)]="filtroDescripcionImagen" type="text" placeholder="Buscar" class='border-2 ml-2 rounded border-gray-300 transform duration-500 focus:border-primaryColor p-2 outline-none'>
+        <div class="flex items-center">
+            <div class="bg-white p-2">
+                <input [(ngModel)]="filtroDescripcionImagen" type="text" placeholder="Buscar" class='border ml-2 rounded shadow border-gray-300 transform duration-500 focus:border-primaryColor p-2 outline-none'>
+            </div>
+            <select (change)="paginaActualImg = 1" class="bg-white px-2 ml-2 border border-gray-300 shadow text-gray-600 py-2 rounded" [(ngModel)]="cantidadItemsImg">
+                <option value="10"> 10 elementos </option>
+                <option value="20"> 20 elementos </option>
+                <option value="50"> 50 elementos </option>
+                <option value="100"> 100 elementos </option>
+            </select>
         </div>
         <div class="flex flex-wrap p-2" *ngIf="imagenes">
             <div class="w-1/5" *ngFor="let imagen of imagenes | filtroImagenes:filtroDescripcionImagen:'true' | paginate: {id:'imagenes', itemsPerPage: cantidadItemsImg, currentPage: paginaActualImg}">
@@ -171,10 +179,16 @@
                         <input #txtParametro placeholder="Número o Descripción" (keyup)="filtrarParametro(txtParametro.value)" class="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
                         />
                     </div>
+                    <select (change)="paginaActual = 1" class="bg-white px-2 border text-gray-600 ml-2 border-gray-400 rounded" [(ngModel)]="cantidadItems">
+                        <option value="10"> 10 elementos </option>
+                        <option value="20"> 20 elementos </option>
+                        <option value="50"> 50 elementos </option>
+                        <option value="100"> 100 elementos </option>
+                    </select>
                 </div>
             </div>
             <div class="overflow-x-auto">
-                <div class="inline-block min-w-full shadow rounded-lg overflow-hidden px-2">
+                <div class="inline-block max-h-screen overflow-y-auto  min-w-full shadow rounded-lg overflow-hidden px-2">
                     <table class="min-w-full leading-normal border border-gray-200 rounded">
                         <thead>
                             <tr>
@@ -271,11 +285,11 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="px-5 py-5 bg-white border-t flex shadow flex-col xs:flex-row items-center xs:justify-between">
-                        <pagination-controls id="preguntas" nextLabel="Siguiente" previousLabel="Anterior" (pageChange)="paginaActual = $event"></pagination-controls>
-                    </div>
                 </div>
             </div>
+        </div>
+        <div class="px-5 py-5 mt-6 bg-white border-t flex shadow flex-col xs:flex-row items-center xs:justify-between">
+            <pagination-controls id="preguntas" nextLabel="Siguiente" previousLabel="Anterior" (pageChange)="paginaActual = $event"></pagination-controls>
         </div>
     </div>
 </app-tarjeta-lista>

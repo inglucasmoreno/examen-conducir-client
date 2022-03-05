@@ -69,6 +69,7 @@ export class PersonasComponent implements OnInit {
   
   // Abrir modal
   abrirModal(estado: string, persona: any = null): void {
+    window.scrollTo(0,0);
     this.reiniciar();
     this.descripcion = '';
     this.idPersona = '';

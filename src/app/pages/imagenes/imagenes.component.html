@@ -64,6 +64,12 @@
             <option value="true"> Activas </option>
             <option value="false"> Inactivas </option>
         </select>
+        <select (change)="paginaActual = 1" class="bg-white px-2 py-2 shadow border border-gray-300 text-gray-600 ml-2 rounded" [(ngModel)]="cantidadItems">
+            <option value="10"> 10 elementos </option>
+            <option value="20"> 20 elementos </option>
+            <option value="50"> 50 elementos </option>
+            <option value="100"> 100 elementos </option>
+        </select>
         <button *ngIf="permisos.all" (click)="modalNuevaImagen()" title="Nueva imagen" class="border rounded border-gray-300 shadow focus:outline-none bg-white p-2 ml-3 hover:text-primaryColor">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />

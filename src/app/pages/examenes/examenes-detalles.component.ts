@@ -35,7 +35,7 @@ export class ExamenesDetallesComponent implements OnInit {
 
   // Paginacion
   public paginaActual: number = 1;
-  public cantidadItems: number = 5;
+  public cantidadItems: number = 10;
 
 
   constructor(private dataService: DataService,
@@ -53,6 +53,7 @@ export class ExamenesDetallesComponent implements OnInit {
 
   // Abrir detalles de pregunta
   detallesPregunta(pregunta: any): void {
+    window.scrollTo(0,0);
     this.preguntaSeleccionada = pregunta;
     this.showModal = true;
   }
@@ -63,6 +64,8 @@ export class ExamenesDetallesComponent implements OnInit {
     this.examenesService.getExamen(this.idExamen).subscribe( ({examen}) => {
       this.examen = examen;
       
+      console.log(examen);
+
       if(examen.reactivado){
         this.examenesService.listarReactivaciones(examen._id).subscribe(({reactivaciones})=>{
           this.reactivaciones = reactivaciones;

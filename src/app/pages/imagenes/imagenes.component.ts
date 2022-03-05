@@ -159,6 +159,7 @@ export class ImagenesComponent implements OnInit {
 
   // Abrir detalles de imagen
   detallesImagen(imagen: any): void {
+    window.scrollTo(0,0);
     if(!this.permisos.all) return this.alertService.info('Usted no tiene permiso para realizar esta acción');
     this.imagenSeleccionada = imagen;
     this.actualizacion.descripcion = imagen.descripcion;

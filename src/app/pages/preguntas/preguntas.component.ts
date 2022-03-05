@@ -59,7 +59,7 @@ export class PreguntasComponent implements OnInit {
   
   // Paginacion - Imagenes
   public paginaActualImg: number = 1;
-  public cantidadItemsImg: number = 20;
+  public cantidadItemsImg: number = 10;
   
   // Filtrado
   public filtro = {
@@ -109,6 +109,7 @@ export class PreguntasComponent implements OnInit {
   
   // Traer datos de pregunta
   getPregunta(pregunta: any): void {
+
     this.idPregunta = pregunta._id;
   
     this.alertService.loading();

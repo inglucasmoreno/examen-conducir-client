@@ -74,7 +74,7 @@ export class ExamenesComponent implements OnInit {
 
   // Paginacion
   public paginaActual: number = 1;
-  public cantidadItems: number = 5;
+  public cantidadItems: number = 10;
 
   // Filtrado
   public filtro = {
