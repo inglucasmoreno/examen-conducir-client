@@ -24,7 +24,24 @@ export class ExamenesService {
     return this.http.get(`${base_url}/examenes/dni/${dni}`);
   }
 
-  // Listar examenes
+  // Listar examenes historial
+  listarExamenesHistorial(
+    direccion: number = 1,
+    columna: string = 'createdAt',
+    data: any = {}
+  ): Observable<any> {
+    console.log(direccion)
+    return this.http.post(`${base_url}/examenes/historial/listado`,data, {
+      params: {
+        direccion: String(direccion),
+        columna,
+        data
+      },
+      headers: {'Authorization': localStorage.getItem('token') }   
+    });
+  }
+
+  // Listar examenes - Hoy
   listarExamenes(
     direccion: number = 1,
     columna: string = 'createdAt',

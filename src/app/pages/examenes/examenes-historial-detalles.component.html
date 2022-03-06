@@ -1,0 +1,130 @@
+<!-- Modal: Reactivaciones de examen -->
+<app-modal *ngIf="reactivaciones" [showModal]="showModalReactivacion">
+    <div class="bg-primary-800 p-2 text-white flex items-center justify-between rounded-t">
+        <h1> Reactivaciones de examen </h1>
+        <svg (click)="showModalReactivacion = false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cursor-pointer feather feather-x text-white mr-2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </div>
+    <div class="p-2">
+        <div class="border border-l-8 border-gray-400 rounded p-2 mb-2" *ngFor="let reactivacion of reactivaciones">
+            <p class="text-sm font-semibold"> Fecha: {{ reactivacion.createdAt | fecha }} </p>
+            <p class="text-sm font-semibold"> Usuario: <span class="capitalize"> {{ reactivacion.usuario.apellido.toLowerCase() }} {{ reactivacion.usuario.nombre.toLowerCase() }} </span> - DNI {{ reactivacion.usuario.dni }} </p>
+            <p class="text-sm mt-2"> {{ reactivacion.motivo }} </p>
+            <p class="text-sm mt-2"> Tiempo: {{ reactivacion.tiempo }} minutos </p>
+        </div>
+    </div>
+</app-modal>
+
+<!-- Modal: Detalles de pregunta -->
+<app-modal-medium *ngIf="preguntaSeleccionada" [showModal]=showModal>
+    <div class="bg-primary-800 text-lg text-white p-2 rounded-t flex items-center justify-between">
+        <h1 class="text-xl"> Detalles de pregunta </h1>
+        <svg (click)="showModal = false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cursor-pointer feather feather-x text-white mr-2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </div>
+    <div class="p-3">
+        <div class="bg-gray-100 border rounded shadow border-gray-200">
+            <h4 class="px-3 py-2 font-semibold bg-primaryColor rounded-t text-white"> Pregunta </h4>
+            <p class="p-2 text-sm">
+                {{ preguntaSeleccionada.descripcion }}
+            </p>
+            <img *ngIf="preguntaSeleccionada.pregunta_img" class="w-40 h-40 bg-white border rounded border-gray-300 shadow mx-3 my-2" [src]="urlBase + '/img/' + preguntaSeleccionada.url_img" alt="Imagen de señal">
+        </div>
+        <div [ngClass]="{'bg-green-100 border-green-200' : (preguntaSeleccionada.seleccionada == 'respuesta_correcta')}" class="bg-gray-100 border mt-2 rounded shadow">
+            <h4 [ngClass]="{'bg-green-700' : preguntaSeleccionada.seleccionada == 'respuesta_correcta', 'bg-primaryColor' : preguntaSeleccionada.seleccionada !== 'respuesta_correcta'}" class="font-semibold px-3 py-2 rounded-t text-white"> Respuesta correcta </h4>
+            <p class="p-2 text-sm font-semibold">
+                {{ preguntaSeleccionada.respuesta_correcta }}
+            </p>
+        </div>
+        <div [ngClass]="{'bg-red-100 border-red-200' : preguntaSeleccionada.seleccionada == 'respuesta_incorrecta_1'}" class="bg-gray-100 border mt-2 rounded shadow">
+            <h4 [ngClass]="{'bg-red-700' : preguntaSeleccionada.seleccionada == 'respuesta_incorrecta_1', 'bg-primaryColor' : preguntaSeleccionada.seleccionada !== 'respuesta_incorrecta_1'}" class="font-semibold px-3 py-2 bg-primaryColor rounded-t text-white">
+                Respuesta incorrecta 1 </h4>
+            <p class="p-2 text-sm">
+                {{ preguntaSeleccionada.respuesta_incorrecta_1 }}
+            </p>
+        </div>
+        <div [ngClass]="{'bg-red-100 border-red-200' : preguntaSeleccionada.seleccionada == 'respuesta_incorrecta_2'}" class="bg-gray-100 border mt-2 rounded shadow">
+            <h4 [ngClass]="{'bg-red-700' : preguntaSeleccionada.seleccionada == 'respuesta_incorrecta_2', 'bg-primaryColor' : preguntaSeleccionada.seleccionada !== 'respuesta_incorrecta_2'}" class="font-semibold px-3 py-2 bg-primaryColor rounded-t text-white"> Respuesta incorrecta 2 </h4>
+            <p class="p-2 text-sm">
+                {{ preguntaSeleccionada.respuesta_incorrecta_2 }}
+            </p>
+        </div>
+    </div>
+</app-modal-medium>
+
+<div *ngIf="examen" class="p-4">
+    <div *ngIf="examen" class="border rounded">
+        <h1 class="text-2xl font-semibol bg-primary-800 text-white p-2 rounded-t flex items-center">
+            <app-boton-regresar routerLink="/dashboard/examenes/historial"></app-boton-regresar>
+            <span class="ml-2">
+                Detalles de examen
+            </span>
+        </h1>
+        <div class="p-2 text-sm bg-gray-100 pb-2">
+            <p class="p-1"> <span class="font-semibold"> Fecha: </span> <span class="capitalize"> {{ examen.createdAt | fecha }} </span> </p>
+            <div class="flex items-center bg-gray-100">
+                <div>
+                    <p class="p-1"> <span class="font-semibold"> Licencia: </span> Clase {{ examen.tipo_licencia }} </p>
+                    <p class="p-1"> <span class="font-semibold"> Lugar: </span> {{ examen.lugar.descripcion }} </p>
+                </div>
+                <div class="ml-4">
+                    <p class="p-1"> <span class="font-semibold"> Usuario creador: </span> <span class="capitalize"> {{ examen.usuario.apellido.toLowerCase() }} {{ examen.usuario.nombre.toLowerCase() }} - DNI {{ examen.usuario.dni }} </span> </p>
+                    <p class="p-1"> <span class="font-semibold"> Rinde el examen: </span> <span class="capitalize"> {{ examen.persona.apellido.toLowerCase() }} {{ examen.persona.nombre.toLowerCase() }} - DNI {{ examen.persona.dni }} </span> </p>
+                </div>
+            </div>
+            <div class="flex items-center">
+                <p class="p-2 mt-2 mb-1 w-max text-secondaryColor border border-pink-200 bg-pink-100 rounded font-semibold"> {{ examen.estado | estadoExamen }} </p>
+                <p *ngIf="examen.estado == 'Rindiendo'" class="p-2 mt-1 w-max border rounded bg-green-100 text-green-700 border-green-200 font-semibold ml-2"> {{ tiempo }} </p>
+                <p (click)="showModalReactivacion = true" *ngIf="examen.reactivado" class="p-2 mt-1 cursor-pointer w-max border rounded bg-yellow-100 text-yellow-700 border-yellow-300 font-semibold ml-2"> Reactivado </p>
+                <p *ngIf="examen.estado == 'Finalizado'" [ngClass]="{'bg-green-100 text-green-700 border-green-200' : (examen.aprobado), 'bg-red-100 text-red-700 border-red-200' : (!examen.aprobado) }" class="p-2 mt-1 w-max border rounded font-semibold ml-2">
+                    {{ examen.cantidad_respuestas_correctas }} / {{ examen.cantidad_respuestas_correctas + examen.cantidad_respuestas_incorrectas }}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="examen" class="mt-2">
+        <div class="text-2xl flex items-center justify-between border mb-3 p-2 bg-primary-800 text-white rounded">
+            <div>
+                <p> Listado de preguntas </p>
+                <p class="text-sm"> cantidad de preguntas: {{ examen.preguntas.length }} </p>
+            </div>
+            <select (change)="paginaActual = 1" class="bg-white px-2 py-2 border text-base text-gray-600 mr-3 border-gray-300 shadow rounded" [(ngModel)]="cantidadItems">
+                <option value="10"> 10 elementos </option>
+                <option value="20"> 20 elementos </option>
+                <option value="50"> 50 elementos </option>
+                <option value="100"> 100 elementos </option>
+            </select>
+        </div>
+        <div *ngIf="!examen.activo" class="flex items-center">
+            <select (change)="reiniciarPaginacion()" [(ngModel)]="filtroRespuestas" class="p-2 bg-white border-gray-300 shadow border rounded mr-4">
+                <option value=""> Todas las preguntas </option>
+                <option value="true"> Correctas </option>
+                <option value="false"> Incorrectas </option>
+            </select>
+            <div class="flex items-center border border-gray-300 p-2 rounded shadow">
+                <div class="w-3 h-3 rounded-full bg-green-700"></div>
+                <span class="ml-1"> Respuestas correctas: {{ examen.cantidad_respuestas_correctas }} </span>
+            </div>
+            <div class="flex items-center ml-4 p-2 border border-gray-300 rounded shadow">
+                <div class="w-3 h-3 rounded-full bg-red-700"></div>
+                <span class="ml-1"> Respuestas incorrectas: {{ examen.cantidad_respuestas_incorrectas }} </span>
+            </div>
+        </div>
+
+        <div class="max-h-screen overflow-y-auto">
+            <button (click)="detallesPregunta(pregunta)" [ngClass]="{'border-green-700 bg-green-100': (pregunta.seleccionada === 'respuesta_correcta' && !examen.activo), 'border-red-700 bg-red-100': (pregunta.seleccionada != 'respuesta_correcta' && !examen.activo)}"
+                class="bg-gray-100 border-l-8 border-gray-300 mt-3 hover:bg-pink-100 hover:border-secondaryColor mb-2 cursor-pointer shadow rounded text-sm flex items-center justify-between" *ngFor="let pregunta of examen.preguntas | filtroPreguntasDetalles:filtroRespuestas | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActual}">
+                <div class="flex items-center">
+                    <p class="p-4">
+                        <span class="text-lg font-semibold"> {{ pregunta.numero }} - </span>
+                        <span> {{ pregunta.descripcion }} </span>
+                    </p>
+                </div>
+                <img class="w-10 h-10 rounded border shadow border-gray-300" *ngIf='pregunta.pregunta_img' [src]="urlBase + '/img/' + pregunta.url_img">
+            </button>
+        </div>
+        <div class="px-5 py-5 bg-white border-t flex shadow flex-col xs:flex-row items-center xs:justify-between">
+            <pagination-controls nextLabel="Siguiente" previousLabel="Anterior" (pageChange)="paginaActual = $event"></pagination-controls>
+        </div>
+    </div>
+
+</div>

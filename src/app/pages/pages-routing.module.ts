@@ -20,6 +20,8 @@ import { ImagenesComponent } from './imagenes/imagenes.component';
 import { PreguntasEstadisticasComponent } from './preguntas/preguntas-estadisticas.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { PermisosGuard } from '../guards/permisos.guard';
+import { ExamenesHistorialComponent } from './examenes/examenes-historial.component';
+import { ExamenesHistorialDetallesComponent } from './examenes/examenes-historial-detalles.component';
 
 const routes: Routes = [
     {
@@ -56,6 +58,8 @@ const routes: Routes = [
             // Examenes
             { path: 'examenes', data: { permisos: 'EXAMENES_NAV' }, canActivate: [ PermisosGuard ], component: ExamenesComponent },
             { path: 'examenes/detalles/:id', data: { permisos: 'EXAMENES_NAV' }, canActivate: [ PermisosGuard ], component: ExamenesDetallesComponent },
+            { path: 'examenes/historial', data: { permisos: 'EXAMENES_NAV' }, canActivate: [ PermisosGuard ], component: ExamenesHistorialComponent },
+            { path: 'examenes/historial/detalles/:id', data: { permisos: 'EXAMENES_NAV' }, canActivate: [ PermisosGuard ], component: ExamenesHistorialDetallesComponent },
             
         ]
     }

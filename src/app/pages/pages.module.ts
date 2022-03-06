@@ -20,6 +20,8 @@ import { ExamenesDetallesComponent } from './examenes/examenes-detalles.componen
 import { ImagenesComponent } from './imagenes/imagenes.component';
 import { PreguntasEstadisticasComponent } from './preguntas/preguntas-estadisticas.component';
 import { PerfilComponent } from './perfil/perfil.component';
+import { ExamenesHistorialComponent } from './examenes/examenes-historial.component';
+import { ExamenesHistorialDetallesComponent } from './examenes/examenes-historial-detalles.component';
 
 
 @NgModule({
@@ -37,7 +39,9 @@ import { PerfilComponent } from './perfil/perfil.component';
     ExamenesDetallesComponent,
     ImagenesComponent,
     PreguntasEstadisticasComponent,
-    PerfilComponent
+    PerfilComponent,
+    ExamenesHistorialComponent,
+    ExamenesHistorialDetallesComponent
   ],
   imports: [
     CommonModule,

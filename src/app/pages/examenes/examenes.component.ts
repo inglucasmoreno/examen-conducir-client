@@ -18,6 +18,9 @@ import { SocketService } from '../../services/socket.service';
 })
 export class ExamenesComponent implements OnInit {
 
+  // Fechas
+  public fechaHoy = new Date();
+
   // Suscripciones
   public wbListarExamenes: Subscription;
 
