@@ -107,6 +107,8 @@ export class ExamenesComponent implements OnInit {
     this.permisos.all = this.permisosUsuarioLogin();
     this.alertService.loading();
 
+    this.limpiarExamenes(); // Se limpian los examenes antiguos
+
     // Probando observables
     const timer = interval(5000); // Cada 5 segundos
     this.timerSubscribe = timer.subscribe((n) => { this.filtradoExamenes(); });
@@ -130,6 +132,15 @@ export class ExamenesComponent implements OnInit {
     return this.authService.usuario.permisos.includes('EXAMENES_ALL') || this.authService.usuario.role === 'ADMIN_ROLE';
   }
 
+  // Se limpian los examenes antiguos
+  limpiarExamenes(): void {
+    this.examenesService.limpiarExamenes().subscribe( resp => {
+      console.log(resp);
+    },({error}) => {
+      console.log(error.message);
+    });
+  }
+  
   // Abrir modal - Nuevo examen
   abrirModal(estado: string, examen: any = null): void {
     this.reiniciarFormulario();
@@ -275,6 +286,7 @@ export class ExamenesComponent implements OnInit {
     .subscribe( ({ examenes }) => {
       this.examenes = examenes;
       this.examenesTmp = examenes;
+      this.limpiarExamenes();
       this.filtradoExamenes();
       // tipo === 'modal' ? this.showModalExamen = false : null;
       this.alertService.close();

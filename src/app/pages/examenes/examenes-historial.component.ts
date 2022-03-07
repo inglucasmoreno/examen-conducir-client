@@ -3,6 +3,7 @@ import { AlertService } from 'src/app/services/alert.service';
 import { ExamenesService } from '../../services/examenes.service';
 import { FormBuilder } from '@angular/forms';
 import { LugaresService } from '../../services/lugares.service';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-examenes-historial',
@@ -44,10 +45,12 @@ export class ExamenesHistorialComponent implements OnInit {
 
   constructor(private examenesService: ExamenesService,
               private lugaresService: LugaresService,
+              private dataService: DataService,
               private fb: FormBuilder,
               private alertService: AlertService) { }
 
   ngOnInit(): void {
+    this.dataService.ubicacionActual = "Dashboard - Examenes - Historial";
     this.listarLugares();
   }
 

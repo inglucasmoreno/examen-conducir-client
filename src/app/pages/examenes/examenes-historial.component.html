@@ -107,12 +107,13 @@
                     </span> - {{ examen.persona.dni }}
                 </p>
                 <p class="text-sm mt-1 bg-gray-100 py-1 px-2 w-max rounded border border-gray-300"> Clase {{ examen.tipo_licencia }} </p>
-                <p class="bg-green-100 text-sm text-green-800 w-max p-1 mt-2 border border-green-200 rounded" *ngIf="examen.estado === 'Creado'"> Listo para rendirse </p>
-                <p [ngClass]="{'bg-yellow-100 border-yellow-300 text-yellow-800' : examen.reactivado, 'bg-pink-100 border-pink-300 text-secondaryColor' : !examen.reactivado}" class="bg-pink-100 text-sm w-max p-1 mt-2 border rounded" *ngIf="examen.estado === 'Rindiendo'">
+                <p [ngClass]="{'bg-yellow-100 border-yellow-300 text-yellow-800' : examen.reactivado, 'bg-pink-100 border-pink-300 text-secondaryColor' : !examen.reactivado}" class="text-sm w-max p-1 mt-2 border font-semibold rounded" *ngIf="examen.estado === 'Creado'"> Listo para rendirse </p>
+                <p class="bg-red-100 text-sm text-red-800 w-max p-1 font-semibold mt-2 border border-red-300 rounded" *ngIf="examen.estado === 'Finalizado' && examen.baja_tiempo"> {{ examen.baja_motivo }} </p>
+                <p [ngClass]="{'bg-yellow-100 border-yellow-300 text-yellow-800' : examen.reactivado, 'bg-pink-100 border-pink-300 text-secondaryColor' : !examen.reactivado}" class="bg-pink-100 text-sm w-max p-1 mt-2 font-semibold border rounded" *ngIf="examen.estado === 'Rindiendo'">
                     Rindiendose </p>
-                <div class="flex items-center mt-2" *ngIf="!examen.activo">
-                    <p [ngClass]="{'bg-yellow-100 border-yellow-300 text-yellow-800' : examen.reactivado, 'bg-pink-100 border-pink-300 text-secondaryColor' : !examen.reactivado}" class="text-sm w-max p-1 border rounded" *ngIf="examen.estado === 'Finalizado'"> Examen finalizado </p>
-                    <p [ngClass]="{'bg-yellow-100 border-yellow-300 text-yellow-800' : examen.reactivado, 'bg-pink-100 border-pink-300 text-secondaryColor' : !examen.reactivado}" class="text-sm ml-2 border rounded px-2 py-1"> {{ examen.cantidad_respuestas_correctas }} / {{ examen.cantidad_respuestas_correctas + examen.cantidad_respuestas_incorrectas }} </p>
+                <div class="flex items-center mt-2" *ngIf="!examen.activo && !examen.baja_tiempo">
+                    <p [ngClass]="{'bg-yellow-100 border-yellow-300 text-yellow-800' : examen.reactivado, 'bg-pink-100 border-pink-300 text-secondaryColor' : !examen.reactivado}" class="text-sm w-max p-1 border font-semibold rounded" *ngIf="examen.estado === 'Finalizado'"> Examen finalizado </p>
+                    <p [ngClass]="{'bg-yellow-100 border-yellow-300 text-yellow-800' : examen.reactivado, 'bg-pink-100 border-pink-300 text-secondaryColor' : !examen.reactivado}" class="text-sm ml-2 border font-semibold rounded px-2 py-1"> {{ examen.cantidad_respuestas_correctas }} / {{ examen.cantidad_respuestas_correctas + examen.cantidad_respuestas_incorrectas }} </p>
                 </div>
             </div>
         </div>

@@ -57,6 +57,15 @@ export class ExamenesService {
     });
   }
 
+  // Limpiar examenes antiguos
+  limpiarExamenes(
+  ): Observable<any> {
+    return this.http.get(`${base_url}/examenes/limpiar/antiguos`,{
+      params: {},
+      headers: {'Authorization': localStorage.getItem('token') }   
+    });
+  } 
+
   // Nuevo examen
   nuevoExamen(data: any): Observable<any> {
     return this.http.post(`${base_url}/examenes`, data, {

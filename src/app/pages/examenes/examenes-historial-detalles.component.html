@@ -71,12 +71,13 @@
                 </div>
             </div>
             <div class="flex items-center">
-                <p class="p-2 mt-2 mb-1 w-max text-secondaryColor border border-pink-200 bg-pink-100 rounded font-semibold"> {{ examen.estado | estadoExamen }} </p>
+                <p *ngIf="!examen.baja_tiempo" class="p-2 mt-2 mb-1 w-max text-secondaryColor border border-pink-200 bg-pink-100 rounded font-semibold"> {{ examen.estado | estadoExamen }} </p>
                 <p *ngIf="examen.estado == 'Rindiendo'" class="p-2 mt-1 w-max border rounded bg-green-100 text-green-700 border-green-200 font-semibold ml-2"> {{ tiempo }} </p>
                 <p (click)="showModalReactivacion = true" *ngIf="examen.reactivado" class="p-2 mt-1 cursor-pointer w-max border rounded bg-yellow-100 text-yellow-700 border-yellow-300 font-semibold ml-2"> Reactivado </p>
-                <p *ngIf="examen.estado == 'Finalizado'" [ngClass]="{'bg-green-100 text-green-700 border-green-200' : (examen.aprobado), 'bg-red-100 text-red-700 border-red-200' : (!examen.aprobado) }" class="p-2 mt-1 w-max border rounded font-semibold ml-2">
+                <p *ngIf="examen.estado == 'Finalizado' && !examen.baja_tiempo" [ngClass]="{'bg-green-100 text-green-700 border-green-200' : (examen.aprobado), 'bg-red-100 text-red-700 border-red-200' : (!examen.aprobado) }" class="p-2 mt-1 w-max border rounded font-semibold ml-2">
                     {{ examen.cantidad_respuestas_correctas }} / {{ examen.cantidad_respuestas_correctas + examen.cantidad_respuestas_incorrectas }}
                 </p>
+                <p *ngIf="examen.baja_tiempo" class="mt-2 border border-red-300 bg-red-100 font-semibold text-red-800 px-2 py-1 rounded"> {{ examen.baja_motivo }} </p>
             </div>
         </div>
     </div>
@@ -114,7 +115,7 @@
             <button (click)="detallesPregunta(pregunta)" [ngClass]="{'border-green-700 bg-green-100': (pregunta.seleccionada === 'respuesta_correcta' && !examen.activo), 'border-red-700 bg-red-100': (pregunta.seleccionada != 'respuesta_correcta' && !examen.activo)}"
                 class="bg-gray-100 border-l-8 border-gray-300 mt-3 hover:bg-pink-100 hover:border-secondaryColor mb-2 cursor-pointer shadow rounded text-sm flex items-center justify-between" *ngFor="let pregunta of examen.preguntas | filtroPreguntasDetalles:filtroRespuestas | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActual}">
                 <div class="flex items-center">
-                    <p class="p-4">
+                    <p class="py-4 px-2">
                         <span class="text-lg font-semibold"> {{ pregunta.numero }} - </span>
                         <span> {{ pregunta.descripcion }} </span>
                     </p>
