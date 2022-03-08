@@ -37,7 +37,7 @@
                         <input #txtParametro placeholder="Número o Descripción" (keyup)="filtrarParametro(txtParametro.value)" class="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
                         />
                     </div>
-                    <select (change)="paginaActual = 1" class="bg-white px-2 border text-gray-600 ml-2 border-gray-400 rounded" [(ngModel)]="cantidadItems">
+                    <select (change)="paginaActual = 1" class="bg-white px-2 border py-2 md:py-0 md:ml-2 mt-2 md:mt-0 text-gray-600 border-gray-400 rounded" [(ngModel)]="cantidadItems">
                         <option value="10"> 10 elementos </option>
                         <option value="20"> 20 elementos </option>
                         <option value="50"> 50 elementos </option>
@@ -45,7 +45,7 @@
                     </select>
                 </div>
             </div>
-            <p *ngIf="filtro.tipo == 'respuestas'" class="ml-4 mb-2 px-2 rounded border border-gray-200 text-sm text-gray-600 bg-gray-100 w-max py-1"> * Se filtra teniendo en cuenta la cantidad de respuestas correctas/incorrectas de cada pregunta </p>
+            <p *ngIf="filtro.tipo == 'respuestas'" class="ml-4 mb-2 px-2 rounded border border-gray-200 text-sm text-gray-600 bg-gray-100 w-11/12 md:w-max py-1"> * Se filtra teniendo en cuenta la cantidad de respuestas correctas/incorrectas de cada pregunta </p>
             <div class="px-4 py-2 overflow-x-auto">
                 <div class="inline-block min-w-full max-h-screen overflow-y-auto shadow rounded-lg overflow-hidden border border-gray-200">
                     <table class="min-w-full leading-normal">

@@ -5,6 +5,7 @@ import { ImagenesService } from 'src/app/services/imagenes.service';
 import { environment } from 'src/environments/environment';
 import { AlertService } from '../../services/alert.service';
 import { DataService } from '../../services/data.service';
+import gsap from 'gsap';
 
 @Component({
   selector: 'app-imagenes',
@@ -53,6 +54,7 @@ export class ImagenesComponent implements OnInit {
               ) { }
 
   ngOnInit(): void {
+    gsap.from('.gsap-contenido', { y:100, opacity: 0, duration: .5 });
     this.dataService.ubicacionActual = 'Dashboard - Imagenes';
     this.permisos.all = this.permisosUsuarioLogin();
     this.listarImagenes();

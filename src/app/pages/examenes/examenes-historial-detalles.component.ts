@@ -64,9 +64,7 @@ export class ExamenesHistorialDetallesComponent implements OnInit {
     this.alertService.loading();
     this.examenesService.getExamen(this.idExamen).subscribe( ({examen}) => {
       this.examen = examen;
-      
-      console.log(examen);
-
+    
       if(examen.reactivado){
         this.examenesService.listarReactivaciones(examen._id).subscribe(({reactivaciones})=>{
           this.reactivaciones = reactivaciones;

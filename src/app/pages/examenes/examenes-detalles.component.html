@@ -1,7 +1,7 @@
 <!-- Modal: Reactivaciones de examen -->
 <app-modal *ngIf="reactivaciones" [showModal]="showModalReactivacion">
     <div class="bg-primary-800 p-2 text-white flex items-center justify-between rounded-t">
-        <h1> Reactivaciones de examen </h1>
+        <h1 class="font-semibold"> Reactivaciones de examen </h1>
         <svg (click)="showModalReactivacion = false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cursor-pointer feather feather-x text-white mr-2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
     </div>
     <div class="p-2">
@@ -59,12 +59,12 @@
         </h1>
         <div class="p-2 text-sm bg-gray-100 pb-2">
             <p class="p-1"> <span class="font-semibold"> Fecha: </span> <span class="capitalize"> {{ examen.createdAt | fecha }} </span> </p>
-            <div class="flex items-center bg-gray-100">
+            <div class="md:flex md:items-center bg-gray-100">
                 <div>
                     <p class="p-1"> <span class="font-semibold"> Licencia: </span> Clase {{ examen.tipo_licencia }} </p>
                     <p class="p-1"> <span class="font-semibold"> Lugar: </span> {{ examen.lugar.descripcion }} </p>
                 </div>
-                <div class="ml-4">
+                <div class="md:ml-4">
                     <p class="p-1"> <span class="font-semibold"> Usuario creador: </span> <span class="capitalize"> {{ examen.usuario.apellido.toLowerCase() }} {{ examen.usuario.nombre.toLowerCase() }} - DNI {{ examen.usuario.dni }} </span> </p>
                     <p class="p-1"> <span class="font-semibold"> Rinde el examen: </span> <span class="capitalize"> {{ examen.persona.apellido.toLowerCase() }} {{ examen.persona.nombre.toLowerCase() }} - DNI {{ examen.persona.dni }} </span> </p>
                 </div>
@@ -82,7 +82,7 @@
     </div>
 
     <div *ngIf="examen" class="mt-2">
-        <div class="text-2xl flex items-center justify-between border mb-3 p-2 bg-primary-800 text-white rounded">
+        <div class="text-xl md:text-2xl flex items-center justify-between border mb-3 p-2 bg-primary-800 text-white rounded">
             <div>
                 <p> Listado de preguntas </p>
                 <p class="text-sm"> cantidad de preguntas: {{ examen.preguntas.length }} </p>
@@ -94,23 +94,23 @@
                 <option value="100"> 100 elementos </option>
             </select>
         </div>
-        <div *ngIf="!examen.activo" class="flex items-center">
+        <div *ngIf="!examen.activo" class="md:flex md:items-center">
             <select (change)="reiniciarPaginacion()" [(ngModel)]="filtroRespuestas" class="p-2 bg-white border-gray-300 shadow border rounded mr-4">
                 <option value=""> Todas las preguntas </option>
                 <option value="true"> Correctas </option>
                 <option value="false"> Incorrectas </option>
             </select>
-            <div class="flex items-center border border-gray-300 p-2 rounded shadow">
+            <div class="flex items-center border border-gray-300 mt-2 md:mt-0 p-2 rounded shadow">
                 <div class="w-3 h-3 rounded-full bg-green-700"></div>
                 <span class="ml-1"> Respuestas correctas: {{ examen.cantidad_respuestas_correctas }} </span>
             </div>
-            <div class="flex items-center ml-4 p-2 border border-gray-300 rounded shadow">
+            <div class="flex items-center md:ml-4 p-2 border mt-2 md:mt-0 border-gray-300 rounded shadow">
                 <div class="w-3 h-3 rounded-full bg-red-700"></div>
                 <span class="ml-1"> Respuestas incorrectas: {{ examen.cantidad_respuestas_incorrectas }} </span>
             </div>
         </div>
 
-        <div class="max-h-screen overflow-y-auto">
+        <div>
             <div (click)="detallesPregunta(pregunta)" [ngClass]="{'border-green-700 bg-green-100': (pregunta.seleccionada === 'respuesta_correcta' && !examen.activo), 'border-red-700 bg-red-100': (pregunta.seleccionada != 'respuesta_correcta' && !examen.activo)}"
                 class="bg-gray-100 border-l-8 border-gray-300 mt-3 hover:bg-pink-100 hover:border-secondaryColor mb-2 cursor-pointer shadow rounded text-sm flex items-center justify-between" *ngFor="let pregunta of examen.preguntas | filtroPreguntasDetalles:filtroRespuestas | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActual}">
                 <div class="flex items-center">

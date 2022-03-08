@@ -8,12 +8,12 @@
             </svg>
         </div>
         <div class="p-4">
-            <div class="border shadow rounded p-2 text-sm">
-                <p> <span class="font-semibold mt-1"> Fecha de creación: </span> {{ examenReactivar.createdAt | fecha }} </p>
-                <p> <span class="font-semibold mt-1"> Usuario creador: </span> <span class="capitalize"> {{ examenReactivar.usuario.apellido.toLowerCase() }} {{ examenReactivar.usuario.nombre.toLowerCase() }} </span> - DNI {{ examenReactivar.usuario.dni }}</p>
-                <p> <span class="font-semibold mt-1"> Rindio el examen: </span> <span class="capitalize"> {{ examenReactivar.persona.apellido.toLowerCase() }} {{ examenReactivar.persona.nombre.toLowerCase() }} </span> - DNI {{ examenReactivar.persona.dni}}</p>
-                <p> <span class="font-semibold mt-1"> Estado: </span> {{ examenReactivar.estado }} </p>
-                <p> <span class="font-semibold mt-1"> Nota: </span> {{ examenReactivar.cantidad_respuestas_correctas }} / {{ examenReactivar.cantidad_respuestas_correctas + examenReactivar.cantidad_respuestas_incorrectas }} </p>
+            <div class="border shadow rounded p-2 text-xs md:text-sm">
+                <p class="mt-1"> <span class="font-semibold"> Fecha de creación: </span> {{ examenReactivar.createdAt | fecha }} </p>
+                <p class="mt-1"> <span class="font-semibold"> Usuario creador: </span> <span class="capitalize"> {{ examenReactivar.usuario.apellido.toLowerCase() }} {{ examenReactivar.usuario.nombre.toLowerCase() }} </span> - DNI {{ examenReactivar.usuario.dni }}</p>
+                <p class="mt-1"> <span class="font-semibold"> Rindio el examen: </span> <span class="capitalize"> {{ examenReactivar.persona.apellido.toLowerCase() }} {{ examenReactivar.persona.nombre.toLowerCase() }} </span> - DNI {{ examenReactivar.persona.dni}}</p>
+                <p class="mt-1"> <span class="font-semibold"> Estado: </span> {{ examenReactivar.estado }} </p>
+                <p class="mt-1"> <span class="font-semibold"> Nota: </span> {{ examenReactivar.cantidad_respuestas_correctas }} / {{ examenReactivar.cantidad_respuestas_correctas + examenReactivar.cantidad_respuestas_incorrectas }} </p>
             </div>
             <div class="mt-2">
                 <p class="font-semibold"> Motivo de la reactivación </p>
@@ -127,7 +127,7 @@
         <div>
             <div class="flex items-center justify-between bg-primary-800 text-white px-4 py-3 rounded-t">
                 <div class="ml-2">
-                    <h2 class="text-2xl leading-tight"> Listado de examenes </h2>
+                    <h2 class="text-xl md:text-2xl leading-tight"> Listado de examenes </h2>
                     <p> Total de examenes: {{ examenes.length }} </p>
                 </div>
                 <div class="flex items-center">
@@ -172,7 +172,7 @@
                         <input #txtParametro placeholder="Persona, lugar" (keyup)="filtrarParametro(txtParametro.value)" class="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
                         />
                     </div>
-                    <select (change)="paginaActual = 1" class="bg-white px-2 border text-gray-600 ml-2 border-gray-400 rounded" [(ngModel)]="cantidadItems">
+                    <select (change)="paginaActual = 1" class="bg-white px-2 py-2 md:py-0 md:ml-2 mt-2 md:mt-0 border text-gray-600 border-gray-400 rounded" [(ngModel)]="cantidadItems">
                         <option value="10"> 10 elementos </option>
                         <option value="20"> 20 elementos </option>
                         <option value="50"> 50 elementos </option>
@@ -291,7 +291,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                             </svg>
                                         </app-boton-tabla>
-                                        <app-boton-tabla *ngIf="examen.estado === 'Finalizado' && permisos.all" (click)="abrirModalReactivar(examen)" title="Reactivar examen">
+                                        <app-boton-tabla *ngIf="examen.estado === 'Finalizado' && !examen.baja_tiempo && permisos.all" (click)="abrirModalReactivar(examen)" title="Reactivar examen">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                             </svg>

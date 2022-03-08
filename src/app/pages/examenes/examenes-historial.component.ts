@@ -4,6 +4,7 @@ import { ExamenesService } from '../../services/examenes.service';
 import { FormBuilder } from '@angular/forms';
 import { LugaresService } from '../../services/lugares.service';
 import { DataService } from 'src/app/services/data.service';
+import gsap from 'gsap';
 
 @Component({
   selector: 'app-examenes-historial',
@@ -20,6 +21,7 @@ export class ExamenesHistorialComponent implements OnInit {
   // Flags
   public flagInicio = true;
   public reactivados = false;
+  public bajaTiempo = false;
 
   // Lugares
   public lugares: any[];
@@ -51,6 +53,7 @@ export class ExamenesHistorialComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataService.ubicacionActual = "Dashboard - Examenes - Historial";
+    gsap.from('.gsap-contenido', { y:100, opacity: 0, duration: .3 });
     this.listarLugares();
   }
 
@@ -69,14 +72,23 @@ export class ExamenesHistorialComponent implements OnInit {
     this.buscar();  
   }
 
+  soloFinalizadosPorTiempo(): void {
+    this.paginaActual = 1;
+    this.reactivados = false;
+    this.bajaTiempo = !this.bajaTiempo;
+    this.filtrarReactivados();
+  }
+
   soloReactivados(): void {
     this.paginaActual = 1;
+    this.bajaTiempo = false;
     this.reactivados = !this.reactivados;
     this.filtrarReactivados();
   }
 
   filtrarReactivados(): void {
     if(this.reactivados) this.examenesMostrar = this.examenes.filter( examen => examen.reactivado )
+    else if(this.bajaTiempo) this.examenesMostrar = this.examenes.filter( examen => examen.baja_tiempo )
     else this.examenesMostrar = this.examenes;
   }
 

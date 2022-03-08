@@ -81,6 +81,10 @@ export class ExamenesService {
   // Listar reactivaciones de examen
   listarReactivaciones(id: string): Observable<any> {
     return this.http.get(`${base_url}/examenes/reactivar/${id}`,{
+      params:{
+        direccion: -1,
+        columna: 'createdAt'
+      },
       headers: {'Authorization': localStorage.getItem('token') }   
     });
   }

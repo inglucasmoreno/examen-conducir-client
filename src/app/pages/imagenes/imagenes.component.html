@@ -28,7 +28,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
         </h1>
-        <div class="bg-white p-4 flex items-center">
+        <div class="bg-white p-4 max-h-screen overflow-x-auto flex items-center">
             <img class="w-40 h-40 rounded border" [src]="urlBase + '/img/' + imagenSeleccionada.url" alt="imagenSeleccionada.descripcion">
             <div>
                 <p class="ml-3 font-semibold mb-1"> Descripción de la imagen </p>
@@ -56,9 +56,9 @@
 </app-modal>
 
 <!-- Vista principal -->
-<div *ngIf="imagenes" class="p-4">
+<div class="p-4 gsap-contenido">
     <h1 class="text-4xl border-b pb-2 text-center"> Imagenes en sistema </h1>
-    <div class="flex items-center justify-center mt-2">
+    <div class="md:flex md:items-center md:justify-center mt-2">
         <input [(ngModel)]="descripcion" type="text" placeholder="Buscar" class="border border-gray-300 shadow p-2 mx-2 my-2 focus:outline-none rounded">
         <select (change)="reiniciarPaginacion()" class="border border-gray-300 p-2 bg-white shadow rounded ml-2" [(ngModel)]="activo">
             <option value="true"> Activas </option>
@@ -70,15 +70,15 @@
             <option value="50"> 50 elementos </option>
             <option value="100"> 100 elementos </option>
         </select>
-        <button *ngIf="permisos.all" (click)="modalNuevaImagen()" title="Nueva imagen" class="border rounded border-gray-300 shadow focus:outline-none bg-white p-2 ml-3 hover:text-primaryColor">
+        <button *ngIf="permisos.all" (click)="modalNuevaImagen()" title="Nueva imagen" class="border rounded border-gray-300 shadow focus:outline-none bg-white p-2 ml-3 hover:text-secondaryColor">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
         </button>
     </div>
-    <div class="flex flex-wrap  mt-2">
+    <div *ngIf="imagenes" class="flex flex-wrap mt-2">
         <div class="p-2 w-1/2 md:w-1/3 lg:w-1/4 2xl:w-1/6" *ngFor="let imagen of imagenes | filtroImagenes:descripcion:activo | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActual}">
-            <img (click)="detallesImagen(imagen)" class="h-40 w-40 mr-auto ml-auto shadow cursor-pointer border-2 border-gray-300 hover:border-primaryColor rounded" [src]="urlBase + '/img/' + imagen.url" [alt]="imagen.descripcion">
+            <img (click)="detallesImagen(imagen)" class="h-40 w-40 mr-auto ml-auto shadow cursor-pointer border-2 border-gray-300 hover:border-secondaryColor rounded" [src]="urlBase + '/img/' + imagen.url" [alt]="imagen.descripcion">
             <p class="text-center text-xs font-semibold p-1 text-gray-500"> {{ imagen.descripcion }} </p>
         </div>
     </div>
