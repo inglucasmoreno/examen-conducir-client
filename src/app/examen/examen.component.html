@@ -14,16 +14,16 @@
     </div>
     <div class="flex w-11/12 mr-auto ml-auto">
         <div class="py-5 w-full">
-            <div class="gsap-pregunta border border-gray-300 rounded shadow">
+            <div class="border border-gray-300 rounded shadow">
                 <h1 class="bg-primaryColor text-white p-2 rounded-t text-2xl"> Pregunta {{ nroPregunta + 1 }} de {{ preguntas.length }} </h1>
                 <div class="px-2 py-5">
                     <p class="text-2xl"> {{ preguntas[nroPregunta].descripcion }} </p>
                 </div>
             </div>
-            <div class='gsap-pregunta'>
+            <div>
                 <img *ngIf='preguntas[nroPregunta].url_img' class="w-40 h-40 mt-3" [src]="urlBase + '/img/' + preguntas[nroPregunta].url_img" alt="Imagen de señal">
             </div>
-            <div class="gsap-respuestas mt-4">
+            <div class="mt-4">
                 <div (click)="seleccionarPregunta('A')" [ngClass]="{'bg-pink-100 text-secondaryColor border-pink-200' : respuestaSeleccionada == 'A'}" class="text-xl mt-5 p-4 shadow bg-gray-100 rounded border cursor-pointer">
                     <span class="font-semibold"> A </span>
                     <span> - {{ mostrarRespuestas.a.descripcion }} </span>

@@ -58,7 +58,6 @@ export class ImagenesComponent implements OnInit {
     this.dataService.ubicacionActual = 'Dashboard - Imagenes';
     this.permisos.all = this.permisosUsuarioLogin();
     this.listarImagenes();
-    console.log(this.urlBase);
   }
 
   // Asignar permisos de usuario login
@@ -85,21 +84,22 @@ export class ImagenesComponent implements OnInit {
 
   // Se captura la imagen a subir
   capturarImagen(event: any): void {
-    this.imagenParaSubir = event.target.files[0];
-    
-    const formato = this.imagenParaSubir.type.split('/')[1];
-    const condicion = formato !== 'png' && formato !== 'jpg' && formato !== 'jpeg' && formato !== 'gif';
-
-    if(condicion){
-      this.previsualizacion = '';
-      this.file = '';
-      return this.alertService.errorApi('El archivo debe ser una imagen');
-    }
-
-    this.extraerBase64(this.imagenParaSubir).then( (imagen: any) => {
-      this.previsualizacion = imagen.base;
-    });
+    if(event.target.files[0]){ // Se captura si hay imagen seleccionada
+      this.imagenParaSubir = event.target.files[0];
+      
+      const formato = this.imagenParaSubir.type.split('/')[1];
+      const condicion = formato !== 'png' && formato !== 'jpg' && formato !== 'jpeg' && formato !== 'gif';
   
+      if(condicion){
+        this.previsualizacion = '';
+        this.file = '';
+        return this.alertService.errorApi('El archivo debe ser una imagen');
+      }
+  
+      this.extraerBase64(this.imagenParaSubir).then( (imagen: any) => {
+        this.previsualizacion = imagen.base;
+      });
+    }
   }
 
   extraerBase64 = async ($event: any) => new Promise((resolve, reject) => {

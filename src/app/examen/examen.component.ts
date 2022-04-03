@@ -3,8 +3,7 @@ import { Router } from '@angular/router';
 import { AlertService } from '../services/alert.service';
 import { ExamenesService } from '../services/examenes.service';
 import { environment } from '../../environments/environment';
-import { interval, Observable, Subscription } from 'rxjs';
-import gsap from 'gsap';
+import { interval, Subscription } from 'rxjs';
 import { compareAsc, formatDistanceToNowStrict } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { SocketService } from '../services/socket.service';
@@ -108,7 +107,7 @@ export class ExamenComponent implements OnInit, OnDestroy {
     });
     
     this.preguntas = this.examen.preguntas;
-    this.animacionInicial();
+    // this.animacionInicial();
     this.respuestasAleatorias();
     this.calcularTiempo();
 
@@ -133,11 +132,11 @@ export class ExamenComponent implements OnInit, OnDestroy {
   }
 
   // GSAP - Animacion inicial
-  animacionInicial(): void {
-    var tl = gsap.timeline({ defaults: { duration: 0.1 } });
-    tl.from('.gsap-pregunta', { y:100, opacity: 0, duration: .5 })
-      .from('.gsap-respuestas', { y:100, opacity: 0, duration: .5 })
-  }
+  // animacionInicial(): void {
+  //   var tl = gsap.timeline({ defaults: { duration: 0.1 } });
+  //   tl.from('.gsap-pregunta', { y:100, opacity: 0, duration: .5 })
+  //     .from('.gsap-respuestas', { y:100, opacity: 0, duration: .5 })
+  // }
 
   // Pregunta anterior / Proxima pregunta
   incDecNro(tipo: string): void {

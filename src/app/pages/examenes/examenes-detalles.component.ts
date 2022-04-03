@@ -6,7 +6,6 @@ import { ExamenesService } from 'src/app/services/examenes.service';
 import { environment } from 'src/environments/environment';
 import { formatDistance } from 'date-fns';
 import { es } from 'date-fns/locale';
-import gsap from 'gsap';
 
 @Component({
   selector: 'app-examenes-detalles',
@@ -46,7 +45,6 @@ export class ExamenesDetallesComponent implements OnInit {
 
   ngOnInit(): void {    
     this.dataService.ubicacionActual = "Dashboard - Examenes - Detalles";
-    gsap.from('.gsap-contenido', { y:100, opacity: 0, duration: .3 });
     this.activatedRoute.params.subscribe(({id}) => {
       this.idExamen = id;
       this.getExamen();

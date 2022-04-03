@@ -155,7 +155,6 @@ export class PreguntasComponent implements OnInit {
     this.imagenesService.listarImagenes().subscribe(({imagenes}) => {
       this.alertService.close();
       this.imagenes = imagenes;
-      console.log(imagenes);
     },({error}) => {
       this.alertService.errorApi(error.message);
     });

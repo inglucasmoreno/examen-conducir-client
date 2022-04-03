@@ -30,7 +30,6 @@ export class ExamenesService {
     columna: string = 'createdAt',
     data: any = {}
   ): Observable<any> {
-    console.log(direccion)
     return this.http.post(`${base_url}/examenes/historial/listado`,data, {
       params: {
         direccion: String(direccion),

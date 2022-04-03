@@ -63,7 +63,6 @@ export class NuevoUsuarioComponent implements OnInit {
     this.lugaresService.listarLugares().subscribe(({ lugares }) => {
       this.alertService.close();
       this.lugares = lugares.filter(lugar => (lugar.descripcion.toUpperCase() !== 'DIRECCION DE TRANSPORTE' && lugar.activo));
-      console.log(this.lugares);
     },({error}) => {
       this.alertService.errorApi(error.message);
     });
