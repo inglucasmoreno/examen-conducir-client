@@ -7,5 +7,6 @@ export const items = [
     { svg: 'imagenes', route: 'imagenes', item: 'Imagenes', permiso: ['IMAGENES_NAV'] },
     { svg: 'lugares', route: 'lugares', item: 'Lugares', permiso: ['LUGARES_NAV'] },
     { svg: 'preguntas', route: 'preguntas', item: 'Preguntas', permiso: ['PREGUNTAS_NAV'] },
+    { svg: 'formularios', route: 'formularios', item: 'Formularios', permiso: ['FORMULARIOS_NAV'] },
     { svg: 'examenes', route: 'examenes', item: 'Examenes', permiso: ['EXAMENES_NAV'] },
 ]

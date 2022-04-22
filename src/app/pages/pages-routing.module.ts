@@ -22,6 +22,7 @@ import { PerfilComponent } from './perfil/perfil.component';
 import { PermisosGuard } from '../guards/permisos.guard';
 import { ExamenesHistorialComponent } from './examenes/examenes-historial.component';
 import { ExamenesHistorialDetallesComponent } from './examenes/examenes-historial-detalles.component';
+import { FormulariosComponent } from './formularios/formularios.component';
 
 const routes: Routes = [
     {
@@ -54,6 +55,9 @@ const routes: Routes = [
             // Preguntas
             { path: 'preguntas', data: { permisos: 'PREGUNTAS_NAV' }, canActivate: [ PermisosGuard ], component: PreguntasComponent },
             { path: 'preguntas/estadisticas', data: { permisos: 'PREGUNTAS_NAV' }, canActivate: [ PermisosGuard ], component: PreguntasEstadisticasComponent },
+
+            // Formularios
+            { path: 'formularios', data: { permisos: 'FORMULARIOS_NAV' }, canActivate: [ PermisosGuard ], component: FormulariosComponent },
 
             // Examenes
             { path: 'examenes', data: { permisos: 'EXAMENES_NAV' }, canActivate: [ PermisosGuard ], component: ExamenesComponent },
