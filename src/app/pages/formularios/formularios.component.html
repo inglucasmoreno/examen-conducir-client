@@ -5,12 +5,32 @@
             <h1 class=" text-white px-2 py-1 rounded-t text-lg"> {{ estadoFormulario == 'crear' ? 'Creando nuevo formulario' : 'Editando formulario' }} </h1>
             <svg (click)="showModalFormulario = false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cursor-pointer feather feather-x text-white mr-2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </div>
-        <div class="p-4">
-            <p class="font-semibold"> <span class="text-red-500"> * </span> Descripción </p>
-            <input [(ngModel)]="descripcion" class="py-2 mt-1 border-b-2 border-gray-300 tranform duration-500 focus:border-primaryColor appearance-none outline-none w-full text-gray-800" placeholder="Ej. Barrio Jardín San Luis" type="text">
-            <button *ngIf="estadoFormulario == 'crear'" (click)="nuevoFormulario()" class="bg-gray-100 focus:outline-none hover:text-secondaryColor shadow text-gray-800 w-full border border-gray-300 font-semibold p-2 rounded mt-4"> Crear formulario </button>
-            <button *ngIf="estadoFormulario == 'editar'" (click)="actualizarFormulario()" class="bg-gray-100 focus:outline-none hover:text-secondaryColor shadow text-gray-800 w-full border border-gray-300 font-semibold p-2 rounded mt-4"> Actualizar formulario </button>
-        </div>
+        <form [formGroup]="formularioForm" class="p-4">
+            <div class="flex items-center w-full">
+                <div class="w-1/2">
+                    <p class="text-sm font-semibold"> <span class="text-red-500"> * </span> Nro de tramite </p>
+                    <input formControlName="nro_tramite" class="py-2 mt-1 border-b-2 border-gray-300 text-sm tranform duration-500 focus:border-primaryColor appearance-none outline-none w-full text-gray-800" placeholder="Ej. 0001" type="text">
+                </div>
+                <div class="ml-4 w-1/2">
+                    <p class="text-sm font-semibold"> <span class="text-red-500"> * </span> Tipo </p>
+                    <select formControlName="tipo" class="py-2 text-sm border-b-2 border-gray-300 tranform duration-500 focus:border-primaryColor outline-none w-full text-gray-800">
+                        <option value="Auto"> Auto </option>
+                        <option value="Moto"> Moto </option>
+                    </select>                   
+                </div>
+            </div>
+            <div class="mt-4">
+                <p class="text-sm font-semibold"> <span class="text-red-500"> * </span> Persona </p>
+                <select formControlName="persona" class="py-2 text-sm border-b-2 border-gray-300 tranform duration-500 focus:border-primaryColor outline-none w-full text-gray-800">
+                    <option value=""> Seleccionar persona </option>
+                    <option *ngFor="let persona of personas" [value]="persona._id"> {{ persona.apellido }} {{ persona.nombre }} - DNI {{ persona.dni }} </option>
+                </select>
+            </div>
+            <div class="mt-2">
+                <button *ngIf="estadoFormulario == 'crear'" (click)="nuevoFormulario()" class="bg-gray-100 focus:outline-none hover:text-secondaryColor shadow text-gray-800 w-full border border-gray-300 font-semibold p-2 rounded mt-4"> Crear formulario </button>
+                <button *ngIf="estadoFormulario == 'editar'" (click)="actualizarFormulario()" class="bg-gray-100 focus:outline-none hover:text-secondaryColor shadow text-gray-800 w-full border border-gray-300 font-semibold p-2 rounded mt-4"> Actualizar formulario </button>
+            </div>
+        </form>
     </div>
 </app-modal>
 

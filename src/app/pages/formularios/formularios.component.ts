@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { AlertService } from 'src/app/services/alert.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
 import { FormulariosPracticaService } from 'src/app/services/formularios-practica.service';
+import { PersonasService } from 'src/app/services/personas.service';
 
 @Component({
   selector: 'app-formularios',
@@ -20,6 +22,9 @@ export class FormulariosComponent implements OnInit {
 
   // Estado formulario 
   public estadoFormulario = 'crear';
+
+  // Personas
+  public personas;
 
   // Formulario
   public idFormulario: string = '';
@@ -42,33 +47,33 @@ export class FormulariosComponent implements OnInit {
     columna: 'createdAt'
   }
 
+  // Modelo reactivo
+  public formularioForm = this.fb.group({
+    nro_tramite: ['', Validators.required],
+    persona: ['', Validators.required],
+    tipo: ['Auto', Validators.required],
+    activo: ['true', Validators.required]
+  });
+
   constructor(private formulariosPracticaService: FormulariosPracticaService,
-              private authService: AuthService,
+              private fb: FormBuilder,
+              private personasService: PersonasService,
               private alertService: AlertService,
               private dataService: DataService) { }
 
   ngOnInit(): void {
     this.dataService.ubicacionActual = 'Dashboard - Formularios'; 
-    // this.permisos.all = this.permisosUsuarioLogin();
     this.alertService.loading();
     this.listarFormularios(); 
   }
-
-  // Asignar permisos de usuario login
-  // permisosUsuarioLogin(): boolean {
-  //   return this.authService.usuario.permisos.includes('LUGARES_ALL') || this.authService.usuario.role === 'ADMIN_ROLE';
-  // }
 
   // Abrir modal
   abrirModal(estado: string, formulario: any = null): void {
     window.scrollTo(0,0);
     this.reiniciarFormulario();
-    this.descripcion = '';
-    this.idFormulario = '';
-    
+    console.log(formulario);
     if(estado === 'editar') this.getFormulario(formulario);
     else this.showModalFormulario = true;
-
     this.estadoFormulario = estado;  
   }
 
@@ -77,7 +82,11 @@ export class FormulariosComponent implements OnInit {
     this.alertService.loading();
     this.idFormulario = formulario._id;
     this.formulariosPracticaService.getFormulario(formulario._id).subscribe(({formulario}) => {
-      this.descripcion = formulario.descripcion;
+      this.formularioForm.patchValue({
+        nro_tramite: formulario.nro_tramite,
+        persona: formulario.persona,
+        tipo: formulario.tipo        
+      });
       this.alertService.close();
       this.showModalFormulario = true;
     },({error})=>{
@@ -93,8 +102,7 @@ export class FormulariosComponent implements OnInit {
       )
     .subscribe( ({ formularios }) => {
       this.formularios = formularios;
-      this.showModalFormulario = false;
-      this.alertService.close();
+      this.listarPersonas();
     }, (({error}) => {
       console.log(error);
       this.alertService.errorApi(error.msg);
@@ -104,14 +112,18 @@ export class FormulariosComponent implements OnInit {
   // Nuevo formulario
   nuevoFormulario(): void {
 
-    // Verificacion: Descripción vacia
-    if(this.descripcion.trim() === ""){
-      this.alertService.info('Debes colocar una descripción');
+    const { nro_tramite, persona, tipo } = this.formularioForm.value;
+
+    const verificacion = nro_tramite.trim() === '' || persona === '';
+
+    // Verificacion de datos
+    if(verificacion){
+      this.alertService.info('Completar los campos obligatorios');
       return;
     }
 
     this.alertService.loading();
-    this.formulariosPracticaService.nuevoFormulario({ descripcion: this.descripcion }).subscribe(() => {
+    this.formulariosPracticaService.nuevoFormulario({ nro_tramite, persona, tipo }).subscribe(() => {
       this.listarFormularios();
     },({error})=>{
       this.alertService.errorApi(error.message);  
@@ -122,14 +134,18 @@ export class FormulariosComponent implements OnInit {
   // Actualizar formulario
   actualizarFormulario(): void {
 
-    // Verificacion: Descripción vacia
-    if(this.descripcion.trim() === ""){
-      this.alertService.info('Debes colocar una descripción');
+    const { nro_tramite, persona, tipo } = this.formularioForm.value;
+
+    const verificacion = nro_tramite.trim() === '' || persona === '';
+
+    // Verificacion de datos
+    if(verificacion){
+      this.alertService.info('Completar los campos obligatorios');
       return;
     }
 
     this.alertService.loading();
-    this.formulariosPracticaService.actualizarFormulario(this.idFormulario, { descripcion: this.descripcion.toLocaleUpperCase() }).subscribe(() => {
+    this.formulariosPracticaService.actualizarFormulario(this.idFormulario, this.formularioForm.value).subscribe(() => {
       this.listarFormularios();
     },({error})=>{
       this.alertService.errorApi(error.message);
@@ -159,10 +175,29 @@ export class FormulariosComponent implements OnInit {
         });
 
   }
+  
+  // Listar personas
+  listarPersonas(): void {
+    this.personasService.listarPersonas(1, 'apellido').subscribe({
+      next: ({ personas }) => {
+        this.personas = personas;
+        this.alertService.close();
+        this.showModalFormulario = false;
+      },
+      error: ({error}) => {
+        this.alertService.errorApi(error.message);
+      }
+    });
+  }
+
 
   // Reiniciando formulario
   reiniciarFormulario(): void {
-    this.descripcion = '';  
+    this.formularioForm.patchValue({
+      nro_tramite: '',
+      persona: '',
+      tipo: 'Auto'
+    });  
   }
 
   // Filtrar Activo/Inactivo
