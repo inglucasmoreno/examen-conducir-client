@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AlertService } from 'src/app/services/alert.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
 import { FormulariosPracticaService } from 'src/app/services/formularios-practica.service';
 import { PersonasService } from 'src/app/services/personas.service';
@@ -14,6 +13,9 @@ import { PersonasService } from 'src/app/services/personas.service';
 })
 export class FormulariosComponent implements OnInit {
 
+  // Flags
+  public nuevaPersona = false;
+
   // Permisos de usuarios login
   public permisos = { all: false };
 
@@ -24,7 +26,14 @@ export class FormulariosComponent implements OnInit {
   public estadoFormulario = 'crear';
 
   // Personas
-  public personas;
+  public dni = '';
+  public personas: any[];
+  public personaSeleccionada: any;
+  public dataNuevaPersona: any = {
+    apellido: '',
+    nombre: '',
+    dni: ''
+  };
 
   // Formulario
   public idFormulario: string = '';
@@ -114,20 +123,61 @@ export class FormulariosComponent implements OnInit {
 
     const { nro_tramite, persona, tipo } = this.formularioForm.value;
 
-    const verificacion = nro_tramite.trim() === '' || persona === '';
+    const verificacion_1 = (nro_tramite.trim() === '' || !this.personaSeleccionada) && !this.nuevaPersona;
+    const verificacion_2 = (nro_tramite.trim() === '' || 
+                            this.dataNuevaPersona.apellido.trim() === '' ||
+                            this.dataNuevaPersona.nombre.trim() === '' ||
+                            this.dataNuevaPersona.dni.trim() === '') && this.nuevaPersona;
 
     // Verificacion de datos
-    if(verificacion){
+    if(verificacion_1){
+      this.alertService.info('Completar los campos obligatorios');
+      return;
+    }else if(verificacion_2){
       this.alertService.info('Completar los campos obligatorios');
       return;
     }
 
-    this.alertService.loading();
-    this.formulariosPracticaService.nuevoFormulario({ nro_tramite, persona, tipo }).subscribe(() => {
-      this.listarFormularios();
-    },({error})=>{
-      this.alertService.errorApi(error.message);  
-    });
+    if(!this.nuevaPersona){
+      
+      const data = {
+        nro_tramite,
+        tipo,
+        persona: this.personaSeleccionada._id
+      }
+  
+      this.alertService.loading();
+      this.formulariosPracticaService.nuevoFormulario(data).subscribe(() => {
+        this.eliminarPersona();
+        this.listarFormularios();
+      },({error})=>{
+        this.alertService.errorApi(error.message);  
+      });
+    
+    }else{
+
+      this.alertService.loading();
+      this.personasService.nuevaPersona({apellido: this.dataNuevaPersona.apellido, nombre: this.dataNuevaPersona.nombre, dni: this.dataNuevaPersona.dni, }).subscribe({
+        next: ({persona}) => {
+          this.formulariosPracticaService.nuevoFormulario({nro_tramite, tipo, persona: persona._id}).subscribe({
+            next: () => {
+              this.eliminarPersona();
+              this.listarFormularios();
+            },
+            error: ({error}) => {
+              this.alertService.errorApi(error.msg);
+            }
+          })
+        },  
+        error: ({error}) => {
+          this.alertService.errorApi(error.msg);
+        }
+      });
+
+
+    }
+
+
     
   }
 
@@ -190,6 +240,38 @@ export class FormulariosComponent implements OnInit {
     });
   }
 
+  // Buscar personas por DNI
+  buscarPersona(): void {
+
+    if(this.dni?.trim() === ''){
+      this.alertService.info('Debe ingresar un DNI');
+      return;
+    }
+
+    this.alertService.loading();
+    this.personasService.getPersonaDNI(this.dni).subscribe({
+      next: ({ persona }) => { 
+        if(persona){
+          this.personaSeleccionada = persona;
+        }else{
+          this.nuevaPersona = true;
+        } 
+        this.dni = '';
+        this.alertService.close();
+      },
+      error: ({ error }) => {
+        this.alertService.errorApi(error.message);
+      }
+    });
+
+  }
+
+  // Eliminar persona
+  eliminarPersona(): void {
+    this.personaSeleccionada = null;
+    this.nuevaPersona = false;
+    this.dni = '';
+  }
 
   // Reiniciando formulario
   reiniciarFormulario(): void {
