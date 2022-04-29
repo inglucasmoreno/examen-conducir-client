@@ -45,14 +45,14 @@
         <div class="p-4">
 
             <!-- Seleccion de persona -->
-            <p class="font-semibold"> <span class="text-red-500"> * </span> Persona </p>
+            <p class="font-semibold text-sm"> <span class="text-red-500"> * </span> Persona </p>
 
             <div *ngIf="personaSeleccionada" class="text-sm p-2 flex items-center justify-between border border-gray-200">
                 <div>
                     <p> <span class="font-semibold"> Apellido y Nombre: </span> <span> {{ personaSeleccionada.apellido }} {{ personaSeleccionada.nombre }} </span> </p>
                     <p> <span class="font-semibold"> DNI: </span> <span> {{ personaSeleccionada.dni }} </span> </p>
                 </div>
-                <button (click)="eliminarPersonaSeleccionada()" class="bg-red-100 text-red-700 border border-red-200 p-1 rounded focus:outline-none hover:bg-red-200">
+                <button (click)="eliminarPersonaSeleccionada()" class="bg-red-100 text-red-700 border border-red-200 p-2 rounded focus:outline-none hover:bg-red-200">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
@@ -60,9 +60,9 @@
             </div>
 
             <div *ngIf="!personaSeleccionada && !personaNoEncontrada" class="flex items-center">
-                <input (keyup.enter)="dni.trim() !== '' ? buscarPersona() : null" type="text" placeholder="Busqueda por DNI" [(ngModel)]="dni" class="outline-none border border-gray-300 text-sm mt-2 shadow rounded p-2">
-                <button [disabled]="dni.trim() === ''" *ngIf="!loadingPersona" (click)="buscarPersona()" [ngClass]="{ 'text-gray-400' : dni.trim() === '', 'hover:text-secondaryColor' : dni.trim() !== '' }" class="border p-2 bg-gray-100 border-gray-300 ml-2 rounded text-sm mt-2 focus:outline-none"> Buscar persona </button>
-                <div class="p-2 border border-gray-300 mt-2 bg-gray-100 text-sm ml-2 rounded flex items-center" *ngIf="loadingPersona">
+                <input (keyup.enter)="dni.trim() !== '' ? buscarPersona() : null" type="text" placeholder="Busqueda por DNI" [(ngModel)]="dni" class="outline-none w-1/2 border border-gray-300 text-sm mt-2 shadow rounded p-2">
+                <button [disabled]="dni.trim() === ''" *ngIf="!loadingPersona" (click)="buscarPersona()" [ngClass]="{ 'text-gray-400' : dni.trim() === '', 'hover:text-secondaryColor' : dni.trim() !== '' }" class="border p-2 w-1/2 bg-gray-100 border-gray-300 ml-2 rounded text-sm mt-2 focus:outline-none"> Buscar persona </button>
+                <div class="p-2 border-b-2 border-gray-300 mt-2 bg-gray-100 text-sm ml-2 rounded flex items-center" *ngIf="loadingPersona">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
@@ -75,24 +75,24 @@
             <!-- Agregar nueva persona -->
             <div *ngIf="personaNoEncontrada">
                 <p class="text-sm text-gray-500"> La persona no fue encontrada, agrégala a continuación. </p>
-                <div class="flex items-center mt-2">
-                    <div class="w-1/2">
-                        <p class="font-semibold text-sm"> Apellido </p>
-                        <input [(ngModel)]="dataNuevaPersona.apellido" type="text" placeholder="Apellido" class="border w-full border-gray-200 shadow text-sm rounded p-2 mt-1 focus:outline-none">
+                <div class="lg:flex items-center mt-2">
+                    <div class="lg:w-1/2">
+                        <p class="font-semibold text-sm"> <span class="text-red-500"> * </span> Apellido </p>
+                        <input [(ngModel)]="dataNuevaPersona.apellido" type="text" placeholder="Apellido" class="border-b-2 outline-none hover:outline-none transform duration-500 focus:border-primaryColor w-full border-gray-200 text-sm p-2 mt-1 focus:outline-none">
                     </div>
-                    <div class="w-1/2 ml-2">
-                        <p class="font-semibold text-sm"> Nombre </p>
-                        <input [(ngModel)]="dataNuevaPersona.nombre" type="text" placeholder="Nombre" class="border w-full border-gray-200 shadow text-sm rounded p-2 mt-1 focus:outline-none">
+                    <div class="lg:w-1/2 lg:ml-4 mt-2 lg:mt-0">
+                        <p class="font-semibold text-sm"> <span class="text-red-500"> * </span> Nombre </p>
+                        <input [(ngModel)]="dataNuevaPersona.nombre" type="text" placeholder="Nombre" class="border-b-2 outline-none hover:outline-none transform duration-500 focus:border-primaryColor w-full border-gray-200 text-sm p-2 mt-1 focus:outline-none">
                     </div>
                 </div>
-                <div class="flex items-center mt-2">
-                    <div class="w-1/2">
-                        <p class="font-semibold text-sm"> DNI </p>
-                        <input [(ngModel)]="dataNuevaPersona.dni" type="text" placeholder="DNI" class="border w-full border-gray-200 shadow text-sm rounded p-2 mt-1 focus:outline-none">
+                <div class="lg:flex lg:items-center mt-2">
+                    <div class="lg:w-1/2">
+                        <p class="font-semibold text-sm"> <span class="text-red-500"> * </span> DNI </p>
+                        <input [(ngModel)]="dataNuevaPersona.dni" type="text" placeholder="DNI" class="border-b-2 outline-none hover:outline-none transform duration-500 focus:border-primaryColor w-full border-gray-200 text-sm p-2 mt-1 focus:outline-none">
                     </div>
-                    <div class="w-1/2 ml-2"></div>
+                    <div class="w-1/2 ml-4"></div>
                 </div>
-                <div class="flex items-center mt-3">
+                <div class="flex items-center mt-4">
                     <button (click)="cancelarNuevaPersona()" class="p-2 border border-gray-200 bg-gray-100 shadow text-gray-800 rounded w-full hover:text-secondaryColor text-sm focus:outline-none font-semibold"> 
                         Volver al buscador 
                     </button>
@@ -100,8 +100,8 @@
             </div>
 
             <!-- Seleccion de clase de licencia -->
-            <p class="font-semibold mt-3"> <span class="text-red-500"> * </span> Tipo de licencia </p>
-            <select [(ngModel)]="data.tipo_licencia" class="shadow bg-white text-sm border border-gray-300 p-2 rounded focus:outline-none w-full mt-2">
+            <p class="font-semibold mt-3 text-sm"> <span class="text-red-500"> * </span> Tipo de licencia </p>
+            <select [(ngModel)]="data.tipo_licencia" class="bg-white focus:border-primaryColor outline-none transform duration-500 text-sm border-b-2 border-gray-300 p-2 focus:outline-none w-full mt-2">
                 <option value="A"> Clase A </option>
                 <option value="B"> Clase B </option>
                 <option value="C"> Clase C </option>
@@ -109,8 +109,8 @@
             </select>
 
             <!-- Seleccion de lugar -->
-            <p *ngIf="authService.usuario.role === 'ADMIN_ROLE'" class="font-semibold mt-3"> <span class="text-red-500"> * </span> Lugar </p>
-            <select *ngIf="authService.usuario.role === 'ADMIN_ROLE'" [(ngModel)]="data.lugar" class="shadow bg-white border border-gray-300 p-2 focus:outline-none text-sm rounded w-full mt-2">
+            <p *ngIf="authService.usuario.role === 'ADMIN_ROLE'" class="font-semibold text-sm mt-3"> <span class="text-red-500"> * </span> Lugar </p>
+            <select *ngIf="authService.usuario.role === 'ADMIN_ROLE'" [(ngModel)]="data.lugar" class="bg-white border-b-2 border-gray-300 focus:border-primaryColor p-2 focus:outline-none text-sm w-full mt-2">
                 <option value=""> Seleccionar lugar </option>
                 <option *ngFor="let lugar of lugaresSelector" [value]="lugar._id"> {{ lugar.descripcion }} </option>
             </select>

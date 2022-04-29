@@ -55,6 +55,7 @@ export class ImagenesComponent implements OnInit {
 
   ngOnInit(): void {
     gsap.from('.gsap-contenido', { y:100, opacity: 0, duration: .5 });
+    this.dataService.showMenu = false;
     this.dataService.ubicacionActual = 'Dashboard - Imagenes';
     this.permisos.all = this.permisosUsuarioLogin();
     this.listarImagenes();

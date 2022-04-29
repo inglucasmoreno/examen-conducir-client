@@ -102,6 +102,7 @@ export class ExamenesComponent implements OnInit {
   ngOnInit(): void {
   
     this.dataService.ubicacionActual = 'Dashboard - Examenes';
+    this.dataService.showMenu = false;
     this.data.usuario = this.authService.usuario.userId;
     this.data.lugar = this.authService.usuario.lugar;
     this.permisos.all = this.permisosUsuarioLogin();

@@ -72,6 +72,7 @@ export class FormulariosComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataService.ubicacionActual = 'Dashboard - Formularios'; 
+    this.dataService.showMenu = false;
     this.alertService.loading();
     this.listarFormularios(); 
   }
@@ -80,7 +81,6 @@ export class FormulariosComponent implements OnInit {
   abrirModal(estado: string, formulario: any = null): void {
     window.scrollTo(0,0);
     this.reiniciarFormulario();
-    console.log(formulario);
     if(estado === 'editar') this.getFormulario(formulario);
     else this.showModalFormulario = true;
     this.estadoFormulario = estado;  
@@ -96,6 +96,9 @@ export class FormulariosComponent implements OnInit {
         persona: formulario.persona,
         tipo: formulario.tipo        
       });
+      this.buscarPersonaPorID(formulario.persona);
+      // this.dni = formulario.persona.dni;
+      // this.buscarPersona();
       this.alertService.close();
       this.showModalFormulario = true;
     },({error})=>{
@@ -113,7 +116,6 @@ export class FormulariosComponent implements OnInit {
       this.formularios = formularios;
       this.listarPersonas();
     }, (({error}) => {
-      console.log(error);
       this.alertService.errorApi(error.msg);
     }));
   }
@@ -123,13 +125,14 @@ export class FormulariosComponent implements OnInit {
 
     const { nro_tramite, persona, tipo } = this.formularioForm.value;
 
+    // Verificacion de datos
+
     const verificacion_1 = (nro_tramite.trim() === '' || !this.personaSeleccionada) && !this.nuevaPersona;
     const verificacion_2 = (nro_tramite.trim() === '' || 
                             this.dataNuevaPersona.apellido.trim() === '' ||
                             this.dataNuevaPersona.nombre.trim() === '' ||
                             this.dataNuevaPersona.dni.trim() === '') && this.nuevaPersona;
 
-    // Verificacion de datos
     if(verificacion_1){
       this.alertService.info('Completar los campos obligatorios');
       return;
@@ -138,7 +141,7 @@ export class FormulariosComponent implements OnInit {
       return;
     }
 
-    if(!this.nuevaPersona){
+    if(!this.nuevaPersona){ // La persona existe
       
       const data = {
         nro_tramite,
@@ -154,7 +157,7 @@ export class FormulariosComponent implements OnInit {
         this.alertService.errorApi(error.message);  
       });
     
-    }else{
+    }else{ // La pesona no existe
 
       this.alertService.loading();
       this.personasService.nuevaPersona({apellido: this.dataNuevaPersona.apellido, nombre: this.dataNuevaPersona.nombre, dni: this.dataNuevaPersona.dni, }).subscribe({
@@ -174,32 +177,87 @@ export class FormulariosComponent implements OnInit {
         }
       });
 
-
     }
 
-
-    
   }
 
   // Actualizar formulario
   actualizarFormulario(): void {
 
+    // const { nro_tramite, persona, tipo } = this.formularioForm.value;
+
+    // const verificacion = nro_tramite.trim() === '' || persona === '';
+
+    // // Verificacion de datos
+    // if(verificacion){
+    //   this.alertService.info('Completar los campos obligatorios');
+    //   return;
+    // }
+
+    // this.alertService.loading();
+    // this.formulariosPracticaService.actualizarFormulario(this.idFormulario, this.formularioForm.value).subscribe(() => {
+    //   this.listarFormularios();
+    // },({error})=>{
+    //   this.alertService.errorApi(error.message);
+    // });
+
     const { nro_tramite, persona, tipo } = this.formularioForm.value;
 
-    const verificacion = nro_tramite.trim() === '' || persona === '';
-
     // Verificacion de datos
-    if(verificacion){
+
+    const verificacion_1 = (nro_tramite.trim() === '' || !this.personaSeleccionada) && !this.nuevaPersona;
+    const verificacion_2 = (nro_tramite.trim() === '' || 
+                            this.dataNuevaPersona.apellido.trim() === '' ||
+                            this.dataNuevaPersona.nombre.trim() === '' ||
+                            this.dataNuevaPersona.dni.trim() === '') && this.nuevaPersona;
+
+    if(verificacion_1){
+      this.alertService.info('Completar los campos obligatorios');
+      return;
+    }else if(verificacion_2){
       this.alertService.info('Completar los campos obligatorios');
       return;
     }
 
-    this.alertService.loading();
-    this.formulariosPracticaService.actualizarFormulario(this.idFormulario, this.formularioForm.value).subscribe(() => {
-      this.listarFormularios();
-    },({error})=>{
-      this.alertService.errorApi(error.message);
-    });
+    if(!this.nuevaPersona){ // La persona existe
+      
+      const data = {
+        nro_tramite,
+        tipo,
+        persona: this.personaSeleccionada._id
+      }
+  
+      this.alertService.loading();
+      this.formulariosPracticaService.actualizarFormulario(this.idFormulario, data).subscribe(() => {
+        this.eliminarPersona();
+        this.listarFormularios();
+      },({error})=>{
+        this.alertService.errorApi(error.message);  
+      });
+    
+    }else{ // La pesona no existe
+
+      this.alertService.loading();
+      this.personasService.nuevaPersona({apellido: this.dataNuevaPersona.apellido, nombre: this.dataNuevaPersona.nombre, dni: this.dataNuevaPersona.dni, }).subscribe({
+        next: ({persona}) => {
+          this.formulariosPracticaService.actualizarFormulario(this.idFormulario, {nro_tramite, tipo, persona: persona._id}).subscribe({
+            next: () => {
+              this.eliminarPersona();
+              this.listarFormularios();
+            },
+            error: ({error}) => {
+              this.alertService.errorApi(error.msg);
+            }
+          })
+        },  
+        error: ({error}) => {
+          this.alertService.errorApi(error.msg);
+        }
+      });
+
+    }
+
+
 
   }
 
@@ -240,6 +298,17 @@ export class FormulariosComponent implements OnInit {
     });
   }
 
+  buscarPersonaPorID(id: string): void {
+    this.personasService.getPersona(id).subscribe({
+      next: ({persona}) => {
+        this.personaSeleccionada = persona;
+      },
+      error: ({error}) => {
+        this.alertService.errorApi(error.msg);
+      }
+    });
+  }
+
   // Buscar personas por DNI
   buscarPersona(): void {
 
@@ -254,6 +323,7 @@ export class FormulariosComponent implements OnInit {
         if(persona){
           this.personaSeleccionada = persona;
         }else{
+          this.dataNuevaPersona.dni = this.dni;
           this.nuevaPersona = true;
         } 
         this.dni = '';
@@ -275,6 +345,7 @@ export class FormulariosComponent implements OnInit {
 
   // Reiniciando formulario
   reiniciarFormulario(): void {
+    this.personaSeleccionada = null;
     this.formularioForm.patchValue({
       nro_tramite: '',
       persona: '',

@@ -82,6 +82,7 @@ export class PreguntasComponent implements OnInit {
   
   ngOnInit(): void {
     this.dataService.ubicacionActual = "Dashboard - Preguntas";
+    this.dataService.showMenu = false;
     this.permisos.all = this.permisosUsuarioLogin();
     this.alertService.loading();
     this.listarPreguntas(); 

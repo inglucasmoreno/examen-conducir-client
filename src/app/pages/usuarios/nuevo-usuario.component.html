@@ -53,11 +53,11 @@
                         </div>
                     </div>
                     <div class="w-full mx-2 flex-1">
-                        <div class="font-semibold mt-3 text-gray-600 text-sm">
+                        <div class="font-semibold mt-2 text-gray-600 text-sm">
                             <span class="text-red-500"> * </span> Rol
                         </div>
                         <div class="bg-white my-2 flex">
-                            <select class="bg-white p-1 py-2 w-full text-sm border-b-2 outline-none" formControlName="role">
+                            <select class="bg-white tranform duration-500 focus:border-primaryColor p-1 py-2 w-full text-sm border-b-2 outline-none" formControlName="role">
                                 <option value="USER_ROLE"> Estandar </option>
                                 <option value="ADMIN_ROLE"> Administrador </option>
                             </select>
@@ -87,7 +87,7 @@
                             <span class="text-red-500"> * </span> Estado
                         </div>
                         <div class="bg-white my-2 flex">
-                            <select class="bg-white p-1 py-2 w-full text-sm border-b-2 outline-none" formControlName="activo">
+                            <select class="bg-white p-1 tranform duration-500 focus:border-primaryColor py-2 w-full text-sm border-b-2 outline-none" formControlName="activo">
                                 <option value=true> Activo </option>
                                 <option value=false> Inactivo </option>
                             </select>
@@ -99,7 +99,7 @@
                                 <span class="text-red-500"> * </span> Lugar de trabajo
                             </div>
                             <div class="bg-white my-2 flex">
-                                <select class="bg-white p-1 py-2 w-full text-sm border-b-2 outline-none capitalize" formControlName="lugar">
+                                <select class="bg-white p-1 tranform duration-500 focus:border-primaryColor py-2 w-full text-sm border-b-2 outline-none capitalize" formControlName="lugar">
                                     <option value=""> Seleccionar lugar </option>
                                     <option *ngFor="let lugar of lugares" [value]="lugar._id"> {{ lugar.descripcion }} </option>
                                 </select>
