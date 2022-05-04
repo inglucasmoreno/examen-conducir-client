@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
+import gsap from 'gsap';
 
 import { Usuario } from '../../../models/usuario.model';
 import { UsuariosService } from '../../../services/usuarios.service';
@@ -49,6 +50,7 @@ export class EditarUsuarioComponent implements OnInit {
               private dataService: DataService) { }
 
   ngOnInit(): void {
+    gsap.from('.gsap-contenido', { y:100, opacity: 0, duration: .3 });
     this.dataService.ubicacionActual = 'Dashboard - Editando usuario'
     this.alertService.loading();
     this.activatedRoute.params.subscribe(({id}) => { this.id = id; });

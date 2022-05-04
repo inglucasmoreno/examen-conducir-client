@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { LugaresService } from 'src/app/services/lugares.service';
+import gsap from 'gsap';
 
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { AlertService } from '../../services/alert.service';
@@ -53,6 +54,7 @@ export class NuevoUsuarioComponent implements OnInit {
               ) { }
 
   ngOnInit(): void {
+    gsap.from('.gsap-contenido', { y:100, opacity: 0, duration: .3 });
     this.dataService.ubicacionActual = 'Dashboard - Creando usuario';
     this.alertService.loading();
     this.listarLugares();

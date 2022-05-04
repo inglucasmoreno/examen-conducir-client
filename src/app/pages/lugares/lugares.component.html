@@ -1,5 +1,5 @@
 <!-- Modal: Crear / Editar lugar -->
-<app-modal [showModal]="showModalLugar">
+<app-modal-small [showModal]="showModalLugar">
     <div (keyup.enter)="estadoFormulario === 'crear' ? nuevoLugar() : actualizarLugares()">
         <div class="flex items-center justify-between bg-primary-800 rounded-t p-2">
             <h1 class=" text-white px-2 py-1 rounded-t text-lg"> {{ estadoFormulario == 'crear' ? 'Creando nuevo lugar' : 'Editando lugar' }} </h1>
@@ -12,7 +12,7 @@
             <button *ngIf="estadoFormulario == 'editar'" (click)="actualizarLugares()" class="bg-gray-100 focus:outline-none hover:text-secondaryColor shadow text-gray-800 w-full border border-gray-300 font-semibold p-2 rounded mt-4"> Actualizar lugar </button>
         </div>
     </div>
-</app-modal>
+</app-modal-small>
 
 <!-- Listado de lugares -->
 <app-tarjeta-lista>

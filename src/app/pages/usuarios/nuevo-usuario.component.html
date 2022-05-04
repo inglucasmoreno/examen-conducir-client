@@ -1,6 +1,6 @@
-<div class="lg:flex p-4" (submit)="nuevoUsuario">
+<div class="lg:flex lg:justify-center p-4 gsap-contenido" (submit)="nuevoUsuario">
 
-    <div (keyup.enter)="nuevoUsuario()" class="w-full h-full lg:w-1/2 bg-white mr-2 shadow rounded border border-gray-200">
+    <div (keyup.enter)="nuevoUsuario()" class="w-full h-full max-w-xl lg:w-1/2 bg-white mr-2 shadow rounded border border-gray-200">
 
         <!-- Cuerpo de formulario -->
         <div [formGroup]="usuarioForm">
@@ -110,7 +110,7 @@
             </div>
         </div>
     </div>
-    <div class="bg-white mt-2 w-full lg:w-1/2 h-full lg:mt-0 border shadow border-gray-300 p-4 rounded">
+    <div class="bg-white mt-2 max-w-xl w-full lg:w-1/2 lg:ml-2 h-full lg:mt-0 border shadow border-gray-300 p-4 rounded">
         <div class="flex">
             <div *ngIf="usuarioForm.value.role === 'ADMIN_ROLE'" class="bg-blue-100 flex items-center justify-center w-32 h-32 rounded-full shadow border border-blue-200">
                 <p class="text-6xl font-semibold text-primaryColor"> A </p>

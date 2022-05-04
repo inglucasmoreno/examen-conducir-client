@@ -33,6 +33,7 @@ export class FiltroExamenesPipe implements PipeTransform {
         return valor.persona.apellido.toLocaleLowerCase().includes(parametro) ||
                valor.persona.nombre.toLocaleLowerCase().includes(parametro)  ||
                valor.persona.dni.toLocaleLowerCase().includes(parametro)  ||
+               valor.nro_examen_string.toLocaleLowerCase().includes(parametro)  ||
                valor.lugar.descripcion.toLocaleLowerCase().includes(parametro)
       });
     }else{

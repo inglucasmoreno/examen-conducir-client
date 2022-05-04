@@ -1,7 +1,7 @@
 <!-- Modal: Nueva imagen -->
-<app-modal [showModal]="showModalNuevo">
-    <div class="flex items-center justify-between bg-primary-800 text-white p-2 rounded-t">
-        <h1> Nueva imagen </h1>
+<app-modal-small [showModal]="showModalNuevo">
+    <div class="flex items-center justify-between bg-primary-800 text-white py-2 rounded-t pr-2">
+        <h1 class="px-4"> Nueva imagen </h1>
         <svg (click)="cerrarNuevaImagen()" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
@@ -17,7 +17,7 @@
             Subir imagen
         </button>
     </div>
-</app-modal>
+</app-modal-small>
 
 <!-- Modal: detalles de imagen -->
 <app-modal [showModal]="showModal">

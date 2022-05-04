@@ -36,6 +36,7 @@ export class ExamenesHistorialComponent implements OnInit {
 
   // Busqueda
   public busquedaForm = this.fb.group({
+    nro_examen_string: '',
     lugar: '',
     fechaDesde: '',
     fechaHasta: '',

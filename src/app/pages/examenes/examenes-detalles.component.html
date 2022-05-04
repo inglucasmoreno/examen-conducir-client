@@ -58,13 +58,16 @@
             </span>
         </h1>
         <div class="p-2 text-sm bg-gray-100 pb-2">
-            <p class="p-1"> <span class="font-semibold"> Fecha: </span> <span class="capitalize"> {{ examen.createdAt | fecha }} </span> </p>
+            <div class="md:flex md:items-center bg-gray-100">
+            </div>
             <div class="md:flex md:items-center bg-gray-100">
                 <div>
+                    <p class="p-1"> <span class="font-semibold"> Nro de examen: </span> <span> {{ examen.nro_examen_string }} </span> </p>
                     <p class="p-1"> <span class="font-semibold"> Licencia: </span> Clase {{ examen.tipo_licencia }} </p>
                     <p class="p-1"> <span class="font-semibold"> Lugar: </span> {{ examen.lugar.descripcion }} </p>
                 </div>
                 <div class="md:ml-4">
+                    <p class="p-1"> <span class="font-semibold"> Fecha: </span> <span class="capitalize"> {{ examen.createdAt | fecha }} </span> </p>
                     <p class="p-1"> <span class="font-semibold"> Usuario creador: </span> <span class="capitalize"> {{ examen.usuario.apellido.toLowerCase() }} {{ examen.usuario.nombre.toLowerCase() }} - DNI {{ examen.usuario.dni }} </span> </p>
                     <p class="p-1"> <span class="font-semibold"> Rinde el examen: </span> <span class="capitalize"> {{ examen.persona.apellido.toLowerCase() }} {{ examen.persona.nombre.toLowerCase() }} - DNI {{ examen.persona.dni }} </span> </p>
                 </div>
