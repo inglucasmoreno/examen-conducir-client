@@ -4,6 +4,10 @@ import { AlertService } from 'src/app/services/alert.service';
 import { DataService } from 'src/app/services/data.service';
 import { FormulariosPracticaService } from 'src/app/services/formularios-practica.service';
 import { PersonasService } from 'src/app/services/personas.service';
+import { environment } from 'src/environments/environment';
+
+
+const base_url = environment.base_url;
 
 @Component({
   selector: 'app-formularios',
@@ -143,14 +147,15 @@ export class FormulariosComponent implements OnInit {
 
     if(!this.nuevaPersona){ // La persona existe
       
-      const data = {
-        nro_tramite,
-        tipo,
-        persona: this.personaSeleccionada._id
-      }
+        const data = {
+          nro_tramite,
+          tipo,
+          persona: this.personaSeleccionada._id
+        }
   
-      this.alertService.loading();
-      this.formulariosPracticaService.nuevoFormulario(data).subscribe(() => {
+        this.alertService.loading();
+        this.formulariosPracticaService.nuevoFormulario(data).subscribe(() => {
+        this.imprimirFormulario();
         this.eliminarPersona();
         this.listarFormularios();
       },({error})=>{
@@ -166,6 +171,7 @@ export class FormulariosComponent implements OnInit {
             next: () => {
               this.eliminarPersona();
               this.listarFormularios();
+              this.imprimirFormulario();
             },
             error: ({error}) => {
               this.alertService.errorApi(error.msg);
@@ -183,23 +189,6 @@ export class FormulariosComponent implements OnInit {
 
   // Actualizar formulario
   actualizarFormulario(): void {
-
-    // const { nro_tramite, persona, tipo } = this.formularioForm.value;
-
-    // const verificacion = nro_tramite.trim() === '' || persona === '';
-
-    // // Verificacion de datos
-    // if(verificacion){
-    //   this.alertService.info('Completar los campos obligatorios');
-    //   return;
-    // }
-
-    // this.alertService.loading();
-    // this.formulariosPracticaService.actualizarFormulario(this.idFormulario, this.formularioForm.value).subscribe(() => {
-    //   this.listarFormularios();
-    // },({error})=>{
-    //   this.alertService.errorApi(error.message);
-    // });
 
     const { nro_tramite, persona, tipo } = this.formularioForm.value;
 
@@ -257,8 +246,6 @@ export class FormulariosComponent implements OnInit {
 
     }
 
-
-
   }
 
   // Actualizar estado Activo/Inactivo
@@ -298,6 +285,7 @@ export class FormulariosComponent implements OnInit {
     });
   }
 
+  // Buscar persona por ID
   buscarPersonaPorID(id: string): void {
     this.personasService.getPersona(id).subscribe({
       next: ({persona}) => {
@@ -307,6 +295,11 @@ export class FormulariosComponent implements OnInit {
         this.alertService.errorApi(error.msg);
       }
     });
+  }
+
+  // Imprimir formulario
+  imprimirFormulario(): void {
+    window.open(`${base_url}/formularios/formulario.pdf`, '_blank');     
   }
 
   // Buscar personas por DNI
