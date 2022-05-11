@@ -152,10 +152,18 @@ export class FormulariosComponent implements OnInit {
           tipo,
           persona: this.personaSeleccionada._id
         }
+
+        const query = { 
+          nro_tramite, 
+          tipo,  
+          apellido: this.personaSeleccionada.apellido, 
+          nombre: this.personaSeleccionada.nombre, 
+          dni: this.personaSeleccionada.dni 
+        };
   
         this.alertService.loading();
-        this.formulariosPracticaService.nuevoFormulario(data).subscribe(() => {
-        this.imprimirFormulario();
+        this.formulariosPracticaService.nuevoFormulario(data, query).subscribe(() => {
+        this.imprimirFormulario(tipo);
         this.eliminarPersona();
         this.listarFormularios();
       },({error})=>{
@@ -167,11 +175,26 @@ export class FormulariosComponent implements OnInit {
       this.alertService.loading();
       this.personasService.nuevaPersona({apellido: this.dataNuevaPersona.apellido, nombre: this.dataNuevaPersona.nombre, dni: this.dataNuevaPersona.dni, }).subscribe({
         next: ({persona}) => {
-          this.formulariosPracticaService.nuevoFormulario({nro_tramite, tipo, persona: persona._id}).subscribe({
+          
+          const data = {
+            nro_tramite, 
+            tipo, 
+            persona: persona._id   
+          }
+
+          const querys = {
+            nro_tramite, 
+            tipo,  
+            apellido: persona.apellido, 
+            nombre: persona.nombre, 
+            dni: persona.dni
+          }
+
+          this.formulariosPracticaService.nuevoFormulario(data, querys).subscribe({
             next: () => {
               this.eliminarPersona();
               this.listarFormularios();
-              this.imprimirFormulario();
+              this.imprimirFormulario(tipo);
             },
             error: ({error}) => {
               this.alertService.errorApi(error.msg);
@@ -298,8 +321,12 @@ export class FormulariosComponent implements OnInit {
   }
 
   // Imprimir formulario
-  imprimirFormulario(): void {
-    window.open(`${base_url}/formularios/formulario.pdf`, '_blank');     
+  imprimirFormulario(tipo: string): void {
+    if(tipo === 'Auto'){
+      window.open(`${base_url}/formularios/formulario_auto.pdf`, '_blank');     
+    }else{
+      window.open(`${base_url}/formularios/formulario_moto.pdf`, '_blank');     
+    }
   }
 
   // Buscar personas por DNI
@@ -338,12 +365,21 @@ export class FormulariosComponent implements OnInit {
 
   // Reiniciando formulario
   reiniciarFormulario(): void {
+    
     this.personaSeleccionada = null;
+    
+    this.dataNuevaPersona = {
+      apellido: '',
+      nombre: '',
+      dni: ''
+    };
+    
     this.formularioForm.patchValue({
       nro_tramite: '',
       persona: '',
       tipo: 'Auto'
     });  
+  
   }
 
   // Filtrar Activo/Inactivo
