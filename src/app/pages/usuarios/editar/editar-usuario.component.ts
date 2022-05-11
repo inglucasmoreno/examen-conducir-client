@@ -20,11 +20,12 @@ export class EditarUsuarioComponent implements OnInit {
   // Permisos de usuario
   public permisos = {
     usuarios: 'USUARIOS_NOT_ACCESS',
-    personas: 'PERSONAS_ALL',
+    personas: 'PERSONAS_NOT_ACCESS',
     imagenes: 'IMAGENES_NOT_ACCESS',
     lugares: 'LUGARES_NOT_ACCESS',
     preguntas: 'PREGUNTAS_NOT_ACCESS',
-    examenes: 'EXAMENES_ALL'
+    examenes: 'EXAMENES_NOT_ACCESS',
+    formularios: 'FORMULARIOS_NOT_ACCESS'
   }
 
   public id: string;
@@ -154,6 +155,9 @@ export class EditarUsuarioComponent implements OnInit {
 
       // Examenes
       (permiso === 'EXAMENES_ALL' || permiso === 'EXAMENES_READ') ? this.permisos.examenes = permiso : null;
+
+      // Formularios
+      (permiso === 'FORMULARIOS_ALL' || permiso === 'FORMULARIOS_READ') ? this.permisos.formularios = permiso : null;
     
     });
 
@@ -198,6 +202,12 @@ export class EditarUsuarioComponent implements OnInit {
     if(this.permisos.examenes !== 'EXAMENES_NOT_ACCESS'){
       permisos.push('EXAMENES_NAV');
       permisos.push(this.permisos.examenes);
+    }
+
+    // Seccion formularios
+    if(this.permisos.examenes !== 'FORMULARIOS_NOT_ACCESS'){
+      permisos.push('FORMULARIOS_NAV');
+      permisos.push(this.permisos.formularios);
     }
 
     return permisos;

@@ -23,6 +23,7 @@ export class NuevoUsuarioComponent implements OnInit {
     imagenes: 'IMAGENES_NOT_ACCESS',
     lugares: 'LUGARES_NOT_ACCESS',
     preguntas: 'PREGUNTAS_NOT_ACCESS',
+    formularios: 'FORMULARIOS_NOT_ACCESS',
     examenes: 'EXAMENES_ALL'
   }
 
@@ -163,6 +164,12 @@ export class NuevoUsuarioComponent implements OnInit {
     if(this.permisos.examenes !== 'EXAMENES_NOT_ACCESS'){
       permisos.push('EXAMENES_NAV');
       permisos.push(this.permisos.examenes);
+    }
+
+    // Seccion formularios
+    if(this.permisos.formularios !== 'FORMULARIOS_NOT_ACCESS'){
+      permisos.push('FORMULARIOS_NAV');
+      permisos.push(this.permisos.formularios);
     }
 
     return permisos;

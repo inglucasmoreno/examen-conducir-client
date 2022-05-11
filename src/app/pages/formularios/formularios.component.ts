@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AlertService } from 'src/app/services/alert.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
 import { FormulariosPracticaService } from 'src/app/services/formularios-practica.service';
+import { LugaresService } from 'src/app/services/lugares.service';
 import { PersonasService } from 'src/app/services/personas.service';
 import { environment } from 'src/environments/environment';
 
@@ -22,6 +24,9 @@ export class FormulariosComponent implements OnInit {
 
   // Permisos de usuarios login
   public permisos = { all: false };
+
+  // Lugares
+  public lugares: any[];
 
   // Modal
   public showModalFormulario = false;
@@ -65,20 +70,30 @@ export class FormulariosComponent implements OnInit {
     nro_tramite: ['', Validators.required],
     persona: ['', Validators.required],
     tipo: ['Auto', Validators.required],
+    lugar: ['', Validators.required],
     activo: ['true', Validators.required]
   });
 
   constructor(private formulariosPracticaService: FormulariosPracticaService,
               private fb: FormBuilder,
               private personasService: PersonasService,
+              private authService: AuthService,
+              private lugaresService: LugaresService,
               private alertService: AlertService,
               private dataService: DataService) { }
 
   ngOnInit(): void {
     this.dataService.ubicacionActual = 'Dashboard - Formularios'; 
     this.dataService.showMenu = false;
+    this.permisos.all = this.permisosUsuarioLogin();
     this.alertService.loading();
+    this.listarLugares();
     this.listarFormularios(); 
+  }
+
+  // Asignar permisos de usuario login
+  permisosUsuarioLogin(): boolean {
+    return this.authService.usuario.permisos.includes('FORMULARIOS_ALL') || this.authService.usuario.role === 'ADMIN_ROLE';
   }
 
   // Abrir modal
@@ -88,6 +103,18 @@ export class FormulariosComponent implements OnInit {
     if(estado === 'editar') this.getFormulario(formulario);
     else this.showModalFormulario = true;
     this.estadoFormulario = estado;  
+  }
+
+  // Listar lugares
+  listarLugares(): void {
+    this.lugaresService.listarLugares(1, 'descripcion').subscribe({
+      next: ({lugares}) => {
+        this.lugares = lugares.filter(lugar => lugar.descripcion !== 'DIRECCION DE TRANSPORTE');
+      },
+      error: ({error}) => {
+        this.alertService.errorApi(error.message);
+      }
+    });
   }
 
   // Traer datos de formulario
@@ -101,8 +128,6 @@ export class FormulariosComponent implements OnInit {
         tipo: formulario.tipo        
       });
       this.buscarPersonaPorID(formulario.persona);
-      // this.dni = formulario.persona.dni;
-      // this.buscarPersona();
       this.alertService.close();
       this.showModalFormulario = true;
     },({error})=>{
@@ -127,12 +152,13 @@ export class FormulariosComponent implements OnInit {
   // Nuevo formulario
   nuevoFormulario(): void {
 
-    const { nro_tramite, persona, tipo } = this.formularioForm.value;
+    const { nro_tramite, persona, lugar, tipo } = this.formularioForm.value;
 
     // Verificacion de datos
 
-    const verificacion_1 = (nro_tramite.trim() === '' || !this.personaSeleccionada) && !this.nuevaPersona;
+    const verificacion_1 = (nro_tramite.trim() === '' || lugar.trim() === '' || !this.personaSeleccionada) && !this.nuevaPersona;
     const verificacion_2 = (nro_tramite.trim() === '' || 
+                            lugar.trim() === '',
                             this.dataNuevaPersona.apellido.trim() === '' ||
                             this.dataNuevaPersona.nombre.trim() === '' ||
                             this.dataNuevaPersona.dni.trim() === '') && this.nuevaPersona;
@@ -150,6 +176,7 @@ export class FormulariosComponent implements OnInit {
         const data = {
           nro_tramite,
           tipo,
+          lugar,
           persona: this.personaSeleccionada._id
         }
 
@@ -178,7 +205,8 @@ export class FormulariosComponent implements OnInit {
           
           const data = {
             nro_tramite, 
-            tipo, 
+            tipo,
+            lugar, 
             persona: persona._id   
           }
 
@@ -377,6 +405,7 @@ export class FormulariosComponent implements OnInit {
     this.formularioForm.patchValue({
       nro_tramite: '',
       persona: '',
+      lugar: '',
       tipo: 'Auto'
     });  
   
