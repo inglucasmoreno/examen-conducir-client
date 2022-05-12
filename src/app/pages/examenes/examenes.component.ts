@@ -136,9 +136,8 @@ export class ExamenesComponent implements OnInit {
   // Se limpian los examenes antiguos
   limpiarExamenes(): void {
     this.examenesService.limpiarExamenes().subscribe( resp => {
-      console.log(resp);
     },({error}) => {
-      console.log(error.message);
+      this.alertService.errorApi(error.message);
     });
   }
   

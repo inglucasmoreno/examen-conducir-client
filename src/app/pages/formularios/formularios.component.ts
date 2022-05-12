@@ -77,7 +77,7 @@ export class FormulariosComponent implements OnInit {
   constructor(private formulariosPracticaService: FormulariosPracticaService,
               private fb: FormBuilder,
               private personasService: PersonasService,
-              private authService: AuthService,
+              public authService: AuthService,
               private lugaresService: LugaresService,
               private alertService: AlertService,
               private dataService: DataService) { }
@@ -125,6 +125,7 @@ export class FormulariosComponent implements OnInit {
       this.formularioForm.patchValue({
         nro_tramite: formulario.nro_tramite,
         persona: formulario.persona,
+        lugar: formulario.lugar,
         tipo: formulario.tipo        
       });
       this.buscarPersonaPorID(formulario.persona);
@@ -137,16 +138,32 @@ export class FormulariosComponent implements OnInit {
 
   // Listar formularios
   listarFormularios(): void {
-    this.formulariosPracticaService.listarFormularios( 
-      this.ordenar.direccion,
-      this.ordenar.columna
-      )
-    .subscribe( ({ formularios }) => {
-      this.formularios = formularios;
-      this.listarPersonas();
-    }, (({error}) => {
-      this.alertService.errorApi(error.msg);
-    }));
+
+    if(this.authService.usuario.role === 'ADMIN_ROLE'){
+      this.formulariosPracticaService.listarFormularios(
+        this.ordenar.direccion,
+        this.ordenar.columna
+        )
+      .subscribe( ({ formularios }) => {
+        this.formularios = formularios;
+        this.listarPersonas();
+      }, (({error}) => {
+        this.alertService.errorApi(error.msg);
+      }));
+    }else{
+      this.formulariosPracticaService.listarFormulariosPorLugar(
+        this.authService.usuario.lugar, 
+        this.ordenar.direccion,
+        this.ordenar.columna
+        )
+      .subscribe( ({ formularios }) => {
+        this.formularios = formularios;
+        this.listarPersonas();
+      }, (({error}) => {
+        this.alertService.errorApi(error.msg);
+      }));
+    }
+
   }
 
   // Nuevo formulario
@@ -156,9 +173,12 @@ export class FormulariosComponent implements OnInit {
 
     // Verificacion de datos
 
-    const verificacion_1 = (nro_tramite.trim() === '' || lugar.trim() === '' || !this.personaSeleccionada) && !this.nuevaPersona;
+    console.log(lugar);
+    console.log(this.authService.usuario.role);
+
+    const verificacion_1 = (nro_tramite.trim() === '' || (lugar.trim() === '' && this.authService.usuario.role === 'ADMIN_ROLE') || !this.personaSeleccionada) && !this.nuevaPersona;
     const verificacion_2 = (nro_tramite.trim() === '' || 
-                            lugar.trim() === '',
+                            (lugar.trim() === '' && this.authService.usuario.role === 'ADMIN_ROLE') ||
                             this.dataNuevaPersona.apellido.trim() === '' ||
                             this.dataNuevaPersona.nombre.trim() === '' ||
                             this.dataNuevaPersona.dni.trim() === '') && this.nuevaPersona;
@@ -176,7 +196,7 @@ export class FormulariosComponent implements OnInit {
         const data = {
           nro_tramite,
           tipo,
-          lugar,
+          lugar: this.authService.usuario.role === 'ADMIN_ROLE' ? lugar : this.authService.usuario.lugar,
           persona: this.personaSeleccionada._id
         }
 
@@ -206,7 +226,7 @@ export class FormulariosComponent implements OnInit {
           const data = {
             nro_tramite, 
             tipo,
-            lugar, 
+            lugar: this.authService.usuario.role === 'ADMIN_ROLE' ? lugar : this.authService.usuario.lugar,
             persona: persona._id   
           }
 
@@ -241,12 +261,13 @@ export class FormulariosComponent implements OnInit {
   // Actualizar formulario
   actualizarFormulario(): void {
 
-    const { nro_tramite, persona, tipo } = this.formularioForm.value;
+    const { nro_tramite, persona, lugar, tipo } = this.formularioForm.value;
 
     // Verificacion de datos
 
-    const verificacion_1 = (nro_tramite.trim() === '' || !this.personaSeleccionada) && !this.nuevaPersona;
-    const verificacion_2 = (nro_tramite.trim() === '' || 
+    const verificacion_1 = (nro_tramite.trim() === '' || (lugar.trim() === '' && this.authService.usuario.role === 'ADMIN_ROLE') || !this.personaSeleccionada) && !this.nuevaPersona;
+    const verificacion_2 = (nro_tramite.trim() === '' ||
+                            (lugar.trim() === '' && this.authService.usuario.role === 'ADMIN_ROLE') || 
                             this.dataNuevaPersona.apellido.trim() === '' ||
                             this.dataNuevaPersona.nombre.trim() === '' ||
                             this.dataNuevaPersona.dni.trim() === '') && this.nuevaPersona;
@@ -264,6 +285,7 @@ export class FormulariosComponent implements OnInit {
       const data = {
         nro_tramite,
         tipo,
+        lugar: this.authService.usuario.role === 'ADMIN_ROLE' ? lugar : this.authService.usuario.lugar,
         persona: this.personaSeleccionada._id
       }
   
@@ -349,11 +371,40 @@ export class FormulariosComponent implements OnInit {
   }
 
   // Imprimir formulario
-  imprimirFormulario(tipo: string): void {
-    if(tipo === 'Auto'){
-      window.open(`${base_url}/formularios/formulario_auto.pdf`, '_blank');     
+  imprimirFormulario(formulario: any): void {
+    
+    this.alertService.loading();
+
+    const data = {
+      nro_tramite: formulario.nro_tramite,
+      tipo: formulario.tipo,
+      nombre: formulario.persona.nombre,
+      apellido: formulario.persona.apellido,
+      dni: formulario.persona.dni,
+      nro_formulario: formulario.nro_formulario_string,
+      fecha: formulario.createdAt
+    }
+
+    if(formulario.tipo === 'Auto'){
+      this.formulariosPracticaService.imprimirFormulario(data).subscribe({
+        next: () => {
+          this.alertService.close();
+          window.open(`${base_url}/formularios/formulario_auto.pdf`, '_blank');     
+        },
+        error: ({error}) => {
+          this.alertService.errorApi(error.message);
+        }
+      });
     }else{
-      window.open(`${base_url}/formularios/formulario_moto.pdf`, '_blank');     
+      this.formulariosPracticaService.imprimirFormulario(data).subscribe({
+        next: () => {
+          this.alertService.close();
+          window.open(`${base_url}/formularios/formulario_moto.pdf`, '_blank');     
+        },
+        error: ({error}) => {
+          this.alertService.errorApi(error.message);
+        }
+      });
     }
   }
 

@@ -33,15 +33,37 @@ export class FormulariosPracticaService {
     });
   }
 
+  // Listar formularios por lugar de trabajo
+  listarFormulariosPorLugar(
+    id: string,
+    direccion: number = 1,
+    columna: string = 'descripcion'  
+  ): Observable<any> {
+    console.log(id);
+    return this.http.get(`${base_url}/formulario-practica/lugar/${id}`,{
+      params: {
+        direccion: String(direccion),
+        columna              
+      },
+      headers: {'Authorization': localStorage.getItem('token') }   
+    });
+  }
+
   // Nuevo formulario
   nuevoFormulario(data: any , querys: any = {}): Observable<any> {
-    console.log(data);
     return this.http.post(`${base_url}/formulario-practica`, data, {
       headers: {'Authorization': localStorage.getItem('token')},
       params: querys
     });  
   }
 
+  // Imprimir formulario
+  imprimirFormulario(data: any): Observable<any> {
+    return this.http.post(`${base_url}/formulario-practica/imprimir`, data, {
+      headers: {'Authorization': localStorage.getItem('token')},
+    });  
+  }
+ 
   // Actualizar formulario
   actualizarFormulario(id: string, data: any): Observable<any> {
     return this.http.put(`${base_url}/formulario-practica/${id}`, data, {
