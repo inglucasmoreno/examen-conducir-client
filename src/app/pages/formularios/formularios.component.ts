@@ -84,11 +84,19 @@ export class FormulariosComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataService.ubicacionActual = 'Dashboard - Formularios'; 
+    this.limpiarFormularios();  // Limpiando formularios antiguos
     this.dataService.showMenu = false;
     this.permisos.all = this.permisosUsuarioLogin();
     this.alertService.loading();
     this.listarLugares();
     this.listarFormularios(); 
+  }
+
+  // Limpiar formularios antiguos
+  limpiarFormularios(): void {
+    this.formulariosPracticaService.limpiarFormularios().subscribe({
+      next: () => {}  
+    })
   }
 
   // Asignar permisos de usuario login
@@ -171,27 +179,25 @@ export class FormulariosComponent implements OnInit {
 
     const { nro_tramite, persona, lugar, tipo } = this.formularioForm.value;
 
-    // Verificacion de datos
+    // Verificacion de datos    
 
-    console.log(lugar);
-    console.log(this.authService.usuario.role);
-
-    const verificacion_1 = (nro_tramite.trim() === '' || (lugar.trim() === '' && this.authService.usuario.role === 'ADMIN_ROLE') || !this.personaSeleccionada) && !this.nuevaPersona;
-    const verificacion_2 = (nro_tramite.trim() === '' || 
-                            (lugar.trim() === '' && this.authService.usuario.role === 'ADMIN_ROLE') ||
-                            this.dataNuevaPersona.apellido.trim() === '' ||
-                            this.dataNuevaPersona.nombre.trim() === '' ||
-                            this.dataNuevaPersona.dni.trim() === '') && this.nuevaPersona;
-
-    if(verificacion_1){
-      this.alertService.info('Completar los campos obligatorios');
-      return;
-    }else if(verificacion_2){
-      this.alertService.info('Completar los campos obligatorios');
-      return;
-    }
+    // if(verificacion_1){
+    //   this.alertService.info('Completar los campos obligatorios');
+    //   return;
+    // }else if(verificacion_2){
+    //   this.alertService.info('Completar los campos obligatorios');
+    //   return;
+    // }
 
     if(!this.nuevaPersona){ // La persona existe
+
+        const verificacion_1 = (nro_tramite.trim() === '' || (lugar.trim() === '' && this.authService.usuario.role === 'ADMIN_ROLE') || !this.personaSeleccionada) && !this.nuevaPersona;
+
+
+        if(verificacion_1){
+          this.alertService.info('Completar los campos obligatorios');
+          return;
+        }
       
         const data = {
           nro_tramite,
@@ -210,14 +216,27 @@ export class FormulariosComponent implements OnInit {
   
         this.alertService.loading();
         this.formulariosPracticaService.nuevoFormulario(data, query).subscribe(() => {
-        this.imprimirFormulario(tipo);
+        // this.imprimirFormulario(tipo);
         this.eliminarPersona();
         this.listarFormularios();
+        this.generarPdf(tipo);
       },({error})=>{
         this.alertService.errorApi(error.message);  
       });
     
     }else{ // La pesona no existe
+
+
+      const verificacion_2 = (nro_tramite.trim() === '' || 
+      (lugar.trim() === '' && this.authService.usuario.role === 'ADMIN_ROLE') ||
+      this.dataNuevaPersona.apellido.trim() === '' ||
+      this.dataNuevaPersona.nombre.trim() === '' ||
+      this.dataNuevaPersona.dni.trim() === '') && this.nuevaPersona;
+
+      if(verificacion_2){
+        this.alertService.info('Completar los campos obligatorios');
+        return;
+      }
 
       this.alertService.loading();
       this.personasService.nuevaPersona({apellido: this.dataNuevaPersona.apellido, nombre: this.dataNuevaPersona.nombre, dni: this.dataNuevaPersona.dni, }).subscribe({
@@ -242,7 +261,7 @@ export class FormulariosComponent implements OnInit {
             next: () => {
               this.eliminarPersona();
               this.listarFormularios();
-              this.imprimirFormulario(tipo);
+              this.generarPdf(tipo);
             },
             error: ({error}) => {
               this.alertService.errorApi(error.msg);
@@ -257,6 +276,16 @@ export class FormulariosComponent implements OnInit {
     }
 
   }
+
+  // Generar PDF luego de creacion
+  generarPdf(tipo: string): void {
+    if(tipo === 'Auto'){
+      window.open(`${base_url}/formularios/formulario_auto.pdf`, '_blank');     
+    }else{
+      window.open(`${base_url}/formularios/formulario_moto.pdf`, '_blank');
+    }
+  }
+
 
   // Actualizar formulario
   actualizarFormulario(): void {

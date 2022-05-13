@@ -33,6 +33,14 @@ export class FormulariosPracticaService {
     });
   }
 
+  // Limpiar formularios
+  limpiarFormularios(): Observable<any> {
+    console.log('Limpiar formularios');
+    return this.http.get(`${base_url}/formulario-practica/antiguos/limpiar/todos`,{
+      headers: {'Authorization': localStorage.getItem('token') }   
+    });
+  }
+
   // Listar formularios por lugar de trabajo
   listarFormulariosPorLugar(
     id: string,
