@@ -85,7 +85,6 @@ export class FormulariosComponent implements OnInit {
   ngOnInit(): void {
     this.dataService.ubicacionActual = 'Dashboard - Formularios'; 
     this.limpiarFormularios();  // Limpiando formularios antiguos
-    this.dataService.showMenu = false;
     this.permisos.all = this.permisosUsuarioLogin();
     this.alertService.loading();
     this.listarLugares();

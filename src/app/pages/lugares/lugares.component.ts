@@ -50,7 +50,6 @@ export class LugaresComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataService.ubicacionActual = 'Dashboard - Lugares'; 
-    this.dataService.showMenu = false;
     this.permisos.all = this.permisosUsuarioLogin();
     this.alertService.loading();
     this.listarLugares(); 

@@ -64,7 +64,7 @@
                 <div class="lg:ml-4 mt-3 lg:mt-0 lg:w-1/2">
                     <p class="text-sm font-semibold"> <span class="text-red-500"> * </span> Tipo </p>
                     <select formControlName="tipo" class="py-2 text-sm border-b-2 border-gray-300 tranform duration-500 focus:border-primaryColor outline-none w-full text-gray-800">
-                        <option value="Auto"> Auto </option>
+                        <option value="Auto"> Automotor </option>
                         <option value="Moto"> Moto </option>
                     </select>                   
                 </div>
@@ -111,8 +111,8 @@
                     <div class="flex flex-row mb-1 sm:mb-0">
                         <div class="relative">
                             <select #txtActivo (change)="filtrarActivos(txtActivo.value)" class="h-full rounded-r border-t border-l rounded-l sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
-                                <option value='true'> Activos </option>
-                                <option value='false'> Inactivos </option>
+                                <option value='true'> Hoy </option>
+                                <option value='false'> Archivo </option>
                                 <option value=''> Todos </option>
                             </select>
                             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">

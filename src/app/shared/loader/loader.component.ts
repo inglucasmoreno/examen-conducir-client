@@ -17,6 +17,7 @@ export class LoaderComponent implements OnInit {
   ngOnInit(): void {
     this.router.events.subscribe(event => {
       if(event instanceof NavigationStart){ // Comienza la navegacion
+        this.dataService.showMenu = false;
         this.show = true;
       }else if(event instanceof NavigationEnd){ // Finaliza la navegacion
         window.scrollTo(0,0);  // Vista en la parte superior de la aplicacion 
