@@ -65,6 +65,13 @@ export class ExamenesService {
     });
   } 
 
+  // Imprimir examen
+  imprimirExamen(data: any): Observable<any> {
+    return this.http.post(`${base_url}/examenes/imprimir`, data, {
+      headers: {'Authorization': localStorage.getItem('token')}
+    });  
+  }
+
   // Nuevo examen
   nuevoExamen(data: any): Observable<any> {
     return this.http.post(`${base_url}/examenes`, data, {

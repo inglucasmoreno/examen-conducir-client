@@ -7,6 +7,9 @@ import { environment } from 'src/environments/environment';
 import { formatDistance } from 'date-fns';
 import { es } from 'date-fns/locale';
 
+
+const base_url = environment.base_url;
+
 @Component({
   selector: 'app-examenes-detalles',
   templateUrl: './examenes-detalles.component.html',
@@ -76,6 +79,20 @@ export class ExamenesDetallesComponent implements OnInit {
 
     },({error}) => {
       this.alertService.errorApi(error.message);
+    });    
+  }
+
+  // Imprimir examen
+  imprimirExamen(): void {
+    this.alertService.loading();
+    this.examenesService.imprimirExamen(this.examen).subscribe({
+      next: () => {
+        window.open(`${base_url}/pdf/examen.pdf`, '_blank');  
+        this.alertService.close()
+      },
+      error: ({error}) => {
+        this.alertService.errorApi(error.message);
+      }  
     });    
   }
 

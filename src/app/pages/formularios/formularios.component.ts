@@ -178,16 +178,6 @@ export class FormulariosComponent implements OnInit {
 
     const { nro_tramite, persona, lugar, tipo } = this.formularioForm.value;
 
-    // Verificacion de datos    
-
-    // if(verificacion_1){
-    //   this.alertService.info('Completar los campos obligatorios');
-    //   return;
-    // }else if(verificacion_2){
-    //   this.alertService.info('Completar los campos obligatorios');
-    //   return;
-    // }
-
     if(!this.nuevaPersona){ // La persona existe
 
         const verificacion_1 = (nro_tramite.trim() === '' || (lugar.trim() === '' && this.authService.usuario.role === 'ADMIN_ROLE') || !this.personaSeleccionada) && !this.nuevaPersona;
@@ -279,9 +269,9 @@ export class FormulariosComponent implements OnInit {
   // Generar PDF luego de creacion
   generarPdf(tipo: string): void {
     if(tipo === 'Auto'){
-      window.open(`${base_url}/formularios/formulario_auto.pdf`, '_blank');     
+      window.open(`${base_url}/pdf/formulario_auto.pdf`, '_blank');     
     }else{
-      window.open(`${base_url}/formularios/formulario_moto.pdf`, '_blank');
+      window.open(`${base_url}/pdf/formulario_moto.pdf`, '_blank');
     }
   }
 
@@ -417,7 +407,7 @@ export class FormulariosComponent implements OnInit {
       this.formulariosPracticaService.imprimirFormulario(data).subscribe({
         next: () => {
           this.alertService.close();
-          window.open(`${base_url}/formularios/formulario_auto.pdf`, '_blank');     
+          window.open(`${base_url}/pdf/formulario_auto.pdf`, '_blank');     
         },
         error: ({error}) => {
           this.alertService.errorApi(error.message);
@@ -427,7 +417,7 @@ export class FormulariosComponent implements OnInit {
       this.formulariosPracticaService.imprimirFormulario(data).subscribe({
         next: () => {
           this.alertService.close();
-          window.open(`${base_url}/formularios/formulario_moto.pdf`, '_blank');     
+          window.open(`${base_url}/pdf/formulario_moto.pdf`, '_blank');     
         },
         error: ({error}) => {
           this.alertService.errorApi(error.message);
