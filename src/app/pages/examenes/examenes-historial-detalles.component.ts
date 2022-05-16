@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { formatDistance } from 'date-fns';
 import { es } from 'date-fns/locale';
 
+const base_url = environment.base_url;
 
 @Component({
   selector: 'app-examenes-historial-detalles',
@@ -57,6 +58,20 @@ export class ExamenesHistorialDetallesComponent implements OnInit {
     window.scrollTo(0,0);
     this.preguntaSeleccionada = pregunta;
     this.showModal = true;
+  }
+
+  // Imprimir examen
+  imprimirExamen(): void {
+    this.alertService.loading();
+    this.examenesService.imprimirExamen(this.examen).subscribe({
+      next: () => {
+        window.open(`${base_url}/pdf/examen.pdf`, '_blank');  
+        this.alertService.close()
+      },
+      error: ({error}) => {
+        this.alertService.errorApi(error.message);
+      }  
+    });    
   }
 
   // Traer datos examen
