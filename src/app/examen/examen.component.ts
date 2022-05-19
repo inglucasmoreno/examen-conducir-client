@@ -166,7 +166,10 @@ export class ExamenComponent implements OnInit, OnDestroy {
   }
   
   // Finalizar examen desde el cliente
-  finalizarExamen(): void {  
+  finalizarExamen(): void { 
+    
+    this.finalizarSeleccion();
+
     this.alertService.question({ msg: 'Esta por finalizar el examen', buttonText: 'Finalizar' })
     .then(({isConfirmed}) => {  
       if (isConfirmed) {
@@ -194,6 +197,8 @@ export class ExamenComponent implements OnInit, OnDestroy {
   // Finalizar examen - Desde la seccion de administracion
   finalizarExamenRemoto(): void {
     
+    this.finalizarSeleccion();
+
     this.examen.preguntas = this.preguntas;
     this.examen.activo = false;
 
