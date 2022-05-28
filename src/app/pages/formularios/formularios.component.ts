@@ -47,6 +47,7 @@ export class FormulariosComponent implements OnInit {
   // Formulario
   public idFormulario: string = '';
   public formularios: any = [];
+  public formulario: any;
   public descripcion: string = '';
 
   // Paginacion
@@ -116,7 +117,7 @@ export class FormulariosComponent implements OnInit {
   listarLugares(): void {
     this.lugaresService.listarLugares(1, 'descripcion').subscribe({
       next: ({lugares}) => {
-        this.lugares = lugares.filter(lugar => lugar.descripcion !== 'DIRECCION DE TRANSPORTE');
+        this.lugares = lugares.filter(lugar => (lugar.descripcion !== 'DIRECCION DE TRANSPORTE' && lugar.activo));
       },
       error: ({error}) => {
         this.alertService.errorApi(error.message);
@@ -129,6 +130,7 @@ export class FormulariosComponent implements OnInit {
     this.alertService.loading();
     this.idFormulario = formulario._id;
     this.formulariosPracticaService.getFormulario(formulario._id).subscribe(({formulario}) => {
+      this.formulario = formulario;
       this.formularioForm.patchValue({
         nro_tramite: formulario.nro_tramite,
         persona: formulario.persona,
@@ -192,7 +194,9 @@ export class FormulariosComponent implements OnInit {
           nro_tramite,
           tipo,
           lugar: this.authService.usuario.role === 'ADMIN_ROLE' ? lugar : this.authService.usuario.lugar,
-          persona: this.personaSeleccionada._id
+          persona: this.personaSeleccionada._id,
+          userCreator: this.authService.usuario.userId,
+          userUpdator: this.authService.usuario.userId,
         }
 
         const query = { 
@@ -200,7 +204,8 @@ export class FormulariosComponent implements OnInit {
           tipo,  
           apellido: this.personaSeleccionada.apellido, 
           nombre: this.personaSeleccionada.nombre, 
-          dni: this.personaSeleccionada.dni 
+          dni: this.personaSeleccionada.dni,
+          userCreator: this.authService.usuario.userId
         };
   
         this.alertService.loading();
@@ -215,7 +220,6 @@ export class FormulariosComponent implements OnInit {
     
     }else{ // La pesona no existe
 
-
       const verificacion_2 = (nro_tramite.trim() === '' || 
       (lugar.trim() === '' && this.authService.usuario.role === 'ADMIN_ROLE') ||
       this.dataNuevaPersona.apellido.trim() === '' ||
@@ -227,15 +231,25 @@ export class FormulariosComponent implements OnInit {
         return;
       }
 
+      const dataPersona = {
+        apellido: this.dataNuevaPersona.apellido,
+        nombre: this.dataNuevaPersona.nombre,
+        dni: this.dataNuevaPersona.dni,
+        userCreator: this.authService.usuario.userId,
+        userUpdator: this.authService.usuario.userId,
+      };
+
       this.alertService.loading();
-      this.personasService.nuevaPersona({apellido: this.dataNuevaPersona.apellido, nombre: this.dataNuevaPersona.nombre, dni: this.dataNuevaPersona.dni, }).subscribe({
+      this.personasService.nuevaPersona(dataPersona).subscribe({
         next: ({persona}) => {
           
           const data = {
             nro_tramite, 
             tipo,
             lugar: this.authService.usuario.role === 'ADMIN_ROLE' ? lugar : this.authService.usuario.lugar,
-            persona: persona._id   
+            persona: persona._id,
+            userCreator: this.authService.usuario.userId,
+            userUpdator: this.authService.usuario.userId,
           }
 
           const querys = {
@@ -243,7 +257,8 @@ export class FormulariosComponent implements OnInit {
             tipo,  
             apellido: persona.apellido, 
             nombre: persona.nombre, 
-            dni: persona.dni
+            dni: persona.dni,
+            userCreator: this.authService.usuario.userId
           }
 
           this.formulariosPracticaService.nuevoFormulario(data, querys).subscribe({
@@ -304,7 +319,9 @@ export class FormulariosComponent implements OnInit {
         nro_tramite,
         tipo,
         lugar: this.authService.usuario.role === 'ADMIN_ROLE' ? lugar : this.authService.usuario.lugar,
-        persona: this.personaSeleccionada._id
+        persona: this.personaSeleccionada._id,
+        userCreator: this.authService.usuario.userId,
+        userUpdator: this.authService.usuario.userId,
       }
   
       this.alertService.loading();
@@ -317,8 +334,16 @@ export class FormulariosComponent implements OnInit {
     
     }else{ // La pesona no existe
 
+      const dataPersona = {
+        apellido: this.dataNuevaPersona.apellido,
+        nombre: this.dataNuevaPersona.nombre,
+        dni: this.dataNuevaPersona.dni,
+        userCreator: this.authService.usuario.userId,
+        userUpdator: this.authService.usuario.userId,
+      };
+
       this.alertService.loading();
-      this.personasService.nuevaPersona({apellido: this.dataNuevaPersona.apellido, nombre: this.dataNuevaPersona.nombre, dni: this.dataNuevaPersona.dni, }).subscribe({
+      this.personasService.nuevaPersona(dataPersona).subscribe({
         next: ({persona}) => {
           this.formulariosPracticaService.actualizarFormulario(this.idFormulario, {nro_tramite, tipo, persona: persona._id}).subscribe({
             next: () => {
@@ -400,7 +425,8 @@ export class FormulariosComponent implements OnInit {
       apellido: formulario.persona.apellido,
       dni: formulario.persona.dni,
       nro_formulario: formulario.nro_formulario_string,
-      fecha: formulario.createdAt
+      fecha: formulario.createdAt,
+      userCreator: formulario.userCreator
     }
 
     if(formulario.tipo === 'Auto'){

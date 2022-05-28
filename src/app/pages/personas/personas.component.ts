@@ -24,7 +24,7 @@ export class PersonasComponent implements OnInit {
   // Personas
   public personas:any[] = [];
   public idPersona: string = '';
-  public persona: any = [];
+  public persona: any;
   public descripcion: string = '';
   
   // Formulario
@@ -32,6 +32,8 @@ export class PersonasComponent implements OnInit {
     dni: '',
     apellido: '',
     nombre: '',
+    userCreator: '',
+    userUpdator: ''
   }
   
   // Paginacion
@@ -90,10 +92,13 @@ export class PersonasComponent implements OnInit {
     this.alertService.loading();
     this.idPersona = persona._id;
     this.personasService.getPersona(persona._id).subscribe(({persona}) => {
+    this.persona = persona;
     this.data = {
       dni: persona.dni,
       apellido: persona.apellido,
       nombre: persona.nombre,
+      userCreator: persona.userCreator._id,
+      userUpdator: persona.userUpdator._id
     };
     this.alertService.close();
     this.showModalPersona = true;
@@ -129,9 +134,12 @@ export class PersonasComponent implements OnInit {
       this.alertService.info('Debes completar todos los datos');
       return;
     }
+
+    this.data.userCreator = this.authService.usuario.userId;
+    this.data.userUpdator = this.authService.usuario.userId;
   
     this.alertService.loading();
-      this.personasService.nuevaPersona(this.data).subscribe(() => {
+    this.personasService.nuevaPersona(this.data).subscribe(() => {
       this.listarPersonas();
     },({error})=>{
       this.alertService.errorApi(error.message);  
@@ -152,6 +160,8 @@ export class PersonasComponent implements OnInit {
       return; 
     }
   
+    this.data.userUpdator = this.authService.usuario.userId;
+
     this.alertService.loading();
     this.personasService.actualizarPersona(this.idPersona, this.data).subscribe(() => {
     this.listarPersonas();
@@ -189,7 +199,9 @@ export class PersonasComponent implements OnInit {
     this.data = {
       dni: '',
       apellido: '',
-      nombre: ''
+      nombre: '',
+      userCreator: '',
+      userUpdator: ''
     }
     this.showModalPersona = false;
   }

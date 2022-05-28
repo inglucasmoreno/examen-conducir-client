@@ -59,6 +59,7 @@ export class FormulariosPracticaService {
 
   // Nuevo formulario
   nuevoFormulario(data: any , querys: any = {}): Observable<any> {
+    console.log(data);
     return this.http.post(`${base_url}/formulario-practica`, data, {
       headers: {'Authorization': localStorage.getItem('token')},
       params: querys

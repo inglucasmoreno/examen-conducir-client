@@ -23,6 +23,26 @@
                     <input [(ngModel)]="data.nombre" class="p-1 mt-1 border-b-2 tranform duration-500 focus:border-primaryColor appearance-none outline-none w-full text-gray-800 text-sm" placeholder="Ej. Lucas Omar" type="text">
                 </div>
             </div>
+            <div *ngIf="estadoFormulario == 'editar'" class="flex items-center mt-4">
+                <div class="w-1/2">
+                    <p class="font-semibold text-gray-800 text-sm"> Usuario creador </p>
+                    <div class="p-1 mt-2 border bg-gray-100 tranform duration-500 appearance-none outline-none w-full text-gray-900 text-sm capitalize"> {{ persona?.userCreator.apellido.toLowerCase() }} {{ persona?.userCreator.nombre.toLowerCase() }} </div>
+                </div>
+                <div class="w-1/2 ml-4">
+                    <p class="font-semibold text-gray-800 text-sm"> Ultima modificación </p>
+                    <div class="p-1 mt-2 border bg-gray-100 tranform duration-500 appearance-none outline-none w-full text-gray-900 text-sm capitalize"> {{ persona?.userUpdator.apellido.toLowerCase() }} {{ persona?.userUpdator.nombre.toLowerCase() }} </div>
+                </div>
+            </div>
+            <div *ngIf="estadoFormulario == 'editar'" class="flex items-center mt-4">
+                <div class="w-1/2">
+                    <p class="font-semibold text-gray-800 text-sm"> Fecha creación </p>
+                    <div class="p-1 mt-2 border bg-gray-100 tranform duration-500 appearance-none outline-none w-full text-gray-900 text-sm capitalize"> {{ persona?.createdAt | fecha }} </div>
+                </div>
+                <div class="w-1/2 ml-4">
+                    <p class="font-semibold text-gray-800 text-sm"> Fecha ultima modificación </p>
+                    <div class="p-1 mt-2 border bg-gray-100 tranform duration-500 appearance-none outline-none w-full text-gray-900 text-sm capitalize"> {{ persona?.updatedAt | fecha }} </div>
+                </div>
+            </div>
             <div class="mt-4">
                 <button *ngIf="estadoFormulario == 'crear'" (click)="nuevaPersona()" class="bg-gray-100 hover:text-secondaryColor shadow text-gray-800 w-full border border-gray-300 font-semibold p-2 rounded mt-4"> Crear persona </button>
                 <button *ngIf="estadoFormulario == 'editar'" (click)="actualizarPersona()" class="bg-gray-100 shadow hover:text-secondaryColor text-gray-800 border border-gray-300 font-semibold w-full p-2 rounded mt-4"> Actualizar persona </button>

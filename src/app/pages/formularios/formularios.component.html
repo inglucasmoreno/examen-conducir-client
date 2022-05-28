@@ -31,7 +31,7 @@
         <div class="px-4" *ngIf="nuevaPersona">
             <p class="font-semibold text-sm mt-4"> Persona </p>
             <p class="text-sm text-gray-500"> La persona no fue encontrada, agrégala a continuación. </p>
-            <div class="lg:flex items-center mt-2">
+            <div class="lg:flex items-center mt-2 mb-3">
                 <div class="lg:w-1/2">
                     <p class="font-semibold text-sm"> <span class="text-red-500"> * </span> Apellido </p>
                     <input [(ngModel)]="dataNuevaPersona.apellido" type="text" placeholder="Apellido" class="border-b-2 w-full outline-none border-gray-200 duration-500 transform text-sm focus:border-primaryColor p-2 mt-1 focus:outline-none">
@@ -78,7 +78,27 @@
                     </select>  
                 </div>
                 <div class="lg:ml-4 mt-3 lg:mt-0 lg:w-1/2"></div>
-            </div>        
+            </div>   
+            <div *ngIf="estadoFormulario == 'editar'" class="flex items-center mt-4">
+                <div class="w-1/2">
+                    <p class="font-semibold text-gray-800 text-sm"> Usuario creador </p>
+                    <div class="p-1 mt-2 border bg-gray-100 tranform duration-500 appearance-none outline-none w-full text-gray-900 text-sm capitalize"> {{ formulario?.userCreator.apellido.toLowerCase() }} {{ formulario?.userCreator.nombre.toLowerCase() }} </div>
+                </div>
+                <div class="w-1/2 ml-4">
+                    <p class="font-semibold text-gray-800 text-sm"> Ultima modificación </p>
+                    <div class="p-1 mt-2 border bg-gray-100 tranform duration-500 appearance-none outline-none w-full text-gray-900 text-sm capitalize"> {{ formulario?.userUpdator.apellido.toLowerCase() }} {{ formulario?.userUpdator.nombre.toLowerCase() }} </div>
+                </div>
+            </div>
+            <div *ngIf="estadoFormulario == 'editar'" class="flex items-center mt-4">
+                <div class="w-1/2">
+                    <p class="font-semibold text-gray-800 text-sm"> Fecha creación </p>
+                    <div class="p-1 mt-2 border bg-gray-100 tranform duration-500 appearance-none outline-none w-full text-gray-900 text-sm capitalize"> {{ formulario?.createdAt | fecha }} </div>
+                </div>
+                <div class="w-1/2 ml-4">
+                    <p class="font-semibold text-gray-800 text-sm"> Fecha ultima modificación </p>
+                    <div class="p-1 mt-2 border bg-gray-100 tranform duration-500 appearance-none outline-none w-full text-gray-900 text-sm capitalize"> {{ formulario?.updatedAt | fecha }} </div>
+                </div>
+            </div>     
             <div class="mt-2">
                 <button *ngIf="estadoFormulario == 'crear'" (click)="nuevoFormulario()" class="bg-gray-100 focus:outline-none hover:text-secondaryColor shadow text-gray-800 w-full border border-gray-300 font-semibold p-2 rounded mt-4"> Crear formulario </button>
                 <button *ngIf="estadoFormulario == 'editar'" (click)="actualizarFormulario()" class="bg-gray-100 focus:outline-none hover:text-secondaryColor shadow text-gray-800 w-full border border-gray-300 font-semibold p-2 rounded mt-4"> Actualizar formulario </button>
