@@ -95,6 +95,7 @@ export class ExamenComponent implements OnInit, OnDestroy {
     
     // Verificacion: Si el examen no esta activo se redirecciona al login-examen
     this.examenesService.getExamen(this.examen._id, 'true').subscribe(({examen}) => {
+      console.log(examen);
       this.alertService.close();
     },({error}) => {
       // Si el examen no existe - Se redirecciona a la pantalla de login

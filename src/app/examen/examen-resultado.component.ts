@@ -32,6 +32,7 @@ export class ExamenResultadoComponent implements OnInit {
     this.activatedRoute.params.subscribe(({ id }) => {
       this.examenesService.getExamen(id).subscribe(({ examen }) => {
         this.examen = examen;
+        console.log(examen);
         this.calculoPorcentaje();
         this.alertService.close();
       },({error}) => {
