@@ -475,7 +475,7 @@ export class ExamenesComponent implements OnInit {
 
   // Filtrado de examenes - Actualizacion de tiempo de examen
   filtradoExamenes(): void {
-    this.examenes.forEach(examen => {
+    this.examenes.map(examen => {
       if(examen.activo){ // Si el examen esta activo se calcula el tiempo faltante
         const creacion = new Date(examen.fecha_rindiendo);
         examen.tiempo = formatDistance(new Date(), creacion, { locale: es });
