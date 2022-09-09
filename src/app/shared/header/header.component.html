@@ -1,8 +1,8 @@
-<nav [ngClass]="{'-translate-x-0 ease-in opacity-100' : this.dataService.showMenu === true, '-translate-x-full ease-out opacity-0':this.dataService.showMenu === false}" class="absolute inset-0 transform duration-200 lg:transform-none lg:opacity-100 ease-in -translate-x-full lg:relative z-10 w-80 bg-primaryColor text-white h-full border-r-4 border-secondaryColor p-3">
+<nav [ngClass]="{'-translate-x-0 ease-in opacity-100' : this.dataService.showMenu === true, '-translate-x-full ease-out opacity-0':this.dataService.showMenu === false}" class="absolute inset-0 transform duration-200 lg:transform-none lg:opacity-100 ease-in -translate-x-full lg:relative z-10 w-80 bg-primaryColor text-white h-full border-r-4 border-pink-600 p-3">
     <div class="flex justify-between">
-        <div routerLink="perfil" class="flex hover:text-pink-200 cursor-pointer">
+        <div routerLink="perfil" class="flex hover:text-blue-200 cursor-pointer">
             <div *ngIf="authService.usuario.role === 'ADMIN_ROLE'" class="bg-blue-100 flex items-center justify-center w-14 h-14 rounded-full shadow border border-blue-200">
-                <p class="text-3xl font-semibold text-primaryColor"> A </p>
+                <p class="text-3xl font-semibold text-secondaryColor"> A </p>
             </div>
             <div *ngIf="authService.usuario.role === 'USER_ROLE'" class="bg-orange-100 flex items-center justify-center w-14 h-14 rounded-full shadow border border-orange-200">
                 <p class="text-3xl font-semibold text-orange-500"> E </p>

@@ -13,8 +13,8 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                primaryColor: "#005780",
-                secondaryColor: "#c9006e",
+                primaryColor: "#27272A",
+                secondaryColor: "#005780",
                 thirdColor: '#fbb984',
                 background: colors.gray,
                 primary: colors.gray,

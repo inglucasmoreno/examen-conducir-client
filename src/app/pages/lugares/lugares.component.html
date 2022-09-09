@@ -27,7 +27,7 @@
                 </div>
                 <div *ngIf="permisos.all">
                     <app-boton-generico title="Nuevo lugar" (click)="abrirModal('crear')">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                         </svg>
                     </app-boton-generico>
@@ -73,12 +73,12 @@
                     <table class="min-w-full leading-normal">
                         <thead>
                             <tr>
-                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 tracking-wider">
                                     <div class="flex items-center focus:outline-none">
                                         <span> Icono </span>
                                     </div>
                                 </th>
-                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 tracking-wider">
                                     <div (click)="ordenarPorColumna('descripcion')" class="cursor-pointer flex items-center focus:outline-none">
                                         <span> Descripción </span>
                                         <span class="ml-2 text-gray-600">    
@@ -88,7 +88,7 @@
                                         </span>
                                     </div>
                                 </th>
-                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-xs font-semibold text-gray-600 tracking-wider">
                                     <div (click)="ordenarPorColumna('createdAt')" class="cursor-pointer w-max flex items-center justify-center focus:outline-none">
                                         <span>
                                             Fecha de creación                                                
@@ -100,7 +100,7 @@
                                         </span>
                                     </div>
                                 </th>
-                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 tracking-wider">
                                     <div (click)="ordenarPorColumna('activo')" class="cursor-pointer flex items-center focus:outline-none">
                                         <span>
                                             Estado                                               
@@ -112,7 +112,7 @@
                                         </span>
                                     </div>
                                 </th>
-                                <th *ngIf="permisos.all" class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <th *ngIf="permisos.all" class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 tracking-wider">
                                     Acción
                                 </th>
                             </tr>
@@ -125,7 +125,7 @@
                                     </p>
                                 </td>
                                 <td class="px-5 py-2 border-b border-gray-200 text-xs">
-                                    <p class="text-gray-900 whitespace-no-wrap capitalize">
+                                    <p class="text-gray-900 w-max whitespace-no-wrap capitalize">
                                         {{ lugar.descripcion.toLowerCase() }}
                                     </p>
                                 </td>

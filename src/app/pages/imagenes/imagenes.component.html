@@ -60,11 +60,11 @@
     <h1 class="text-4xl border-b pb-2 text-center"> Imagenes en sistema </h1>
     <div class="md:flex md:items-center md:justify-center mt-2">
         <input [(ngModel)]="descripcion" type="text" placeholder="Buscar" class="border border-gray-300 shadow p-2 mx-2 my-2 focus:outline-none rounded">
-        <select (change)="reiniciarPaginacion()" class="border border-gray-300 p-2 bg-white shadow rounded ml-2" [(ngModel)]="activo">
+        <select (change)="reiniciarPaginacion()" class="border border-gray-300 p-2 focus:outline-none bg-white shadow rounded ml-2" [(ngModel)]="activo">
             <option value="true"> Activas </option>
             <option value="false"> Inactivas </option>
         </select>
-        <select (change)="paginaActual = 1" class="bg-white px-2 py-2 shadow border border-gray-300 text-gray-600 ml-2 rounded" [(ngModel)]="cantidadItems">
+        <select (change)="paginaActual = 1" class="bg-white px-2 py-2 focus:outline-none shadow border border-gray-300 text-gray-600 ml-2 rounded" [(ngModel)]="cantidadItems">
             <option value="10"> 10 elementos </option>
             <option value="20"> 20 elementos </option>
             <option value="50"> 50 elementos </option>

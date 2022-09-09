@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
   
   ngOnInit(): void { 
     this.dataService.ubicacionActual = 'Dashboard - Home';
-    gsap.from('.gsap-contenido', { y:100, opacity: 0, duration: .5 });
+    gsap.from('.gsap-contenido', { y:100, opacity: 0, duration: .2 });
   }
   
 }
