@@ -1,5 +1,5 @@
 <div *ngIf="examen" class="pb-20">
-    <div class="bg-primaryColor shadow">
+    <div class="bg-secondaryColor shadow">
         <div class="w-11/12 mr-auto ml-auto py-4 text-center flex items-center justify-between">
             <img src="assets/img/examen/logo-examen.png">
             <div class="text-white p-2">
@@ -15,7 +15,7 @@
     <div class="flex w-11/12 mr-auto ml-auto">
         <div class="py-5 w-full">
             <div class="border border-gray-300 rounded shadow">
-                <h1 class="bg-primaryColor text-white p-2 rounded-t text-2xl"> Pregunta {{ nroPregunta + 1 }} de {{ preguntas.length }} </h1>
+                <h1 class="bg-secondaryColor text-white p-2 rounded-t text-2xl"> Pregunta {{ nroPregunta + 1 }} de {{ preguntas.length }} </h1>
                 <div class="px-2 py-5">
                     <p class="text-2xl"> {{ preguntas[nroPregunta].descripcion }} </p>
                 </div>
@@ -40,9 +40,9 @@
         </div>
     </div>
     <div class="gsap-respuestas flex items-center mr-auto ml-auto text-center w-11/12">
-        <button (click)="incDecNro('dec')" [disabled]="nroPregunta <= 0" [ngClass]="{'bg-blue-200' : nroPregunta <= 0, 'bg-primaryColor' : nroPregunta > 0}" class="text-white shadow-lg rounded w-full text-xl font-semibold p-4 border shadow"> Pregunta anterior </button>
-        <button *ngIf="nroPregunta < (examen.preguntas.length - 1)" (click)="incDecNro('inc')" [disabled]="nroPregunta >= (examen.preguntas.length - 1)" [ngClass]="{'bg-blue-200' : nroPregunta >= (examen.preguntas.length - 2), 'bg-primaryColor' : nroPregunta <= (examen.preguntas.length - 2)}"
-            class="ml-2 text-white shadow-lg rounded w-full text-xl font-semibold p-4 border shadow"> Siguiente pregunta </button>
-        <button *ngIf="nroPregunta >= (examen.preguntas.length - 1)" (click)="finalizarExamen()" class="ml-2 bg-green-700 text-white shadow-lg rounded w-full text-xl font-semibold p-4 border shadow"> Finalizar examen </button>
+        <button (click)="incDecNro('dec')" [disabled]="nroPregunta <= 0" [ngClass]="{'bg-blue-200' : nroPregunta <= 0, 'bg-secondaryColor' : nroPregunta > 0}" class="text-white shadow rounded w-full text-xl focus:outline-none font-semibold p-4 border"> Pregunta anterior </button>
+        <button *ngIf="nroPregunta < (examen.preguntas.length - 1)" (click)="incDecNro('inc')" [disabled]="nroPregunta >= (examen.preguntas.length - 1)" [ngClass]="{'bg-blue-200' : nroPregunta >= (examen.preguntas.length - 2), 'bg-secondaryColor' : nroPregunta <= (examen.preguntas.length - 2)}"
+            class="ml-2 text-white shadow focus:outline-none rounded w-full text-xl font-semibold p-4 border"> Siguiente pregunta </button>
+        <button *ngIf="nroPregunta >= (examen.preguntas.length - 1)" (click)="finalizarExamen()" class="ml-2 bg-green-700 text-white focus:outline-none shadow rounded w-full text-xl font-semibold p-4 border"> Finalizar examen </button>
     </div>
 </div>

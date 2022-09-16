@@ -94,7 +94,7 @@
         <div class="text-xl md:text-2xl flex items-center justify-between border mb-3 p-2 bg-primary-800 text-white rounded">
             <div>
                 <p> Listado de preguntas </p>
-                <p class="text-sm"> cantidad de preguntas: {{ examen.preguntas.length }} </p>
+                <p class="text-sm"> Cantidad de preguntas: {{ examen.preguntas.length }} </p>
             </div>
             <select (change)="paginaActual = 1" class="bg-white px-2 py-2 border text-base text-gray-600 mr-3 border-gray-300 shadow rounded" [(ngModel)]="cantidadItems">
                 <option value="10"> 10 elementos </option>
