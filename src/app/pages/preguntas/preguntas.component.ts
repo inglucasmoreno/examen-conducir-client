@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertService } from 'src/app/services/alert.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
+import { InicializacionService } from 'src/app/services/inicializacion.service';
 import { PreguntasService } from 'src/app/services/preguntas.service';
 import { environment } from 'src/environments/environment';
 import { ImagenesService } from '../../services/imagenes.service';
@@ -14,14 +15,22 @@ import { ImagenesService } from '../../services/imagenes.service';
 })
 export class PreguntasComponent implements OnInit {
 
+  // Flag y mensaje de estado
+  public flag_preguntas_importadas = false;
+  public mensaje = '';
+
+  // Archivos para importacion
+  public file: any;
+  public archivoSubir: any;
+
   // Permisos de usuarios login
   public permisos = { all: false };
 
   public urlBase = environment.base_url;
   
-  
   // Modal
   public showModalPregunta = false;
+  public showModalImportarPreguntas = false;
   public flagAccion = 'Creando';
   public estadoFormulario = 'crear';
   
@@ -74,8 +83,9 @@ export class PreguntasComponent implements OnInit {
   }
   
   constructor(private preguntasService: PreguntasService,
-              private authService: AuthService,
+              public authService: AuthService,
               private alertService: AlertService,
+              private inicializacionService: InicializacionService,
               private imagenesService: ImagenesService,
               private dataService: DataService) { }
   
@@ -189,6 +199,7 @@ export class PreguntasComponent implements OnInit {
     .subscribe( ({ preguntas }) => {
       this.preguntas = preguntas;
       this.showModalPregunta = false;
+      this.showModalImportarPreguntas = false;
       this.alertService.close();
     }, (({error}) => {
       this.alertService.errorApi(error.msg);
@@ -338,6 +349,52 @@ export class PreguntasComponent implements OnInit {
     }; 
   }
   
+  // Capturando archivo de importacion
+  capturarArchivo(event: any): void {
+    if(event.target.files[0]){
+      // Se capatura el archivo
+      this.archivoSubir = event.target.files[0];
+  
+      // Se verifica el formato - Debe ser un excel
+      const formato = this.archivoSubir.type.split('/')[1];
+      const condicion = formato !== 'vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+  
+      if(condicion){
+        this.file = null;
+        this.archivoSubir = null;
+        return this.alertService.info('Debes seleccionar un archivo de excel');      
+      }
+    }
+  }
+
+  // Abrir modal de importacion de preguntas
+  abrirImportarPreguntas(): void {
+    this.file = null;
+    this.showModalImportarPreguntas = true;
+  }
+
+  // Importar preguntas
+  importarPreguntas(): void {
+
+    if(!this.file) return this.alertService.info('Debe seleccionar un archivo de excel');
+
+    this.alertService.loading();
+    const formData =  new FormData();
+    formData.append('file', this.archivoSubir); // FormData -> key = 'file' y value = Archivo
+
+    this.inicializacionService.importarPreguntas(formData, this.authService.usuario.userId).subscribe({
+      next: ({msg}) => {
+        this.mensaje = msg;
+        this.flag_preguntas_importadas = true;
+        this.listarPreguntas();        
+      },
+      error: ({error}) => {
+        this.alertService.errorApi(error.message);
+      }
+    })
+
+  }  
+
   // Filtrar Activo/Inactivo
   filtrarActivos(activo: any): void{
     this.paginaActual = 1;

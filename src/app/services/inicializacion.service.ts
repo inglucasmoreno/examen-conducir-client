@@ -22,4 +22,11 @@ export class InicializacionService {
     return this.http.get(`${base_url}/inicializacion/preguntas`);
   }
 
+  // Actualizando base de fichas
+  importarPreguntas(formData: any, usuario: string): Observable<any> {
+    return this.http.post(`${base_url}/inicializacion/preguntas`, formData, {
+      params: { usuario }
+    });
+  }
+
 }

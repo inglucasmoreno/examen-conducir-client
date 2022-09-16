@@ -1,4 +1,4 @@
-<nav [ngClass]="{'-translate-x-0 ease-in opacity-100' : this.dataService.showMenu === true, '-translate-x-full ease-out opacity-0':this.dataService.showMenu === false}" class="absolute inset-0 transform duration-200 lg:transform-none lg:opacity-100 ease-in -translate-x-full lg:relative z-10 w-80 bg-primaryColor text-white h-full border-r-4 border-pink-600 p-3">
+<nav [ngClass]="{'-translate-x-0 ease-in opacity-100' : this.dataService.showMenu === true, '-translate-x-full ease-out opacity-0':this.dataService.showMenu === false}" class="absolute inset-0 transform duration-200 lg:transform-none lg:opacity-100 ease-in -translate-x-full lg:relative z-10 w-80 bg-primaryColor text-white h-full border-r-4 border-secondaryColor p-3">
     <div class="flex justify-between">
         <div routerLink="perfil" class="flex hover:text-blue-200 cursor-pointer">
             <div *ngIf="authService.usuario.role === 'ADMIN_ROLE'" class="bg-blue-100 flex items-center justify-center w-14 h-14 rounded-full shadow border border-blue-200">
@@ -19,7 +19,7 @@
         </button>
     </div>
     <ul class="mt-5">
-        <div class="flex text-xs items-center justify-center border-b pb-2 mb-2 text-pink-200">
+        <div class="flex text-xs items-center justify-center border-b pb-2 mb-2 text-blue-200">
             <div class="ml-1 font-semibold flex">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
