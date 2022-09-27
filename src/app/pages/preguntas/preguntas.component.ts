@@ -59,6 +59,9 @@ export class PreguntasComponent implements OnInit {
   tipo_B: false,
   tipo_C: false,
   tipo_D: false,
+  tipo_E: false,
+  tipo_G: false,
+  tipo_H: false,
   alcance: ''
   };
   
@@ -138,6 +141,9 @@ export class PreguntasComponent implements OnInit {
         tipo_B: false,
         tipo_C: false,
         tipo_D: false,
+        tipo_E: false,
+        tipo_G: false,
+        tipo_H: false,
         alcance: pregunta.alcance
       };
       
@@ -188,6 +194,9 @@ export class PreguntasComponent implements OnInit {
     if(alcance.includes('B')) this.dataForm.tipo_B = true;
     if(alcance.includes('C')) this.dataForm.tipo_C = true;
     if(alcance.includes('D')) this.dataForm.tipo_D = true;
+    if(alcance.includes('E')) this.dataForm.tipo_E = true;
+    if(alcance.includes('G')) this.dataForm.tipo_G = true;
+    if(alcance.includes('H')) this.dataForm.tipo_H = true;
   } 
   
   // Listar preguntas
@@ -221,15 +230,27 @@ export class PreguntasComponent implements OnInit {
     }
   
     if(this.dataForm.tipo_B){
-    this.dataForm.alcance += 'B';   
+      this.dataForm.alcance += 'B';   
     }
     if(this.dataForm.tipo_C){
-    this.dataForm.alcance += 'C';   
+      this.dataForm.alcance += 'C';   
     }
   
     if(this.dataForm.tipo_D){
-    this.dataForm.alcance += 'D';   
-    } 
+      this.dataForm.alcance += 'D';   
+    }
+    
+    if(this.dataForm.tipo_E){
+      this.dataForm.alcance += 'E';   
+    }
+
+    if(this.dataForm.tipo_G){
+      this.dataForm.alcance += 'G';   
+    }
+
+    if(this.dataForm.tipo_H){
+      this.dataForm.alcance += 'H';   
+    }
   
   }
   
@@ -345,6 +366,9 @@ export class PreguntasComponent implements OnInit {
       tipo_B: false,
       tipo_C: false,
       tipo_D: false,
+      tipo_E: false,
+      tipo_G: false,
+      tipo_H: false,
       alcance: ''
     }; 
   }
