@@ -95,7 +95,6 @@ export class ExamenComponent implements OnInit, OnDestroy {
     
     // Verificacion: Si el examen no esta activo se redirecciona al login-examen
     this.examenesService.getExamen(this.examen._id, 'true').subscribe(({examen}) => {
-      console.log(examen);
       this.alertService.close();
     },({error}) => {
       // Si el examen no existe - Se redirecciona a la pantalla de login
@@ -131,13 +130,6 @@ export class ExamenComponent implements OnInit, OnDestroy {
       if(data.examen === this.examen._id) this.finalizarExamenRemoto();
     });
   }
-
-  // GSAP - Animacion inicial
-  // animacionInicial(): void {
-  //   var tl = gsap.timeline({ defaults: { duration: 0.1 } });
-  //   tl.from('.gsap-pregunta', { y:100, opacity: 0, duration: .5 })
-  //     .from('.gsap-respuestas', { y:100, opacity: 0, duration: .5 })
-  // }
 
   // Pregunta anterior / Proxima pregunta
   incDecNro(tipo: string): void {
