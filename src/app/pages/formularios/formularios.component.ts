@@ -51,8 +51,10 @@ export class FormulariosComponent implements OnInit {
   public descripcion: string = '';
 
   // Paginacion
+  public totalItems: number;
   public paginaActual: number = 1;
   public cantidadItems: number = 10;
+  public desde: number = 0;
 
   // Filtrado
   public filtro = {
@@ -129,8 +131,9 @@ export class FormulariosComponent implements OnInit {
   getFormulario(formulario: any): void {
     this.alertService.loading();
     this.idFormulario = formulario._id;
-    this.formulariosPracticaService.getFormulario(formulario._id).subscribe(({formulario}) => {
+    this.formulariosPracticaService.getFormulario(formulario._id).subscribe(({formulario, totalItems}) => {
       this.formulario = formulario;
+      this.totalItems = totalItems;
       this.formularioForm.patchValue({
         nro_tramite: formulario.nro_tramite,
         persona: formulario.persona,
@@ -150,21 +153,34 @@ export class FormulariosComponent implements OnInit {
 
     if(this.authService.usuario.role === 'ADMIN_ROLE'){
       this.formulariosPracticaService.listarFormularios(
-        this.ordenar.direccion,
-        this.ordenar.columna
-        )
-      .subscribe( ({ formularios }) => {
+        {
+          direccion: this.ordenar.direccion,
+          columna: this.ordenar.columna,
+          desde: this.desde,
+          cantidadItems: this.cantidadItems,
+          activo: this.filtro.activo,
+          parametro: this.filtro.parametro          
+        }
+      )
+      .subscribe( ({ formularios, totalItems}) => {
         this.formularios = formularios;
+        this.totalItems = totalItems;
         this.listarPersonas();
       }, (({error}) => {
         this.alertService.errorApi(error.msg);
       }));
     }else{
       this.formulariosPracticaService.listarFormulariosPorLugar(
-        this.authService.usuario.lugar, 
-        this.ordenar.direccion,
-        this.ordenar.columna
-        )
+        {
+          id: this.authService.usuario.lugar, 
+          direccion: this.ordenar.direccion,
+          columna: this.ordenar.columna,
+          desde: this.desde,
+          cantidadItems: this.cantidadItems,
+          activo: this.filtro.activo,
+          parametro: this.filtro.parametro 
+        }
+      )
       .subscribe( ({ formularios }) => {
         this.formularios = formularios;
         this.listarPersonas();
@@ -389,7 +405,12 @@ export class FormulariosComponent implements OnInit {
   
   // Listar personas
   listarPersonas(): void {
-    this.personasService.listarPersonas(1, 'apellido').subscribe({
+    this.personasService.listarPersonas(
+      {
+        direccion: 1,
+        columna: 'apellido',
+      }
+    ).subscribe({
       next: ({ personas }) => {
         this.personas = personas;
         this.alertService.close();
@@ -522,6 +543,20 @@ export class FormulariosComponent implements OnInit {
   ordenarPorColumna(columna: string){
     this.ordenar.columna = columna;
     this.ordenar.direccion = this.ordenar.direccion == 1 ? -1 : 1; 
+    this.alertService.loading();
+    this.listarFormularios();
+  }
+
+  // Cambiar cantidad de items
+  cambiarCantidadItems(): void {
+    this.paginaActual = 1
+    this.cambiarPagina(1);
+  }
+
+  // Paginacion - Cambiar pagina
+  cambiarPagina(nroPagina): void {
+    this.paginaActual = nroPagina;
+    this.desde = (this.paginaActual - 1) * this.cantidadItems;
     this.alertService.loading();
     this.listarFormularios();
   }

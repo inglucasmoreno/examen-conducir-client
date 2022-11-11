@@ -20,14 +20,15 @@ export class PreguntasService {
   };
 
   // Listar preguntas
-  listarPreguntas(
-    direccion: number = 1,
-    columna: string = 'descripcion'  
-  ): Observable<any> {
+  listarPreguntas(parametros?: any): Observable<any> {
     return this.http.get(`${base_url}/preguntas`,{
       params: {
-        direccion: String(direccion),
-        columna              
+        columna: parametros?.columna || 'descripcion',
+        direccion: parametros?.direccion || 1,
+        desde: parametros?.desde || 0,
+        registerpp: parametros?.cantidadItems || 100000,
+        activo: parametros?.activo || '',
+        parametro: parametros?.parametro || '',            
       },
       headers: { 'Authorization': localStorage.getItem('token') }   
     });

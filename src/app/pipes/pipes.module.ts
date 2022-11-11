@@ -13,6 +13,7 @@ import { FiltroImagenesPipe } from './filtro-imagenes.pipe';
 import { EstadoExamenPipe } from './estado-examen.pipe';
 import { FiltroPreguntasEstadisticasPipe } from './filtro-preguntas-estadisticas.pipe';
 import { FiltroFormularioPipe } from './filtro-formulario.pipe';
+import { ClasesPipe } from './clases.pipe';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { FiltroFormularioPipe } from './filtro-formulario.pipe';
     EstadoExamenPipe,
     FiltroPreguntasEstadisticasPipe,
     FiltroFormularioPipe,
+    ClasesPipe,
   ],
   imports: [
     CommonModule
@@ -47,6 +49,7 @@ import { FiltroFormularioPipe } from './filtro-formulario.pipe';
     EstadoExamenPipe,
     FiltroPreguntasEstadisticasPipe,
     FiltroFormularioPipe,
+    ClasesPipe
   ]
 })
 export class PipesModule { }

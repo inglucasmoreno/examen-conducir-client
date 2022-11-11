@@ -14,19 +14,19 @@ export class PersonasComponent implements OnInit {
 
   // Permisos de usuarios login
   public permisos = { all: false };
-  
+
   // Modal
   public showModalPersona = false;
-  
+
   // Estado formulario 
   public estadoFormulario = 'crear';
-  
+
   // Personas
-  public personas:any[] = [];
+  public personas: any[] = [];
   public idPersona: string = '';
   public persona: any;
   public descripcion: string = '';
-  
+
   // Formulario
   public data = {
     dni: '',
@@ -35,17 +35,19 @@ export class PersonasComponent implements OnInit {
     userCreator: '',
     userUpdator: ''
   }
-  
+
   // Paginacion
+  public totalItems: number;
   public paginaActual: number = 1;
   public cantidadItems: number = 10;
-  
+  public desde: number = 0;
+
   // Filtrado
   public filtro = {
     activo: 'true',
     parametro: ''
   }
-  
+
   // Ordenar
   public ordenar = {
     direccion: 1,  // Asc (1) | Desc (-1)
@@ -53,147 +55,154 @@ export class PersonasComponent implements OnInit {
   }
 
   constructor(private personasService: PersonasService,
-              private alertService: AlertService,
-              private authService: AuthService,
-              private dataService: DataService) { }
-  
+    private alertService: AlertService,
+    private authService: AuthService,
+    private dataService: DataService) { }
+
   ngOnInit(): void {
-    this.dataService.ubicacionActual = 'Dashboard - Personas'; 
+    this.dataService.ubicacionActual = 'Dashboard - Personas';
     this.permisos.all = this.permisosUsuarioLogin();
     this.alertService.loading();
-    this.listarPersonas(); 
+    this.listarPersonas();
   }
 
   // Asignar permisos de usuario login
   permisosUsuarioLogin(): boolean {
     return this.authService.usuario.permisos.includes('PERSONAS_ALL') || this.authService.usuario.role === 'ADMIN_ROLE';
   }
-  
+
   // Abrir modal
   abrirModal(estado: string, persona: any = null): void {
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
     this.reiniciar();
     this.descripcion = '';
     this.idPersona = '';
-  
-    if(estado === 'editar') this.getPersona(persona);
+
+    if (estado === 'editar') this.getPersona(persona);
     else this.showModalPersona = true;
-  
-    this.estadoFormulario = estado;  
+
+    this.estadoFormulario = estado;
   }
-  
+
   // Cerrar modal
   cerrarModal(): void {
     this.reiniciar();
   }
-  
+
   // Traer datos de persona
   getPersona(persona: any): void {
     this.alertService.loading();
     this.idPersona = persona._id;
-    this.personasService.getPersona(persona._id).subscribe(({persona}) => {
-    this.persona = persona;
-    this.data = {
-      dni: persona.dni,
-      apellido: persona.apellido,
-      nombre: persona.nombre,
-      userCreator: persona.userCreator._id,
-      userUpdator: persona.userUpdator._id
-    };
-    this.alertService.close();
-    this.showModalPersona = true;
-  },({error})=>{
-    this.alertService.errorApi(error.message);
-  });
+    this.personasService.getPersona(persona._id).subscribe(({ persona }) => {
+      this.persona = persona;
+      this.data = {
+        dni: persona.dni,
+        apellido: persona.apellido,
+        nombre: persona.nombre,
+        userCreator: persona.userCreator._id,
+        userUpdator: persona.userUpdator._id
+      };
+      this.alertService.close();
+      this.showModalPersona = true;
+    }, ({ error }) => {
+      this.alertService.errorApi(error.message);
+    });
   }
-  
+
   // Listar personas
   listarPersonas(): void {
-    this.personasService.listarPersonas( 
-    this.ordenar.direccion,
-    this.ordenar.columna
+    this.personasService.listarPersonas(
+      {
+        direccion: this.ordenar.direccion,
+        columna: this.ordenar.columna,
+        desde: this.desde,
+        cantidadItems: this.cantidadItems,
+        activo: this.filtro.activo,
+        parametro: this.filtro.parametro
+      }
     )
-    .subscribe( ({ personas }) => {
-      this.personas = personas;
-      this.showModalPersona = false;
-      this.alertService.close();
-    }, (({error}) => {
-      this.alertService.errorApi(error.message);
-    }));
+      .subscribe(({ personas, totalItems }) => {
+        this.personas = personas;
+        this.totalItems = totalItems;
+        this.showModalPersona = false;
+        this.alertService.close();
+      }, (({ error }) => {
+        this.alertService.errorApi(error.message);
+      }));
   }
-  
+
   // Nueva persona
   nuevaPersona(): void {
-    
-    const verificacion = this.data.dni.trim() === "" || 
-                        this.data.apellido.trim() === "" ||
-                        this.data.nombre.trim() === ""
-  
+
+    const verificacion = this.data.dni.trim() === "" ||
+      this.data.apellido.trim() === "" ||
+      this.data.nombre.trim() === ""
+
     // Verificacion: Descripción vacia
-    if(verificacion){
+    if (verificacion) {
       this.alertService.info('Debes completar todos los datos');
       return;
     }
 
     this.data.userCreator = this.authService.usuario.userId;
     this.data.userUpdator = this.authService.usuario.userId;
-  
+
     this.alertService.loading();
     this.personasService.nuevaPersona(this.data).subscribe(() => {
       this.listarPersonas();
-    },({error})=>{
-      this.alertService.errorApi(error.message);  
+    }, ({ error }) => {
+      this.alertService.errorApi(error.message);
     });
-  
+
   }
-  
+
   // Actualizar personas
   actualizarPersona(): void {
-  
-    const verificacion = this.data.dni.trim() === "" || 
-                        this.data.apellido.trim() === "" ||
-                        this.data.nombre.trim() === ""
-  
+
+    const verificacion = this.data.dni.trim() === "" ||
+      this.data.apellido.trim() === "" ||
+      this.data.nombre.trim() === ""
+
     // Verificacion: Descripción vacia
-    if(verificacion){
+    if (verificacion) {
       this.alertService.info('Debes completar todos los datos');
-      return; 
+      return;
     }
-  
+
     this.data.userUpdator = this.authService.usuario.userId;
 
     this.alertService.loading();
     this.personasService.actualizarPersona(this.idPersona, this.data).subscribe(() => {
-    this.listarPersonas();
-  
-  },({error})=>{
+      this.listarPersonas();
+
+    }, ({ error }) => {
       this.alertService.errorApi(error.message);
     });
-  
+
   }
-  
+
   // Actualizar estado Activo/Inactivo
   actualizarEstado(personas: any): void {
-    
+
     const { _id, activo } = personas;
 
-    if(!this.permisos.all) return this.alertService.info('Usted no tiene permiso para realizar esta acción');
+    if (!this.permisos.all) return this.alertService.info('Usted no tiene permiso para realizar esta acción');
 
     this.alertService.question({ msg: '¿Quieres actualizar el estado?', buttonText: 'Actualizar' })
-    .then(({isConfirmed}) => {  
-      if (isConfirmed) {
-        this.alertService.loading();
-        this.personasService.actualizarPersona(_id, {activo: !activo}).subscribe(() => {
+      .then(({ isConfirmed }) => {
+        if (isConfirmed) {
           this.alertService.loading();
-          this.listarPersonas();
-        }, ({error}) => {
-          this.alertService.close();
-          this.alertService.errorApi(error.message);
-        });
-      }
-    });
+          this.personasService.actualizarPersona(_id, { activo: !activo }).subscribe(() => {
+            this.alertService.loading();
+            this.listarPersonas();
+          }, ({ error }) => {
+            this.alertService.close();
+            this.alertService.errorApi(error.message);
+          });
+        }
+      });
   }
-  
+
   // Reiniciar
   reiniciar(): void {
     this.data = {
@@ -205,25 +214,39 @@ export class PersonasComponent implements OnInit {
     }
     this.showModalPersona = false;
   }
-  
+
   // Filtrar Activo/Inactivo
-  filtrarActivos(activo: any): void{
+  filtrarActivos(activo: any): void {
     this.paginaActual = 1;
     this.filtro.activo = activo;
   }
-  
+
   // Filtrar por Parametro
-  filtrarParametro(parametro: string): void{
+  filtrarParametro(parametro: string): void {
     this.paginaActual = 1;
     this.filtro.parametro = parametro;
   }
-  
+
   // Ordenar por columna
-  ordenarPorColumna(columna: string){
+  ordenarPorColumna(columna: string) {
     this.ordenar.columna = columna;
-    this.ordenar.direccion = this.ordenar.direccion == 1 ? -1 : 1; 
+    this.ordenar.direccion = this.ordenar.direccion == 1 ? -1 : 1;
     this.alertService.loading();
     this.listarPersonas();
   }
-  
+
+  // Cambiar cantidad de items
+  cambiarCantidadItems(): void {
+    this.paginaActual = 1
+    this.cambiarPagina(1);
+  }
+
+  // Paginacion - Cambiar pagina
+  cambiarPagina(nroPagina): void {
+    this.paginaActual = nroPagina;
+    this.desde = (this.paginaActual - 1) * this.cantidadItems;
+    this.alertService.loading();
+    this.listarPersonas();
+  }
+
 }

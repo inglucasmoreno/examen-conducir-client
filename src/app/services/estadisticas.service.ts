@@ -13,14 +13,15 @@ export class EstadisticasService {
   constructor(private http: HttpClient) { }
 
   // Estadisticas de preguntas
-  preguntas(
-    direccion: number = 1,
-    columna: string = 'descripcion'  
-  ): Observable<any> {
+  preguntas(parametros?: any): Observable<any> {
     return this.http.get(`${base_url}/estadisticas/preguntas`,{
       params: {
-        direccion: String(direccion),
-        columna              
+        columna: parametros?.columna || 'descripcion',
+        direccion: parametros?.direccion || 1,
+        desde: parametros?.desde || 0,
+        registerpp: parametros?.cantidadItems || 100000,
+        activo: parametros?.activo || '',
+        parametro: parametros?.parametro || '',              
       },
       headers: {'Authorization': localStorage.getItem('token') }   
     });

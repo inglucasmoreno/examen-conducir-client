@@ -27,14 +27,16 @@ export class PersonasService {
   }
 
   // Listar personas
-  listarPersonas(
-    direccion: number = 1,
-    columna: string = 'apellido'  
-  ): Observable<any> {
+  listarPersonas(parametros?: any): Observable<any> {
+    console.log(parametros)
     return this.http.get(`${base_url}/personas`,{
       params: {
-        direccion: String(direccion),
-        columna              
+        columna: parametros?.columna || 'descripcion',
+        direccion: parametros?.direccion || 1,
+        desde: parametros?.desde || 0,
+        registerpp: parametros?.cantidadItems || 100000,
+        activo: parametros?.activo || '',
+        parametro: parametros?.parametro || '',             
       },
       headers: { 'Authorization': localStorage.getItem('token') }   
     });

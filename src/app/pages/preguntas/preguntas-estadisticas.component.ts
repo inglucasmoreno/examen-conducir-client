@@ -13,8 +13,10 @@ export class PreguntasEstadisticasComponent implements OnInit {
   public estadisticas;
 
   // Paginacion
+  public totalItems: number;
   public paginaActual: number = 1;
   public cantidadItems: number = 10;
+  public desde: number = 0;
 
   // Filtrado
   public filtro = {
@@ -29,8 +31,8 @@ export class PreguntasEstadisticasComponent implements OnInit {
   }
 
   constructor(private estadisticasService: EstadisticasService,
-              private dataService: DataService,
-              private alertService: AlertService) { }
+    private dataService: DataService,
+    private alertService: AlertService) { }
 
   ngOnInit(): void {
     this.dataService.ubicacionActual = 'Dashboard - Preguntas - Estadisticas';
@@ -39,9 +41,19 @@ export class PreguntasEstadisticasComponent implements OnInit {
   }
 
   // Listar estadisticas
-  listarEstadisticas(): void{
-    this.estadisticasService.preguntas(this.ordenar.direccion, this.ordenar.columna).subscribe(({ estadisticas }) => {
+  listarEstadisticas(): void {
+    this.estadisticasService.preguntas(
+      {
+        direccion: this.ordenar.direccion,
+        columna: this.ordenar.columna,
+        desde: this.desde,
+        cantidadItems: this.cantidadItems,
+        activo: '',
+        parametro: this.filtro.parametro
+      }
+    ).subscribe(({ estadisticas, totalItems }) => {
       this.estadisticas = estadisticas;
+      this.totalItems = totalItems;
       this.alertService.close();
     }, ({ error }) => {
       this.alertService.errorApi(error.message);
@@ -49,15 +61,29 @@ export class PreguntasEstadisticasComponent implements OnInit {
   }
 
   // Filtrar por Parametro
-  filtrarParametro(parametro: string): void{
+  filtrarParametro(parametro: string): void {
     this.paginaActual = 1;
     this.filtro.parametro = parametro;
   }
 
   // Ordenar por columna
-  ordenarPorColumna(columna: string){
+  ordenarPorColumna(columna: string) {
     this.ordenar.columna = columna;
-    this.ordenar.direccion = this.ordenar.direccion == 1 ? -1 : 1; 
+    this.ordenar.direccion = this.ordenar.direccion == 1 ? -1 : 1;
+    this.alertService.loading();
+    this.listarEstadisticas();
+  }
+
+  // Cambiar cantidad de items
+  cambiarCantidadItems(): void {
+    this.paginaActual = 1
+    this.cambiarPagina(1);
+  }
+
+  // Paginacion - Cambiar pagina
+  cambiarPagina(nroPagina): void {
+    this.paginaActual = nroPagina;
+    this.desde = (this.paginaActual - 1) * this.cantidadItems;
     this.alertService.loading();
     this.listarEstadisticas();
   }
