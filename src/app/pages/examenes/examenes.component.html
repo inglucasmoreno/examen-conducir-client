@@ -108,6 +108,7 @@
                 <option value="D"> Clase D </option>
                 <option value="E"> Clase E </option>
                 <option value="G"> Clase G </option>
+                <option value="J"> Clase E2 </option>
                 <option value="H"> Clase D4 </option>
             </select>
 
@@ -263,7 +264,7 @@
                                 </td>
                                 <td class="px-5 py-2 border-b border-gray-200 text-xs">
                                     <p class="text-gray-900 whitespace-no-wrap">
-                                        Clase {{ examen.tipo_licencia }}
+                                        Clase {{ examen.tipo_licencia | clases }}
                                     </p>
                                 </td>
                                 <td class="px-5 py-2 border-b border-gray-200 text-xs">

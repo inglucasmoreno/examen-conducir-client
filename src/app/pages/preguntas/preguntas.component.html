@@ -28,9 +28,9 @@
         </div>
         <div class="flex items-center">
             <div class="bg-white p-2">
-                <input [(ngModel)]="filtroDescripcionImagen" type="text" placeholder="Buscar" class='border ml-2 rounded shadow border-gray-300 transform duration-500 focus:border-primaryColor p-2 outline-none'>
+                <input [(ngModel)]="filtroDescripcionImagen" type="text" placeholder="Buscar" class='border focus:outline-none ml-2 rounded shadow border-gray-300 transform duration-500 p-2 outline-none'>
             </div>
-            <select (change)="paginaActualImg = 1" class="bg-white px-2 ml-2 border border-gray-300 shadow text-gray-600 py-2 rounded" [(ngModel)]="cantidadItemsImg">
+            <select (change)="paginaActualImg = 1" class="bg-white focus:outline-none px-2 ml-2 border border-gray-300 shadow text-gray-600 py-2 rounded" [(ngModel)]="cantidadItemsImg">
                 <option value="10"> 10 elementos </option>
                 <option value="20"> 20 elementos </option>
                 <option value="50"> 50 elementos </option>
@@ -99,26 +99,29 @@
             <div class="bg-white mt-4">
                 <p class="font-semibold"> Tipo de licencia </p>
                 <p class="text-xs text-gray-500 mt-1"> * Determina en que tipo de examenes aparecera la pregunta </p>
-                <div class="flex items-center mt-2">
+                <div class="flex items-center mt-2 text-sm">
                     <div (click)="cambiarAlcance('A', dataForm.tipo_A)" title="Moto" [ngClass]="{'bg-pink-100 border-pink-300 text-secondaryColor':dataForm.tipo_A}" class="w-10 h-10 bg-gray-100 rounded border cursor-pointer border-gray-200 font-semibold shadow text-center flex items-center justify-center">
                         <p> A </p>
                     </div>
-                    <div (click)="cambiarAlcance('B', dataForm.tipo_B)" title="Auto particular" [ngClass]="{'bg-pink-100 border-pink-300 text-secondaryColor':dataForm.tipo_B}" class="w-10 h-10 ml-2 bg-gray-100 rounded border cursor-pointer border-gray-200 font-semibold shadow text-center flex items-center justify-center">
+                    <div (click)="cambiarAlcance('B', dataForm.tipo_B)" [ngClass]="{'bg-pink-100 border-pink-300 text-secondaryColor':dataForm.tipo_B}" class="w-10 h-10 ml-2 bg-gray-100 rounded border cursor-pointer border-gray-200 font-semibold shadow text-center flex items-center justify-center">
                         <p> B </p>
                     </div>
-                    <div (click)="cambiarAlcance('C', dataForm.tipo_C)" title="Transporte de carga, camiones" [ngClass]="{'bg-pink-100 border-pink-300 text-secondaryColor':dataForm.tipo_C}" class="w-10 h-10 ml-2 bg-gray-100 rounded border cursor-pointer border-gray-200 font-semibold shadow text-center flex items-center justify-center">
+                    <div (click)="cambiarAlcance('C', dataForm.tipo_C)" [ngClass]="{'bg-pink-100 border-pink-300 text-secondaryColor':dataForm.tipo_C}" class="w-10 h-10 ml-2 bg-gray-100 rounded border cursor-pointer border-gray-200 font-semibold shadow text-center flex items-center justify-center">
                         <p> C </p>
                     </div>
-                    <div (click)="cambiarAlcance('D', dataForm.tipo_D)" title="Transporte de pasajeros, taxis, traffic, colectivo, ambulancia" [ngClass]="{'bg-pink-100 border-pink-300 text-secondaryColor':dataForm.tipo_D}" class="w-10 h-10 ml-2 bg-gray-100 rounded border cursor-pointer border-gray-200 font-semibold shadow text-center flex items-center justify-center">
+                    <div (click)="cambiarAlcance('D', dataForm.tipo_D)" [ngClass]="{'bg-pink-100 border-pink-300 text-secondaryColor':dataForm.tipo_D}" class="w-10 h-10 ml-2 bg-gray-100 rounded border cursor-pointer border-gray-200 font-semibold shadow text-center flex items-center justify-center">
                         <p> D </p>
                     </div>
-                    <div (click)="cambiarAlcance('E', dataForm.tipo_E)" title="Vehículos con uno o mas remolques, maquinaria especial no agrícola" [ngClass]="{'bg-pink-100 border-pink-300 text-secondaryColor':dataForm.tipo_E}" class="w-10 h-10 ml-2 bg-gray-100 rounded border cursor-pointer border-gray-200 font-semibold shadow text-center flex items-center justify-center">
+                    <div (click)="cambiarAlcance('E', dataForm.tipo_E)" [ngClass]="{'bg-pink-100 border-pink-300 text-secondaryColor':dataForm.tipo_E}" class="w-10 h-10 ml-2 bg-gray-100 rounded border cursor-pointer border-gray-200 font-semibold shadow text-center flex items-center justify-center">
                         <p> E </p>
                     </div>
-                    <div (click)="cambiarAlcance('G', dataForm.tipo_G)" title="Maquinaria agrícola" [ngClass]="{'bg-pink-100 border-pink-300 text-secondaryColor':dataForm.tipo_G}" class="w-10 h-10 ml-2 bg-gray-100 rounded border cursor-pointer border-gray-200 font-semibold shadow text-center flex items-center justify-center">
+                    <div (click)="cambiarAlcance('G', dataForm.tipo_G)" [ngClass]="{'bg-pink-100 border-pink-300 text-secondaryColor':dataForm.tipo_G}" class="w-10 h-10 ml-2 bg-gray-100 rounded border cursor-pointer border-gray-200 font-semibold shadow text-center flex items-center justify-center">
                         <p> G </p>
                     </div>
-                    <div (click)="cambiarAlcance('H', dataForm.tipo_H)" title="Maquinaria agrícola" [ngClass]="{'bg-pink-100 border-pink-300 text-secondaryColor':dataForm.tipo_H}" class="w-10 h-10 ml-2 bg-gray-100 rounded border cursor-pointer border-gray-200 font-semibold shadow text-center flex items-center justify-center">
+                    <div (click)="cambiarAlcance('J', dataForm.tipo_J)" [ngClass]="{'bg-pink-100 border-pink-300 text-secondaryColor':dataForm.tipo_J}" class="w-10 h-10 ml-2 bg-gray-100 rounded border cursor-pointer border-gray-200 font-semibold shadow text-center flex items-center justify-center">
+                        <p> E2 </p>
+                    </div>
+                    <div (click)="cambiarAlcance('H', dataForm.tipo_H)" [ngClass]="{'bg-pink-100 border-pink-300 text-secondaryColor':dataForm.tipo_H}" class="w-10 h-10 ml-2 bg-gray-100 rounded border cursor-pointer border-gray-200 font-semibold shadow text-center flex items-center justify-center">
                         <p> D4 </p>
                     </div>
                 </div>
@@ -126,7 +129,7 @@
             <div class="bg-white mt-4">
                 <p class="font-semibold"> Frecuencia </p>
                 <p class="text-xs text-gray-500 mt-1"> * Determina el nivel de frecuencia con la que aparecera la pregunta </p>
-                <div class="flex items-center mt-2">
+                <div class="flex items-center mt-2 text-sm">
                     <div (click)="dataForm.frecuencia = 1" [ngClass]="{'bg-pink-100 border-pink-300 text-secondaryColor':dataForm.frecuencia === 1}" class="w-10 h-10 bg-gray-100 rounded border cursor-pointer border-gray-200 font-semibold shadow text-center flex items-center justify-center">
                         <p> 1 </p>
                     </div>
@@ -147,9 +150,23 @@
                     </div>
                 </div>
             </div>
+            <p class="font-semibold mt-4"> Eliminatoria </p>
+            <p class="text-xs text-gray-500 mt-1"> * El examen se desaprueba automaticamente al responder mal una pregunta eliminatoria </p>
+            <div class="bg-white flex mt-2 items-center text-sm">
+                <div>
+                    <div (click)="dataForm.eliminatoria = false" [ngClass]="{'bg-pink-100 border-pink-300 text-secondaryColor':!dataForm.eliminatoria}" class="w-10 h-10 bg-gray-100 rounded border cursor-pointer border-gray-200 font-semibold shadow text-center flex items-center justify-center">
+                        <p> NO </p>
+                    </div>
+                </div>
+                <div>
+                    <div (click)="dataForm.eliminatoria = true" [ngClass]="{'bg-pink-100 border-pink-300 text-secondaryColor':dataForm.eliminatoria}" class="w-10 h-10 ml-2 bg-gray-100 rounded border cursor-pointer border-gray-200 font-semibold shadow text-center flex items-center justify-center">
+                        <p> SI </p>
+                    </div>
+                </div>
+            </div>
             <div class="my-2">
-                <button *ngIf="estadoFormulario === 'crear'" (click)="nuevaPregunta()" class="bg-gray-100 hover:text-secondaryColor shadow text-gray-800 w-full border border-gray-300 font-semibold p-2 rounded mt-4"> Crear pregunta </button>
-                <button *ngIf="estadoFormulario === 'editar'" (click)="actualizarPregunta()" class="bg-gray-100 hover:text-secondaryColor shadow text-gray-800 w-full border border-gray-300 font-semibold p-2 rounded mt-4"> Actualizar pregunta </button>
+                <button *ngIf="estadoFormulario === 'crear'" (click)="nuevaPregunta()" class="bg-gray-100 focus:outline-none hover:text-secondaryColor shadow text-gray-800 w-full border border-gray-300 font-semibold p-2 rounded mt-4"> Crear pregunta </button>
+                <button *ngIf="estadoFormulario === 'editar'" (click)="actualizarPregunta()" class="bg-gray-100 focus:outline-none hover:text-secondaryColor shadow text-gray-800 w-full border border-gray-300 font-semibold p-2 rounded mt-4"> Actualizar pregunta </button>
             </div>
         </div>
     </div>
@@ -283,7 +300,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="animate__animated animate__fadeIn" *ngFor="let pregunta of preguntas | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActual, totalItems: totalItems}">
+                            <tr [ngClass]="{'bg-red-50':pregunta.eliminatoria}" class="animate__animated animate__fadeIn" *ngFor="let pregunta of preguntas | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActual, totalItems: totalItems}">
                                 <td class="px-5 py-2 border-b border-gray-200 text-xs">
                                     <p class="text-gray-900 whitespace-no-wrap">
                                         {{ pregunta.numero }}

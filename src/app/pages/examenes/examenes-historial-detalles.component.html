@@ -69,7 +69,7 @@
             <div class="md:flex md:items-center bg-gray-100">
                 <div>
                     <p class="p-1"> <span class="font-semibold"> Nro de examen: </span> <span> {{ examen.nro_examen_string }} </span> </p>
-                    <p class="p-1"> <span class="font-semibold"> Licencia: </span> Clase {{ examen.tipo_licencia }} </p>
+                    <p class="p-1"> <span class="font-semibold"> Licencia: </span> Clase {{ examen.tipo_licencia | clases }} </p>
                     <p class="p-1"> <span class="font-semibold"> Lugar: </span> {{ examen.lugar.descripcion }} </p>
                 </div>
                 <div class="md:ml-4">
@@ -79,13 +79,15 @@
                 </div>
             </div>
             <div class="flex items-center">
-                <p *ngIf="!examen.baja_tiempo" class="p-2 mt-2 mb-1 w-max text-secondaryColor border border-pink-200 bg-pink-100 rounded font-semibold"> {{ examen.estado | estadoExamen }} </p>
-                <p *ngIf="examen.estado == 'Rindiendo'" class="p-2 mt-1 w-max border rounded bg-green-100 text-green-700 border-green-200 font-semibold ml-2"> {{ tiempo }} </p>
+                <p *ngIf="!examen.baja_tiempo" class="p-2 mt-2 mb-1 w-max text-secondaryColor border border-pink-300 bg-pink-100 rounded font-semibold"> {{ examen.estado | estadoExamen }} </p>
+                <p *ngIf="examen.estado == 'Rindiendo'" class="p-2 mt-1 w-max border rounded bg-green-100 text-green-700 border-green-300 font-semibold ml-2"> {{ tiempo }} </p>
                 <p (click)="showModalReactivacion = true" *ngIf="examen.reactivado" class="p-2 mt-1 cursor-pointer w-max border rounded bg-yellow-100 text-yellow-700 border-yellow-300 font-semibold ml-2"> Reactivado </p>
-                <p *ngIf="examen.estado == 'Finalizado' && !examen.baja_tiempo" [ngClass]="{'bg-green-100 text-green-700 border-green-200' : (examen.aprobado), 'bg-red-100 text-red-700 border-red-200' : (!examen.aprobado) }" class="p-2 mt-1 w-max border rounded font-semibold ml-2">
+                <p *ngIf="examen.estado == 'Finalizado' && !examen.baja_tiempo" [ngClass]="{'bg-green-100 text-green-700 border-green-300' : (examen.aprobado), 'bg-red-100 text-red-700 border-red-200' : (!examen.aprobado) }" class="p-2 mt-1 w-max border rounded font-semibold ml-2">
                     {{ examen.cantidad_respuestas_correctas }} / {{ examen.cantidad_respuestas_correctas + examen.cantidad_respuestas_incorrectas }}
                 </p>
                 <p *ngIf="examen.baja_tiempo" class="mt-2 border border-red-300 bg-red-100 font-semibold text-red-800 px-2 py-1 rounded"> {{ examen.baja_motivo }} </p>
+                <p *ngIf="examen.estado == 'Finalizado' && examen.aprobado" class="p-2 mt-1 w-max border rounded bg-green-100 text-green-700 border-green-300 font-semibold ml-2"> Aprobado </p>
+                <p *ngIf="examen.estado == 'Finalizado' && !examen.aprobado" class="p-2 mt-1 w-max border rounded bg-red-100 text-red-700 border-red-300 font-semibold ml-2"> Desaprobado </p>
             </div>
         </div>
     </div>
@@ -104,7 +106,7 @@
             </select>
         </div>
         <div *ngIf="!examen.activo" class="md:flex md:items-center">
-            <select (change)="reiniciarPaginacion()" [(ngModel)]="filtroRespuestas" class="p-2 bg-white border-gray-300 shadow border rounded mr-4">
+            <select (change)="reiniciarPaginacion()" [(ngModel)]="filtroRespuestas" class="p-2 bg-white focus:outline-none border-gray-300 shadow border rounded mr-4">
                 <option value=""> Todas las preguntas </option>
                 <option value="true"> Correctas </option>
                 <option value="false"> Incorrectas </option>
@@ -126,6 +128,7 @@
                     <p class="py-4 px-2">
                         <span class="text-lg font-semibold"> {{ pregunta.numero }} - </span>
                         <span> {{ pregunta.descripcion }} </span>
+                        <span class="bg-red-700 text-white p-1 rounded ml-2 font-semibold text-xs" *ngIf="pregunta.eliminatoria"> Eliminatoria </span>
                     </p>
                 </div>
                 <img class="w-10 h-10 rounded border shadow border-gray-300" *ngIf='pregunta.pregunta_img' [src]="urlBase + '/img/' + pregunta.url_img">

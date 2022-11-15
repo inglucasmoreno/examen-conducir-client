@@ -62,6 +62,8 @@ export class PreguntasComponent implements OnInit {
     tipo_E: false,
     tipo_G: false,
     tipo_H: false,
+    tipo_J: false,
+    eliminatoria: false,
     alcance: ''
   };
 
@@ -146,6 +148,8 @@ export class PreguntasComponent implements OnInit {
         tipo_E: false,
         tipo_G: false,
         tipo_H: false,
+        tipo_J: false,
+        eliminatoria: pregunta.eliminatoria,
         alcance: pregunta.alcance
       };
 
@@ -199,6 +203,7 @@ export class PreguntasComponent implements OnInit {
     if (alcance.includes('E')) this.dataForm.tipo_E = true;
     if (alcance.includes('G')) this.dataForm.tipo_G = true;
     if (alcance.includes('H')) this.dataForm.tipo_H = true;
+    if (alcance.includes('J')) this.dataForm.tipo_J = true;
   }
 
   // Listar preguntas
@@ -261,6 +266,9 @@ export class PreguntasComponent implements OnInit {
       this.dataForm.alcance += 'H';
     }
 
+    if (this.dataForm.tipo_J) {
+      this.dataForm.alcance += 'J';
+    }
   }
 
   // Nueva pregunta
@@ -378,6 +386,8 @@ export class PreguntasComponent implements OnInit {
       tipo_E: false,
       tipo_G: false,
       tipo_H: false,
+      tipo_J: false,
+      eliminatoria: false,
       alcance: ''
     };
   }
