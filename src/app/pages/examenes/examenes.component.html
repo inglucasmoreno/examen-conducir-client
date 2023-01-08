@@ -266,13 +266,7 @@
                                     {{ examen.createdAt | fecha }}
                                 </td>
                                 <td class="px-5 py-2 border-b border-gray-200 text-xs">
-<<<<<<< HEAD
                                     {{ examen.nro_examen_string }}
-=======
-                                    <p class="text-gray-900 whitespace-no-wrap">
-                                        {{ examen.nro_examen_string }}
-                                    </p>
->>>>>>> b829868581c546d7ef168eb910b1974a02b77d8b
                                 </td>
                                 <td class="flex items-center px-5 py-2 border-b border-gray-200 text-sm font-semibold">
                                     <p [ngClass]="{'text-green-700 bg-green-100 border-green-200': (examen.estado == 'Rindiendo' && !examen.reactivado), 'text-secondaryColor bg-pink-100 border-pink-200': (examen.estado !== 'Rindiendo' && !examen.reactivado), 'text-yellow-700 bg-yellow-100':examen.reactivado}"
