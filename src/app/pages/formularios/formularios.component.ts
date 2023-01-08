@@ -7,6 +7,7 @@ import { FormulariosPracticaService } from 'src/app/services/formularios-practic
 import { LugaresService } from 'src/app/services/lugares.service';
 import { PersonasService } from 'src/app/services/personas.service';
 import { environment } from 'src/environments/environment';
+import { SigemService } from '../../services/sigem.service';
 
 
 const base_url = environment.base_url;
@@ -31,7 +32,7 @@ export class FormulariosComponent implements OnInit {
   // Modal
   public showModalFormulario = false;
 
-  // Estado formulario 
+  // Estado formulario
   public estadoFormulario = 'crear';
 
   // Personas
@@ -81,23 +82,24 @@ export class FormulariosComponent implements OnInit {
               private fb: FormBuilder,
               private personasService: PersonasService,
               public authService: AuthService,
+              private sigemService: SigemService,
               private lugaresService: LugaresService,
               private alertService: AlertService,
               private dataService: DataService) { }
 
   ngOnInit(): void {
-    this.dataService.ubicacionActual = 'Dashboard - Formularios'; 
+    this.dataService.ubicacionActual = 'Dashboard - Formularios';
     this.limpiarFormularios();  // Limpiando formularios antiguos
     this.permisos.all = this.permisosUsuarioLogin();
     this.alertService.loading();
     this.listarLugares();
-    this.listarFormularios(); 
+    this.listarFormularios();
   }
 
   // Limpiar formularios antiguos
   limpiarFormularios(): void {
     this.formulariosPracticaService.limpiarFormularios().subscribe({
-      next: () => {}  
+      next: () => {}
     })
   }
 
@@ -112,7 +114,7 @@ export class FormulariosComponent implements OnInit {
     this.reiniciarFormulario();
     if(estado === 'editar') this.getFormulario(formulario);
     else this.showModalFormulario = true;
-    this.estadoFormulario = estado;  
+    this.estadoFormulario = estado;
   }
 
   // Listar lugares
@@ -138,7 +140,7 @@ export class FormulariosComponent implements OnInit {
         nro_tramite: formulario.nro_tramite,
         persona: formulario.persona,
         lugar: formulario.lugar,
-        tipo: formulario.tipo        
+        tipo: formulario.tipo
       });
       this.buscarPersonaPorID(formulario.persona);
       this.alertService.close();
@@ -159,7 +161,7 @@ export class FormulariosComponent implements OnInit {
           desde: this.desde,
           cantidadItems: this.cantidadItems,
           activo: this.filtro.activo,
-          parametro: this.filtro.parametro          
+          parametro: this.filtro.parametro
         }
       )
       .subscribe( ({ formularios, totalItems}) => {
@@ -172,13 +174,13 @@ export class FormulariosComponent implements OnInit {
     }else{
       this.formulariosPracticaService.listarFormulariosPorLugar(
         {
-          id: this.authService.usuario.lugar, 
+          id: this.authService.usuario.lugar,
           direccion: this.ordenar.direccion,
           columna: this.ordenar.columna,
           desde: this.desde,
           cantidadItems: this.cantidadItems,
           activo: this.filtro.activo,
-          parametro: this.filtro.parametro 
+          parametro: this.filtro.parametro
         }
       )
       .subscribe( ({ formularios }) => {
@@ -205,7 +207,7 @@ export class FormulariosComponent implements OnInit {
           this.alertService.info('Completar los campos obligatorios');
           return;
         }
-      
+
         const data = {
           nro_tramite,
           tipo,
@@ -215,15 +217,15 @@ export class FormulariosComponent implements OnInit {
           userUpdator: this.authService.usuario.userId,
         }
 
-        const query = { 
-          nro_tramite, 
-          tipo,  
-          apellido: this.personaSeleccionada.apellido, 
-          nombre: this.personaSeleccionada.nombre, 
+        const query = {
+          nro_tramite,
+          tipo,
+          apellido: this.personaSeleccionada.apellido,
+          nombre: this.personaSeleccionada.nombre,
           dni: this.personaSeleccionada.dni,
           userCreator: this.authService.usuario.userId
         };
-  
+
         this.alertService.loading();
         this.formulariosPracticaService.nuevoFormulario(data, query).subscribe(() => {
         // this.imprimirFormulario(tipo);
@@ -231,12 +233,12 @@ export class FormulariosComponent implements OnInit {
         this.listarFormularios();
         this.generarPdf(tipo);
       },({error})=>{
-        this.alertService.errorApi(error.message);  
+        this.alertService.errorApi(error.message);
       });
-    
+
     }else{ // La pesona no existe
 
-      const verificacion_2 = (nro_tramite.trim() === '' || 
+      const verificacion_2 = (nro_tramite.trim() === '' ||
       (lugar.trim() === '' && this.authService.usuario.role === 'ADMIN_ROLE') ||
       this.dataNuevaPersona.apellido.trim() === '' ||
       this.dataNuevaPersona.nombre.trim() === '' ||
@@ -258,9 +260,9 @@ export class FormulariosComponent implements OnInit {
       this.alertService.loading();
       this.personasService.nuevaPersona(dataPersona).subscribe({
         next: ({persona}) => {
-          
+
           const data = {
-            nro_tramite, 
+            nro_tramite,
             tipo,
             lugar: this.authService.usuario.role === 'ADMIN_ROLE' ? lugar : this.authService.usuario.lugar,
             persona: persona._id,
@@ -269,10 +271,10 @@ export class FormulariosComponent implements OnInit {
           }
 
           const querys = {
-            nro_tramite, 
-            tipo,  
-            apellido: persona.apellido, 
-            nombre: persona.nombre, 
+            nro_tramite,
+            tipo,
+            apellido: persona.apellido,
+            nombre: persona.nombre,
             dni: persona.dni,
             userCreator: this.authService.usuario.userId
           }
@@ -287,7 +289,7 @@ export class FormulariosComponent implements OnInit {
               this.alertService.errorApi(error.msg);
             }
           })
-        },  
+        },
         error: ({error}) => {
           this.alertService.errorApi(error.msg);
         }
@@ -300,7 +302,7 @@ export class FormulariosComponent implements OnInit {
   // Generar PDF luego de creacion
   generarPdf(tipo: string): void {
     if(tipo === 'Auto'){
-      window.open(`${base_url}/pdf/formulario_auto.pdf`, '_blank');     
+      window.open(`${base_url}/pdf/formulario_auto.pdf`, '_blank');
     }else{
       window.open(`${base_url}/pdf/formulario_moto.pdf`, '_blank');
     }
@@ -316,7 +318,7 @@ export class FormulariosComponent implements OnInit {
 
     const verificacion_1 = (nro_tramite.trim() === '' || (lugar.trim() === '' && this.authService.usuario.role === 'ADMIN_ROLE') || !this.personaSeleccionada) && !this.nuevaPersona;
     const verificacion_2 = (nro_tramite.trim() === '' ||
-                            (lugar.trim() === '' && this.authService.usuario.role === 'ADMIN_ROLE') || 
+                            (lugar.trim() === '' && this.authService.usuario.role === 'ADMIN_ROLE') ||
                             this.dataNuevaPersona.apellido.trim() === '' ||
                             this.dataNuevaPersona.nombre.trim() === '' ||
                             this.dataNuevaPersona.dni.trim() === '') && this.nuevaPersona;
@@ -330,7 +332,7 @@ export class FormulariosComponent implements OnInit {
     }
 
     if(!this.nuevaPersona){ // La persona existe
-      
+
       const data = {
         nro_tramite,
         tipo,
@@ -339,15 +341,15 @@ export class FormulariosComponent implements OnInit {
         userCreator: this.authService.usuario.userId,
         userUpdator: this.authService.usuario.userId,
       }
-  
+
       this.alertService.loading();
       this.formulariosPracticaService.actualizarFormulario(this.idFormulario, data).subscribe(() => {
         this.eliminarPersona();
         this.listarFormularios();
       },({error})=>{
-        this.alertService.errorApi(error.message);  
+        this.alertService.errorApi(error.message);
       });
-    
+
     }else{ // La pesona no existe
 
       const dataPersona = {
@@ -370,7 +372,7 @@ export class FormulariosComponent implements OnInit {
               this.alertService.errorApi(error.msg);
             }
           })
-        },  
+        },
         error: ({error}) => {
           this.alertService.errorApi(error.msg);
         }
@@ -382,13 +384,13 @@ export class FormulariosComponent implements OnInit {
 
   // Actualizar estado Activo/Inactivo
   actualizarEstado(formulario: any): void {
-    
+
     const { _id, activo } = formulario;
-    
+
     if(!this.permisos.all) return this.alertService.info('Usted no tiene permiso para realizar esta acción');
 
     this.alertService.question({ msg: '¿Quieres actualizar el estado?', buttonText: 'Actualizar' })
-        .then(({isConfirmed}) => {  
+        .then(({isConfirmed}) => {
           if (isConfirmed) {
             this.alertService.loading();
             this.formulariosPracticaService.actualizarFormulario(_id, {activo: !activo}).subscribe(() => {
@@ -402,7 +404,7 @@ export class FormulariosComponent implements OnInit {
         });
 
   }
-  
+
   // Listar personas
   listarPersonas(): void {
     this.personasService.listarPersonas(
@@ -436,7 +438,7 @@ export class FormulariosComponent implements OnInit {
 
   // Imprimir formulario
   imprimirFormulario(formulario: any): void {
-    
+
     this.alertService.loading();
 
     const data = {
@@ -454,7 +456,7 @@ export class FormulariosComponent implements OnInit {
       this.formulariosPracticaService.imprimirFormulario(data).subscribe({
         next: () => {
           this.alertService.close();
-          window.open(`${base_url}/pdf/formulario_auto.pdf`, '_blank');     
+          window.open(`${base_url}/pdf/formulario_auto.pdf`, '_blank');
         },
         error: ({error}) => {
           this.alertService.errorApi(error.message);
@@ -464,7 +466,7 @@ export class FormulariosComponent implements OnInit {
       this.formulariosPracticaService.imprimirFormulario(data).subscribe({
         next: () => {
           this.alertService.close();
-          window.open(`${base_url}/pdf/formulario_moto.pdf`, '_blank');     
+          window.open(`${base_url}/pdf/formulario_moto.pdf`, '_blank');
         },
         error: ({error}) => {
           this.alertService.errorApi(error.message);
@@ -482,21 +484,49 @@ export class FormulariosComponent implements OnInit {
     }
 
     this.alertService.loading();
-    this.personasService.getPersonaDNI(this.dni).subscribe({
-      next: ({ persona }) => { 
-        if(persona){
+
+    const data = {
+      dni: this.dni,
+      userCreator: this.authService.usuario.userId,
+      userUpdator: this.authService.usuario.userId
+    };
+
+    this.sigemService.getPersona(data).subscribe({
+      next: ({ persona, success }) => {
+
+        if(success){
           this.personaSeleccionada = persona;
+
         }else{
           this.dataNuevaPersona.dni = this.dni;
           this.nuevaPersona = true;
-        } 
+        }
+
         this.dni = '';
         this.alertService.close();
-      },
-      error: ({ error }) => {
+
+      }, error: ({error}) => {
+        this.dni = '';
         this.alertService.errorApi(error.message);
       }
-    });
+    })
+
+
+    // this.personasService.getPersonaDNI(this.dni).subscribe({
+    //   next: ({ persona }) => {
+    //     if(persona){
+    //       this.personaSeleccionada = persona;
+    //     }else{
+    //       this.dataNuevaPersona.dni = this.dni;
+    //       this.nuevaPersona = true;
+    //     }
+    //     this.dni = '';
+    //     this.alertService.close();
+    //   },
+    //   error: ({ error }) => {
+    //     this.alertService.errorApi(error.message);
+    //   }
+    // });
 
   }
 
@@ -509,22 +539,22 @@ export class FormulariosComponent implements OnInit {
 
   // Reiniciando formulario
   reiniciarFormulario(): void {
-    
+
     this.personaSeleccionada = null;
-    
+
     this.dataNuevaPersona = {
       apellido: '',
       nombre: '',
       dni: ''
     };
-    
+
     this.formularioForm.patchValue({
       nro_tramite: '',
       persona: '',
       lugar: '',
       tipo: 'Auto'
-    });  
-  
+    });
+
   }
 
   // Filtrar Activo/Inactivo
@@ -542,7 +572,7 @@ export class FormulariosComponent implements OnInit {
   // Ordenar por columna
   ordenarPorColumna(columna: string){
     this.ordenar.columna = columna;
-    this.ordenar.direccion = this.ordenar.direccion == 1 ? -1 : 1; 
+    this.ordenar.direccion = this.ordenar.direccion == 1 ? -1 : 1;
     this.alertService.loading();
     this.listarFormularios();
   }

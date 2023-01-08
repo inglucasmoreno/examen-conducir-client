@@ -9,6 +9,7 @@ import { ExamenesService } from 'src/app/services/examenes.service';
 import { LugaresService } from 'src/app/services/lugares.service';
 import { PersonasService } from 'src/app/services/personas.service';
 import { SocketService } from '../../services/socket.service';
+import { SigemService } from '../../services/sigem.service';
 
 @Component({
   selector: 'app-examenes',
@@ -92,6 +93,7 @@ export class ExamenesComponent implements OnInit {
   }
 
   constructor(private examenesService: ExamenesService,
+              private sigemService: SigemService,
               private lugaresService: LugaresService,
               private personasService: PersonasService,
               private alertService: AlertService,
@@ -165,32 +167,63 @@ export class ExamenesComponent implements OnInit {
 
   // Buscar personas
   buscarPersona(): void {
+    
     this.loadingPersona = true;
-    this.personasService.getPersonaDNI(this.dni).subscribe( ({ persona }) => {
 
-      // La persona esta registrada?
-      if(!persona){
-        this.dataNuevaPersona.dni = this.dni;
-        this.personaNoEncontrada = true;
-      }
+    const data = {
+      dni: this.dni,
+      userCreator: this.authService.usuario.userId,
+      userUpdator: this.authService.usuario.userId
+    };
 
-      if(persona && !persona.activo){
+    this.sigemService.getPersona(data).subscribe({
+      next: ({ persona, success }) => {
+
+        if(!success){
+          this.dataNuevaPersona.dni = this.dni;
+          this.personaNoEncontrada = true;
+        }else{
+          this.persona = persona;
+          this.seleccionarPersona();
+        }
+
+        this.dni = '';
         this.loadingPersona = false;
-        return this.alertService.info('La persona esta registrada pero inactiva');
+
+      }, error: ({error}) => {
+        this.dni = '';
+        this.loadingPersona = false;
+        this.alertService.errorApi(error.message);
       }
-
-      this.persona = persona;
-            
-      this.dni = '';
-      this.loadingPersona = false;
-      
-      this.seleccionarPersona();
-
-    },({error}) => {
-      this.dni = '';
-      this.loadingPersona = false;
-      this.alertService.errorApi(error);
     })
+
+    // this.personasService.getPersonaDNI(this.dni).subscribe( ({ persona }) => {
+
+    //   // La persona esta registrada?
+    //   if(!persona){
+    //     this.dataNuevaPersona.dni = this.dni;
+    //     this.personaNoEncontrada = true;
+    //   }
+
+    //   if(persona && !persona.activo){
+    //     this.loadingPersona = false;
+    //     return this.alertService.info('La persona esta registrada pero inactiva');
+    //   }
+
+    //   this.persona = persona;
+            
+    //   this.dni = '';
+    //   this.loadingPersona = false;
+      
+    //   this.seleccionarPersona();
+
+    // },({error}) => {
+    //   this.dni = '';
+    //   this.loadingPersona = false;
+    //   this.alertService.errorApi(error);
+    // })
+
+    
   }
 
   // Crear nueva persona
@@ -203,7 +236,16 @@ export class ExamenesComponent implements OnInit {
     if(verificacion) return this.alertService.info('Debes completar todos los campos');
 
     this.alertService.loading();
-    this.personasService.nuevaPersona(this.dataNuevaPersona).subscribe(({ persona }) => {
+
+    const data = {
+      apellido: this.dataNuevaPersona.apellido,
+      nombre: this.dataNuevaPersona.nombre,
+      dni: this.dataNuevaPersona.dni,
+      userCreator: this.authService.usuario.userId,
+      userUpdator: this.authService.usuario.userId,
+    }
+
+    this.personasService.nuevaPersona(data).subscribe(({ persona }) => {
       this.personaSeleccionada = persona;
       this.personaNoEncontrada = false;
       this.limpiarNuevaPersona();
@@ -314,8 +356,16 @@ export class ExamenesComponent implements OnInit {
       } 
       
       this.alertService.loading();
+      
+      const data = {
+        apellido: this.dataNuevaPersona.apellido,
+        nombre: this.dataNuevaPersona.nombre,
+        dni: this.dataNuevaPersona.dni,
+        userCreator: this.authService.usuario.userId,
+        userUpdator: this.authService.usuario.userId,
+      }
 
-      this.personasService.nuevaPersona(this.dataNuevaPersona).subscribe( ({ persona }) => {
+      this.personasService.nuevaPersona(data).subscribe( ({ persona }) => {
       
         this.personaSeleccionada = persona;
         this.data.persona = this.personaSeleccionada._id; // Se guarda en data el ID de la persona

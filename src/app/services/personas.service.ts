@@ -44,6 +44,7 @@ export class PersonasService {
 
   // Nueva persona
   nuevaPersona(data: any): Observable<any> {
+    console.log(data);
     return this.http.post(`${base_url}/personas`, data, {
       headers: {'Authorization': localStorage.getItem('token')}
     });  

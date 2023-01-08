@@ -33,7 +33,8 @@ export class PersonasComponent implements OnInit {
     apellido: '',
     nombre: '',
     userCreator: '',
-    userUpdator: ''
+    userUpdator: '',
+    sigem: false
   }
 
   // Paginacion
@@ -51,7 +52,7 @@ export class PersonasComponent implements OnInit {
   // Ordenar
   public ordenar = {
     direccion: 1,  // Asc (1) | Desc (-1)
-    columna: 'descripcion'
+    columna: 'apellido'
   }
 
   constructor(private personasService: PersonasService,
@@ -99,6 +100,7 @@ export class PersonasComponent implements OnInit {
         dni: persona.dni,
         apellido: persona.apellido,
         nombre: persona.nombre,
+        sigem: persona.sigem,
         userCreator: persona.userCreator._id,
         userUpdator: persona.userUpdator._id
       };
@@ -209,6 +211,7 @@ export class PersonasComponent implements OnInit {
       dni: '',
       apellido: '',
       nombre: '',
+      sigem: false,
       userCreator: '',
       userUpdator: ''
     }
