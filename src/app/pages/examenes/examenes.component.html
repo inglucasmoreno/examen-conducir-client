@@ -202,6 +202,18 @@
                                     </div>
                                 </th>
                                 <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-xs font-semibold text-gray-600 tracking-wider">
+                                    <div (click)="ordenarPorColumna('numero')" class="cursor-pointer w-max flex items-center justify-center focus:outline-none">
+                                        <span>
+                                            Número                                              
+                                        </span>
+                                        <span class="ml-2">
+                                            <svg *ngIf="ordenar.columna == 'numero' && ordenar.direccion == 1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>                                   
+                                            <svg *ngIf="ordenar.columna == 'numero' && ordenar.direccion == -1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                                            <svg *ngIf="ordenar.columna != 'numero'" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                        </span>
+                                    </div>
+                                </th>
+                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-xs font-semibold text-gray-600 tracking-wider">
                                     <div (click)="ordenarPorColumna('createdAt')" class="cursor-pointer w-max flex items-center justify-center focus:outline-none">
                                         <span>
                                             Tiempo de examen                                               
@@ -233,7 +245,7 @@
                                         </span>
                                     </div>
                                 </th>
-                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 tracking-wider">
+                                <!-- <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 tracking-wider">
                                     <div (click)="ordenarPorColumna('lugar.descripcion')" class="cursor-pointer flex items-center focus:outline-none">
                                         <span> Lugar </span>
                                         <span class="ml-2 text-gray-600">    
@@ -242,7 +254,7 @@
                                             <svg *ngIf="ordenar.columna != 'lugar.descripcion'" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                                         </span>
                                     </div>
-                                </th>
+                                </th> -->
                                 <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 tracking-wider">
                                     Acción
                                 </th>
@@ -252,6 +264,11 @@
                             <tr class="animate__animated animate__fadeIn" *ngFor="let examen of examenes | filtroExamenes:filtro.parametro:filtro.activo | paginate: {id:'examenes', itemsPerPage: cantidadItems, currentPage: paginaActual}">
                                 <td class="px-5 py-2 border-b border-gray-200 text-xs">
                                     {{ examen.createdAt | fecha }}
+                                </td>
+                                <td class="px-5 py-2 border-b border-gray-200 text-xs">
+                                    <p class="text-gray-900 whitespace-no-wrap">
+                                        {{ examen.nro_examen_string }}
+                                    </p>
                                 </td>
                                 <td class="flex items-center px-5 py-2 border-b border-gray-200 text-sm font-semibold">
                                     <p [ngClass]="{'text-green-700 bg-green-100 border-green-200': (examen.estado == 'Rindiendo' && !examen.reactivado), 'text-secondaryColor bg-pink-100 border-pink-200': (examen.estado !== 'Rindiendo' && !examen.reactivado), 'text-yellow-700 bg-yellow-100':examen.reactivado}"
@@ -272,11 +289,11 @@
                                         {{ examen.persona.apellido.toLowerCase() }} {{ examen.persona.nombre.toLowerCase() }} -  <span> DNI {{ examen.persona.dni }} </span> 
                                     </p>
                                 </td>
-                                <td class="px-5 py-2 border-b border-gray-200 text-xs">
+                                <!-- <td class="px-5 py-2 border-b border-gray-200 text-xs">
                                     <p class="text-gray-900 whitespace-no-wrap">
                                         {{ examen.lugar.descripcion }}
                                     </p>
-                                </td>
+                                </td> -->
                                 <td class="px-5 py-2 border-b border-gray-200 text-xs text-center">
                                     <p class="flex items-center justify-center text-gray-900 whitespace-no-wrap">
                                         <app-boton-tabla class="mr-2" [routerLink]="['/dashboard/examenes/detalles', examen._id]" title="Detalles de examen">
