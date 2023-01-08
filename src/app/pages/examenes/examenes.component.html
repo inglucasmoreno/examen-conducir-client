@@ -202,6 +202,7 @@
                                     </div>
                                 </th>
                                 <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-xs font-semibold text-gray-600 tracking-wider">
+<<<<<<< HEAD
                                     <div (click)="ordenarPorColumna('nro_examen_string')" class="cursor-pointer w-max flex items-center justify-center focus:outline-none">
                                         <span>
                                             Número                                               
@@ -210,6 +211,16 @@
                                             <svg *ngIf="ordenar.columna == 'nro_examen_string' && ordenar.direccion == 1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>                                   
                                             <svg *ngIf="ordenar.columna == 'nro_examen_string' && ordenar.direccion == -1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
                                             <svg *ngIf="ordenar.columna != 'nro_examen_string'" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+=======
+                                    <div (click)="ordenarPorColumna('numero')" class="cursor-pointer w-max flex items-center justify-center focus:outline-none">
+                                        <span>
+                                            Número                                              
+                                        </span>
+                                        <span class="ml-2">
+                                            <svg *ngIf="ordenar.columna == 'numero' && ordenar.direccion == 1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>                                   
+                                            <svg *ngIf="ordenar.columna == 'numero' && ordenar.direccion == -1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                                            <svg *ngIf="ordenar.columna != 'numero'" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+>>>>>>> b829868581c546d7ef168eb910b1974a02b77d8b
                                         </span>
                                     </div>
                                 </th>
@@ -266,7 +277,13 @@
                                     {{ examen.createdAt | fecha }}
                                 </td>
                                 <td class="px-5 py-2 border-b border-gray-200 text-xs">
+<<<<<<< HEAD
                                     {{ examen.nro_examen_string }}
+=======
+                                    <p class="text-gray-900 whitespace-no-wrap">
+                                        {{ examen.nro_examen_string }}
+                                    </p>
+>>>>>>> b829868581c546d7ef168eb910b1974a02b77d8b
                                 </td>
                                 <td class="flex items-center px-5 py-2 border-b border-gray-200 text-sm font-semibold">
                                     <p [ngClass]="{'text-green-700 bg-green-100 border-green-200': (examen.estado == 'Rindiendo' && !examen.reactivado), 'text-secondaryColor bg-pink-100 border-pink-200': (examen.estado !== 'Rindiendo' && !examen.reactivado), 'text-yellow-700 bg-yellow-100':examen.reactivado}"
