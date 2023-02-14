@@ -28,13 +28,17 @@ export class ExamenesService {
   listarExamenesHistorial(
     direccion: number = 1,
     columna: string = 'createdAt',
-    data: any = {}
+    data: any = {},
+    desde: number = 0,
+    registerpp: number = 10,
   ): Observable<any> {
     return this.http.post(`${base_url}/examenes/historial/listado`,data, {
       params: {
         direccion: String(direccion),
         columna,
-        data
+        data,
+        desde,
+        registerpp,
       },
       headers: {'Authorization': localStorage.getItem('token') }   
     });

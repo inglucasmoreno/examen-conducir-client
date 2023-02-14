@@ -4,7 +4,7 @@
             <app-boton-regresar routerLink="/dashboard/examenes"></app-boton-regresar>
             <h1 class="ml-1"> Filtros de busqueda </h1>
         </div>
-        <form [formGroup]="busquedaForm" (submit)="buscar()" class="p-4">
+        <form [formGroup]="busquedaForm" (submit)="buscar(true)" class="p-4">
             <div>
                 <p class="font-semibold"> Nro de examen </p>
                 <input formControlName="nro_examen_string" placeholder="Ej. 000001" class="border border-gray-300 p-2 shadow w-full mt-1 focus:outline-none" type="text">
@@ -64,10 +64,10 @@
         <div class="md:flex md:items-center md:justify-between">
             <div>
                 <h1 class="text-xl font-semibold"> Resultados de busqueda </h1>
-                <p *ngIf="examenes" class="text-gray-600"> Total de resultados: {{ examenesMostrar.length }} </p>
+                <p *ngIf="examenes" class="text-gray-600"> Total de resultados: {{ totalItems }} </p>
             </div>
             <div class="flex items-center" *ngIf="examenes && examenes.lenght !== 0">
-                <select [(ngModel)]="cantidadItems" class="bg-white p-2 border border-gray-300 rounded">
+                <select [(ngModel)]="cantidadItems" (change)="cambiarPagina(1)" class="bg-white p-2 border focus:outline-none border-gray-300 rounded">
                     <option value="10"> 10 elementos </option>
                     <option value="20"> 20 elementos </option>
                     <option value="50"> 50 elementos </option>
@@ -97,10 +97,10 @@
         </div>
         <p *ngIf="flagInicio" class="bg-gray-100 p-2 mt-2 rounded border border-gray-300"> Seleccione los criterios de busqueda y haga clic en <span class="font-semibold"> Buscar </span> </p>
         <div *ngIf="examenes && examenes.length !== 0" class="bg-white flex text-sm mt-2 pt-4 flex-col xs:flex-row items-center xs:justify-between">
-            <pagination-controls nextLabel="Siguiente" previousLabel="Anterior" (pageChange)="paginaActual = $event"></pagination-controls>
+            <pagination-controls nextLabel="Siguiente" previousLabel="Anterior" (pageChange)="cambiarPagina($event)"></pagination-controls>
         </div>
         <div class="mt-2 max-h-screen overflow-y-auto">
-            <div [routerLink]="['/dashboard/examenes/historial/detalles', examen._id]" class="border hover:border-pink-500 cursor-pointer border-gray-300 p-2 mb-2 rounded shadow" *ngFor="let examen of examenesMostrar | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActual}">
+            <div [routerLink]="['/dashboard/examenes/historial/detalles', examen._id]" class="border hover:border-pink-500 cursor-pointer border-gray-300 p-2 mb-2 rounded shadow" *ngFor="let examen of examenesMostrar | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActual, totalItems: totalItems}">
                 <p class="text-sm font-semibold"> Fecha: {{ examen.createdAt | fecha }} </p>
                 <p class="text-sm mt-1 font-semibold"> Nro de examen: {{ examen.nro_examen_string }} </p>
                 <p class="text-sm mt-1 capitalize"> Lugar: {{ examen.lugar.descripcion.toLowerCase() }} </p>

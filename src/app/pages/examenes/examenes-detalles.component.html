@@ -82,7 +82,7 @@
             <div class="flex items-center">
                 <p *ngIf="!examen.baja_tiempo" class="p-2 mt-2 mb-1 w-max text-secondaryColor border border-pink-300 bg-pink-100 rounded font-semibold"> {{ examen.estado | estadoExamen }} </p>
                 <p *ngIf="examen.estado == 'Rindiendo'" class="p-2 mt-1 w-max border rounded bg-green-100 text-green-700 border-green-300 font-semibold ml-2"> {{ tiempo }} </p>
-                <p (click)="showModalReactivacion = true" *ngIf="examen.reactivado" class="p-2 mt-1 cursor-pointer w-max border rounded bg-yellow-100 text-yellow-700 border-yellow-300 font-semibold ml-2"> Reactivado </p>
+                <p (click)="showModalReactivacion = true" *ngIf="examen.reactivado" class="p-2 mt-1 mr-2 cursor-pointer w-max border rounded bg-yellow-100 text-yellow-700 border-yellow-300 font-semibold ml-2"> Reactivado </p>
                 <p *ngIf="examen.estado == 'Finalizado' && !examen.baja_tiempo" [ngClass]="{'bg-green-100 text-green-700 border-green-300' : (examen.aprobado), 'bg-red-100 text-red-700 border-red-300' : (!examen.aprobado) }" class="p-2 mt-1 w-max border rounded font-semibold ml-2">
                     {{ examen.cantidad_respuestas_correctas }} / {{ examen.cantidad_respuestas_correctas + examen.cantidad_respuestas_incorrectas }}
                 </p>
