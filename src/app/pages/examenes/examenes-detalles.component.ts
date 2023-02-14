@@ -20,6 +20,9 @@ export class ExamenesDetallesComponent implements OnInit {
 
   public urlBase = environment.base_url;
 
+  // Direccion de retorno
+  public urlRetorno = '';
+
   // Modal
   public showModal = false;
   public showModalReactivacion = false;
@@ -48,7 +51,8 @@ export class ExamenesDetallesComponent implements OnInit {
 
   ngOnInit(): void {    
     this.dataService.ubicacionActual = "Dashboard - Examenes - Detalles";
-    this.activatedRoute.params.subscribe(({id}) => {
+    this.activatedRoute.params.subscribe(({id, desde}) => {
+      this.urlRetorno = desde === 'examenes' ? '/dashboard/examenes' : '/dashboard/examenes/historial';
       this.idExamen = id;
       this.getExamen();
     });

@@ -61,7 +61,7 @@ const routes: Routes = [
 
             // Examenes
             { path: 'examenes', data: { permisos: 'EXAMENES_NAV' }, canActivate: [ PermisosGuard ], component: ExamenesComponent },
-            { path: 'examenes/detalles/:id', data: { permisos: 'EXAMENES_NAV' }, canActivate: [ PermisosGuard ], component: ExamenesDetallesComponent },
+            { path: 'examenes/detalles/:desde/:id', data: { permisos: 'EXAMENES_NAV' }, canActivate: [ PermisosGuard ], component: ExamenesDetallesComponent },
             { path: 'examenes/historial', data: { permisos: 'EXAMENES_NAV' }, canActivate: [ PermisosGuard ], component: ExamenesHistorialComponent },
             { path: 'examenes/historial/detalles/:id', data: { permisos: 'EXAMENES_NAV' }, canActivate: [ PermisosGuard ], component: ExamenesHistorialDetallesComponent },
             

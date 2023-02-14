@@ -53,7 +53,7 @@
     <div *ngIf="examen" class="border rounded">
         <div class="text-2xl font-semibol bg-primary-800 text-white p-2 rounded-t flex items-center justify-between">
             <div class="flex items-center">
-                <app-boton-regresar routerLink="/dashboard/examenes"></app-boton-regresar>
+                <app-boton-regresar [routerLink]="urlRetorno"></app-boton-regresar>
                 <span class="ml-2">
                     Detalles de examen
                 </span>
@@ -99,7 +99,7 @@
                 <p> Listado de preguntas </p>
                 <p class="text-sm"> Cantidad de preguntas: {{ examen.preguntas.length }} </p>
             </div>
-            <select (change)="paginaActual = 1" class="bg-white px-2 py-2 border text-base text-gray-600 mr-3 border-gray-300 shadow rounded" [(ngModel)]="cantidadItems">
+            <select (change)="paginaActual = 1" class="bg-white px-2 py-2 focus:outline-none border text-base text-gray-600 mr-3 border-gray-300 shadow rounded" [(ngModel)]="cantidadItems">
                 <option value="10"> 10 elementos </option>
                 <option value="20"> 20 elementos </option>
                 <option value="50"> 50 elementos </option>

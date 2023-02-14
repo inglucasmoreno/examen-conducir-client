@@ -11,6 +11,14 @@
 
             </div>
             <div>
+                <p class="font-semibold mt-3"> Aprobados / Desaprobados </p>
+                <select class="p-2 bg-white rounded border focus:outline-none border-gray-300 w-full mt-1" formControlName="lugar">
+                    <option value=""> Todos los examenes </option>
+                    <option value="true"> Aprobados </option>
+                    <option value="false"> Desaprobados </option>
+                </select>
+            </div>
+            <div>
                 <p class="font-semibold mt-3"> Lugar </p>
                 <select class="p-2 bg-white rounded border border-gray-300 w-full mt-1" formControlName="lugar">
                     <option value=""> Todos los lugares </option>
@@ -100,7 +108,7 @@
             <pagination-controls nextLabel="Siguiente" previousLabel="Anterior" (pageChange)="cambiarPagina($event)"></pagination-controls>
         </div>
         <div class="mt-2 max-h-screen overflow-y-auto">
-            <div [routerLink]="['/dashboard/examenes/historial/detalles', examen._id]" class="border hover:border-pink-500 cursor-pointer border-gray-300 p-2 mb-2 rounded shadow" *ngFor="let examen of examenesMostrar | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActual, totalItems: totalItems}">
+            <div [routerLink]="['/dashboard/examenes/detalles','historial' , examen._id]" class="border hover:border-pink-500 cursor-pointer border-gray-300 p-2 mb-2 rounded shadow" *ngFor="let examen of examenesMostrar | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActual, totalItems: totalItems}">
                 <p class="text-sm font-semibold"> Fecha: {{ examen.createdAt | fecha }} </p>
                 <p class="text-sm mt-1 font-semibold"> Nro de examen: {{ examen.nro_examen_string }} </p>
                 <p class="text-sm mt-1 capitalize"> Lugar: {{ examen.lugar.descripcion.toLowerCase() }} </p>
