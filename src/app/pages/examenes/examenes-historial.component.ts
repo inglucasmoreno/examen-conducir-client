@@ -22,8 +22,8 @@ export class ExamenesHistorialComponent implements OnInit {
 
   // Flags
   public flagInicio = true;
-  public reactivados = false;
-  public bajaTiempo = false;
+  public reactivados = '';
+  public bajaTiempo = '';
 
   // Lugares
   public lugares: any[];
@@ -46,7 +46,8 @@ export class ExamenesHistorialComponent implements OnInit {
     estado: '',
     clase: '',
     usuario: '',
-    persona: ''
+    persona: '',
+    aprobado: '',
   });
 
   constructor(private examenesService: ExamenesService,
@@ -77,24 +78,34 @@ export class ExamenesHistorialComponent implements OnInit {
   }
 
   soloFinalizadosPorTiempo(): void {
-    this.paginaActual = 1;
-    this.reactivados = false;
-    this.bajaTiempo = !this.bajaTiempo;
-    this.filtrarReactivados();
+  
+    // this.reactivados = false;
+    // this.filtrarReactivados();
+
+    this.bajaTiempo = this.bajaTiempo === '' ? 'true' : '';
+    this.reactivados = '';
+    this.cambiarCantidadItems();
+    this.buscar();
+
   }
 
   soloReactivados(): void {
-    this.paginaActual = 1;
-    this.bajaTiempo = false;
-    this.reactivados = !this.reactivados;
-    this.filtrarReactivados();
+    
+    // this.filtrarReactivados();
+    // this.bajaTiempo = false;
+
+    this.reactivados = this.reactivados === '' ? 'true' : '';
+    this.bajaTiempo = '';
+    this.cambiarCantidadItems();
+    this.buscar();
+
   }
 
-  filtrarReactivados(): void {
-    if (this.reactivados) this.examenesMostrar = this.examenes.filter(examen => examen.reactivado);
-    else if (this.bajaTiempo) this.examenesMostrar = this.examenes.filter(examen => examen.baja_tiempo);
-    else this.examenesMostrar = this.examenes;
-  }
+  // filtrarReactivados(): void {
+  //   if (this.reactivados) this.examenesMostrar = this.examenes.filter(examen => examen.reactivado);
+  //   else if (this.bajaTiempo) this.examenesMostrar = this.examenes.filter(examen => examen.baja_tiempo);
+  //   else this.examenesMostrar = this.examenes;
+  // }
 
   buscar(boton: boolean = false): void {
     this.alertService.loading();
@@ -104,6 +115,8 @@ export class ExamenesHistorialComponent implements OnInit {
       this.busquedaForm.value,
       this.desde,
       this.cantidadItems,
+      this.reactivados,
+      this.bajaTiempo
     ).subscribe(({ examenes, totalItems }) => {
 
       if(boton) this.paginaActual = 1;
@@ -112,7 +125,7 @@ export class ExamenesHistorialComponent implements OnInit {
       this.totalItems = totalItems;
       this.examenesMostrar = examenes;
       this.flagInicio = false;
-      this.filtrarReactivados();
+      // this.filtrarReactivados();
       this.alertService.close();
     
     }, ({ error }) => {

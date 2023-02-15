@@ -23,6 +23,7 @@ import { PermisosGuard } from '../guards/permisos.guard';
 import { ExamenesHistorialComponent } from './examenes/examenes-historial.component';
 import { ExamenesHistorialDetallesComponent } from './examenes/examenes-historial-detalles.component';
 import { FormulariosComponent } from './formularios/formularios.component';
+import { ExamenesEstadisticasComponent } from './examenes/examenes-estadisticas.component';
 
 const routes: Routes = [
     {
@@ -61,9 +62,16 @@ const routes: Routes = [
 
             // Examenes
             { path: 'examenes', data: { permisos: 'EXAMENES_NAV' }, canActivate: [ PermisosGuard ], component: ExamenesComponent },
+           
             { path: 'examenes/detalles/:desde/:id', data: { permisos: 'EXAMENES_NAV' }, canActivate: [ PermisosGuard ], component: ExamenesDetallesComponent },
-            { path: 'examenes/historial', data: { permisos: 'EXAMENES_NAV' }, canActivate: [ PermisosGuard ], component: ExamenesHistorialComponent },
-            { path: 'examenes/historial/detalles/:id', data: { permisos: 'EXAMENES_NAV' }, canActivate: [ PermisosGuard ], component: ExamenesHistorialDetallesComponent },
+           
+            { path: 'examenes/historial', data: { permisos: 'EXAMENES_NAV' }, canActivate: [ PermisosGuard ], component: 
+            ExamenesHistorialComponent },
+
+            { path: 'examenes/estadisticas', data: { permisos: 'EXAMENES_NAV' }, canActivate: [ PermisosGuard ], component: 
+            ExamenesEstadisticasComponent },
+
+            // { path: 'examenes/historial/detalles/:id', data: { permisos: 'EXAMENES_NAV' }, canActivate: [ PermisosGuard ], component: ExamenesHistorialDetallesComponent },
             
         ]
     }

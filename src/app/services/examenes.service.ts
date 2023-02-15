@@ -31,6 +31,8 @@ export class ExamenesService {
     data: any = {},
     desde: number = 0,
     registerpp: number = 10,
+    reactivados: string = '',
+    bajaTiempo: string = ''
   ): Observable<any> {
     return this.http.post(`${base_url}/examenes/historial/listado`,data, {
       params: {
@@ -39,6 +41,8 @@ export class ExamenesService {
         data,
         desde,
         registerpp,
+        reactivados,
+        bajaTiempo
       },
       headers: {'Authorization': localStorage.getItem('token') }   
     });
@@ -68,6 +72,20 @@ export class ExamenesService {
       headers: {'Authorization': localStorage.getItem('token') }   
     });
   } 
+
+  // Estadisticas de examenes
+  estadisiticasExamenes(
+    fechaDesde,
+    fechaHasta
+  ): Observable<any> {
+    return this.http.get(`${base_url}/examenes/estadisticas/listado/general`, {
+      params: {
+        fechaDesde,
+        fechaHasta
+      },
+      headers: {'Authorization': localStorage.getItem('token') }   
+    });
+  }
 
   // Imprimir examen
   imprimirExamen(data: any): Observable<any> {

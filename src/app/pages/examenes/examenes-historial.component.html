@@ -1,5 +1,5 @@
 <div class="md:flex p-2 w-full container gsap-contenido">
-    <div class="border border-gray-300 w-full md:w-2/3 text-sm shadow rounded-t h-full">
+    <div class="border border-gray-400 w-full md:w-2/3 text-sm shadow rounded-t h-full">
         <div class="text-xl flex items-center bg-primary-800 text-white px-2 py-2 rounded-t">
             <app-boton-regresar routerLink="/dashboard/examenes"></app-boton-regresar>
             <h1 class="ml-1"> Filtros de busqueda </h1>
@@ -7,12 +7,12 @@
         <form [formGroup]="busquedaForm" (submit)="buscar(true)" class="p-4">
             <div>
                 <p class="font-semibold"> Nro de examen </p>
-                <input formControlName="nro_examen_string" placeholder="Ej. 000001" class="border border-gray-300 p-2 shadow w-full mt-1 focus:outline-none" type="text">
+                <input formControlName="nro_examen_string" placeholder="Ej. 000001" class="border border-gray-400 p-2 shadow w-full mt-1 focus:outline-none" type="text">
 
             </div>
             <div>
                 <p class="font-semibold mt-3"> Aprobados / Desaprobados </p>
-                <select class="p-2 bg-white rounded border focus:outline-none border-gray-300 w-full mt-1" formControlName="lugar">
+                <select formControlName="aprobado" class="p-2 bg-white rounded border focus:outline-none border-gray-400 w-full mt-1">
                     <option value=""> Todos los examenes </option>
                     <option value="true"> Aprobados </option>
                     <option value="false"> Desaprobados </option>
@@ -20,22 +20,22 @@
             </div>
             <div>
                 <p class="font-semibold mt-3"> Lugar </p>
-                <select class="p-2 bg-white rounded border border-gray-300 w-full mt-1" formControlName="lugar">
+                <select class="p-2 bg-white rounded border focus:outline-none border-gray-400 w-full mt-1" formControlName="lugar">
                     <option value=""> Todos los lugares </option>
                     <option *ngFor="let lugar of lugares" [value]="lugar._id"> {{ lugar.descripcion }} </option>
                 </select>
             </div>
             <div class="mt-3">
                 <p class="font-semibold"> Fecha desde </p>
-                <input formControlName="fechaDesde" class="border border-gray-300 p-2 shadow w-full mt-1 focus:outline-none" type="date">
+                <input formControlName="fechaDesde" class="border border-gray-400 p-2 shadow w-full mt-1 focus:outline-none" type="date">
             </div>
             <div class="mt-3">
                 <p class="font-semibold"> Fecha hasta </p>
-                <input formControlName="fechaHasta" class="border border-gray-300 p-2 shadow w-full mt-1 focus:outline-none" type="date">
+                <input formControlName="fechaHasta" class="border border-gray-400 p-2 shadow w-full mt-1 focus:outline-none" type="date">
             </div>
             <div class="mt-3">
                 <p class="font-semibold"> Estado de examen </p>
-                <select class="p-2 bg-white rounded focus:outline-none border border-gray-300 w-full mt-1" formControlName="estado">
+                <select class="p-2 bg-white rounded focus:outline-none border border-gray-400 w-full mt-1" formControlName="estado">
                     <option value=""> Todos los estados </option>
                     <option value="Creado"> Listo para rendirse </option>
                     <option value="Rindiendose"> Rindiendose </option>
@@ -44,7 +44,7 @@
             </div>
             <div class="mt-3">
                 <p class="font-semibold"> Tipo de licencia </p>
-                <select class="p-2 bg-white rounded border focus:outline-none border-gray-300 w-full mt-1" formControlName="clase">
+                <select class="p-2 bg-white rounded border focus:outline-none border-gray-400 w-full mt-1" formControlName="clase">
                     <option value=""> Todas las clases </option>
                     <option value="A"> Clase A </option>
                     <option value="B"> Clase B </option>
@@ -57,36 +57,36 @@
             </div>
             <div class="mt-3">
                 <p class="font-semibold"> Usuario </p>
-                <input formControlName="usuario" placeholder="DNI de usuario creador" class="border border-gray-300 p-2 shadow w-full mt-1 focus:outline-none" type="text">
+                <input formControlName="usuario" placeholder="DNI de usuario creador" class="border border-gray-400 p-2 shadow w-full mt-1 focus:outline-none" type="text">
             </div>
             <div class="mt-3">
                 <p class="font-semibold"> Destino de examen </p>
-                <input formControlName="persona" placeholder="DNI de persona" class="border border-gray-300 p-2 shadow w-full mt-1 focus:outline-none" type="text">
+                <input formControlName="persona" placeholder="DNI de persona" class="border border-gray-400 p-2 shadow w-full mt-1 focus:outline-none" type="text">
             </div>
-            <button class="border border-gray-300 shadow bg-gray-100 font-semibold w-full p-2 focus:outline-none hover:text-secondaryColor mt-4">
+            <button class="border border-gray-400 shadow bg-gray-100 font-semibold w-full p-2 focus:outline-none hover:text-secondaryColor mt-4">
                 Buscar
             </button>
         </form>
     </div>
-    <div class="border md:ml-3 mt-2 text-sm md:text-md border-gray-300 w-full shadow p-4 h-full">
+    <div class="border md:ml-3 mt-2 text-sm md:text-md border-gray-400 w-full shadow p-4 h-full">
         <div class="md:flex md:items-center md:justify-between">
             <div>
                 <h1 class="text-xl font-semibold"> Resultados de busqueda </h1>
                 <p *ngIf="examenes" class="text-gray-600"> Total de resultados: {{ totalItems }} </p>
             </div>
             <div class="flex items-center" *ngIf="examenes && examenes.lenght !== 0">
-                <select [(ngModel)]="cantidadItems" (change)="cambiarPagina(1)" class="bg-white p-2 border focus:outline-none border-gray-300 rounded">
+                <select [(ngModel)]="cantidadItems" (change)="cambiarPagina(1)" class="bg-white p-2 border focus:outline-none border-gray-400 rounded">
                     <option value="10"> 10 elementos </option>
                     <option value="20"> 20 elementos </option>
                     <option value="50"> 50 elementos </option>
                     <option value="100"> 100 elementos </option>
                 </select>
-                <button (click)="soloFinalizadosPorTiempo()" title="Solo finalizados por exceso de tiempo" [ngClass]="{'bg-red-100 text-red-800 border-red-300':bajaTiempo}" class="border hover:text-red-800 focus:outline-none border-gray-300 p-2 rounded ml-2">
+                <button (click)="soloFinalizadosPorTiempo()" title="Solo finalizados por exceso de tiempo" [ngClass]="{'bg-red-100 text-red-800 border-red-300':bajaTiempo}" class="border hover:text-red-800 focus:outline-none border-gray-400 p-2 rounded ml-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                 </button>
-                <button (click)="soloReactivados()" title="Solo examenes reactivados" [ngClass]="{'bg-yellow-100 text-yellow-800 border-yellow-300':reactivados}" class="border hover:text-yellow-800 focus:outline-none border-gray-300 p-2 rounded ml-2">
+                <button (click)="soloReactivados()" title="Solo examenes reactivados" [ngClass]="{'bg-yellow-100 text-yellow-800 border-yellow-300':reactivados}" class="border hover:text-yellow-800 focus:outline-none border-gray-400 p-2 rounded ml-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
@@ -103,12 +103,12 @@
                 </button>
             </div>
         </div>
-        <p *ngIf="flagInicio" class="bg-gray-100 p-2 mt-2 rounded border border-gray-300"> Seleccione los criterios de busqueda y haga clic en <span class="font-semibold"> Buscar </span> </p>
+        <p *ngIf="flagInicio" class="bg-gray-100 p-2 mt-2 rounded border border-gray-400"> Seleccione los criterios de busqueda y haga clic en <span class="font-semibold"> Buscar </span> </p>
         <div *ngIf="examenes && examenes.length !== 0" class="bg-white flex text-sm mt-2 pt-4 flex-col xs:flex-row items-center xs:justify-between">
             <pagination-controls nextLabel="Siguiente" previousLabel="Anterior" (pageChange)="cambiarPagina($event)"></pagination-controls>
         </div>
         <div class="mt-2 max-h-screen overflow-y-auto">
-            <div [routerLink]="['/dashboard/examenes/detalles','historial' , examen._id]" class="border hover:border-pink-500 cursor-pointer border-gray-300 p-2 mb-2 rounded shadow" *ngFor="let examen of examenesMostrar | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActual, totalItems: totalItems}">
+            <div [routerLink]="['/dashboard/examenes/detalles','historial' , examen._id]" class="border hover:border-pink-500 cursor-pointer border-gray-400 p-2 mb-2 rounded shadow" *ngFor="let examen of examenesMostrar | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActual, totalItems: totalItems}">
                 <p class="text-sm font-semibold"> Fecha: {{ examen.createdAt | fecha }} </p>
                 <p class="text-sm mt-1 font-semibold"> Nro de examen: {{ examen.nro_examen_string }} </p>
                 <p class="text-sm mt-1 capitalize"> Lugar: {{ examen.lugar.descripcion.toLowerCase() }} </p>
@@ -128,7 +128,7 @@
                         {{ examen.persona.nombre.toLowerCase() }} 
                     </span> - {{ examen.persona.dni }}
                 </p>
-                <p class="text-sm mt-1 bg-gray-100 py-1 px-2 w-max rounded border border-gray-300"> Clase {{ examen.tipo_licencia | clases }} </p>
+                <p class="text-sm mt-1 bg-gray-100 py-1 px-2 w-max rounded border border-gray-400"> Clase {{ examen.tipo_licencia | clases }} </p>
                 <p [ngClass]="{'bg-yellow-100 border-yellow-300 text-yellow-800' : examen.reactivado, 'bg-pink-100 border-pink-300 text-secondaryColor' : !examen.reactivado}" class="text-sm w-max p-1 mt-2 border font-semibold rounded" *ngIf="examen.estado === 'Creado'">
                     Listo para rendirse </p>
                 <p class="bg-red-100 text-sm text-red-800 w-max p-1 font-semibold mt-2 border border-red-300 rounded" *ngIf="examen.estado === 'Finalizado' && examen.baja_tiempo"> {{ examen.baja_motivo }} </p>
