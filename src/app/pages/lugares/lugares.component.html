@@ -5,7 +5,7 @@
             <h1 class=" text-white px-2 py-1 rounded-t text-lg"> {{ estadoFormulario == 'crear' ? 'Creando nuevo lugar' : 'Editando lugar' }} </h1>
             <svg (click)="showModalLugar = false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cursor-pointer feather feather-x text-white mr-2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </div>
-        <div class="p-4">
+        <div class="p-4 text-sm">
             <p class="font-semibold"> <span class="text-red-500"> * </span> Descripción </p>
             <input [(ngModel)]="descripcion" class="py-2 mt-1 border-b-2 border-gray-300 tranform duration-500 focus:border-primaryColor appearance-none outline-none w-full text-gray-800" placeholder="Ej. Barrio Jardín San Luis" type="text">
             <button *ngIf="estadoFormulario == 'crear'" (click)="nuevoLugar()" class="bg-gray-100 focus:outline-none hover:text-secondaryColor shadow text-gray-800 w-full border border-gray-300 font-semibold p-2 rounded mt-4"> Crear lugar </button>
@@ -37,7 +37,7 @@
                 <div class="my-2 flex sm:flex-row flex-col">
                     <div class="flex flex-row mb-1 sm:mb-0">
                         <div class="relative">
-                            <select #txtActivo (change)="filtrarActivos(txtActivo.value)" class="h-full rounded-r border-t border-l rounded-l sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
+                            <select #txtActivo (change)="filtrarActivos(txtActivo.value)" class="h-full rounded-r border-t border-l rounded-l sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 text-sm px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                                 <option value='true'> Activos </option>
                                 <option value='false'> Inactivos </option>
                                 <option value=''> Todos </option>
@@ -60,7 +60,7 @@
                         <input #txtParametro placeholder="Buscar" (change)="filtrarParametro(txtParametro.value)" class="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
                         />
                     </div>
-                    <select (change)="paginaActual = 1" class="bg-white focus:outline-none px-2 py-2 md:py-0 md:ml-2 mt-2 md:mt-0 border text-gray-600 border-gray-400 rounded" [(ngModel)]="cantidadItems">
+                    <select (change)="paginaActual = 1" class="bg-white text-sm focus:outline-none px-2 py-2 md:py-0 md:ml-2 mt-2 md:mt-0 border text-gray-600 border-gray-400 rounded" [(ngModel)]="cantidadItems">
                         <option value="10"> 10 elementos </option>
                         <option value="20"> 20 elementos </option>
                         <option value="50"> 50 elementos </option>

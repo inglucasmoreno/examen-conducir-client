@@ -16,7 +16,7 @@
                 <div class="my-2 flex sm:flex-row flex-col">
                     <div class="flex flex-row mb-1 sm:mb-0">
                         <div class="relative">
-                            <select (change)="cambiarPagina(1)" [(ngModel)]="filtro.tipo" class="h-full rounded-r border-t border-l rounded-l sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
+                            <select (change)="cambiarPagina(1)" [(ngModel)]="filtro.tipo" class="h-full text-sm rounded-r border-t border-l rounded-l sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                                 <option value='respuestas'> Por respuestas </option>
                             </select>
                             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -37,7 +37,7 @@
                         <input placeholder="Número o Descripción" (change)="cambiarPagina(1)" [(ngModel)]="filtro.parametro" class="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
                         />
                     </div>
-                    <select (change)="cambiarCantidadItems()" class="bg-white focus:outline-none px-2 border py-2 md:py-0 md:ml-2 mt-2 md:mt-0 text-gray-600 border-gray-400 rounded" [(ngModel)]="cantidadItems">
+                    <select (change)="cambiarCantidadItems()" class="bg-white text-sm focus:outline-none px-2 border py-2 md:py-0 md:ml-2 mt-2 md:mt-0 text-gray-600 border-gray-400 rounded" [(ngModel)]="cantidadItems">
                         <option value="10"> 10 elementos </option>
                         <option value="20"> 20 elementos </option>
                         <option value="50"> 50 elementos </option>
