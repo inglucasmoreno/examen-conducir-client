@@ -15,19 +15,21 @@ export class PreguntasEstadisticasComponent implements OnInit {
   // Paginacion
   public totalItems: number;
   public paginaActual: number = 1;
-  public cantidadItems: number = 10;
+  public cantidadItems: number = 10000;
   public desde: number = 0;
 
   // Filtrado
   public filtro = {
     tipo: 'respuestas',
-    parametro: ''
+    parametro: '',
+    fechaDesde: '',
+    fechaHasta: ''
   }
 
   // Ordenar
   public ordenar = {
     direccion: 1,  // Asc (1) | Desc (-1)
-    columna: '_id.pregunta.numero'
+    columna: 'porcentaje_incorrectas'
   }
 
   constructor(private estadisticasService: EstadisticasService,
@@ -36,12 +38,26 @@ export class PreguntasEstadisticasComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataService.ubicacionActual = 'Dashboard - Preguntas - Estadisticas';
-    this.alertService.loading();
-    this.listarEstadisticas();
+    // this.alertService.loading();
+    // this.listarEstadisticas();
   }
 
   // Listar estadisticas
   listarEstadisticas(): void {
+
+    // Verificacion de fecha de inicio
+    if(!this.filtro.fechaDesde || this.filtro.fechaDesde === ''){
+      this.alertService.info('Debe colocar una fecha de inicio de busqueda');
+      return;
+    }
+
+    // Verificacion de fecha 
+    if(!this.filtro.fechaHasta || this.filtro.fechaHasta === ''){
+      this.alertService.info('Debe colocar una fecha de finalización de busqueda');
+      return;
+    }
+
+    this.alertService.loading();
     this.estadisticasService.preguntas(
       {
         direccion: this.ordenar.direccion,
@@ -49,7 +65,9 @@ export class PreguntasEstadisticasComponent implements OnInit {
         desde: this.desde,
         cantidadItems: this.cantidadItems,
         activo: '',
-        parametro: this.filtro.parametro
+        parametro: this.filtro.parametro,
+        fechaDesde: this.filtro.fechaDesde,
+        fechaHasta: this.filtro.fechaHasta
       }
     ).subscribe(({ estadisticas, totalItems }) => {
       this.estadisticas = estadisticas;

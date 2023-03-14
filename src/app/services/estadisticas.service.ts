@@ -21,7 +21,9 @@ export class EstadisticasService {
         desde: parametros?.desde || 0,
         registerpp: parametros?.cantidadItems || 100000,
         activo: parametros?.activo || '',
-        parametro: parametros?.parametro || '',              
+        parametro: parametros?.parametro || '',
+        fechaDesde: parametros?.fechaDesde || '',              
+        fechaHasta: parametros?.fechaHasta || '',              
       },
       headers: {'Authorization': localStorage.getItem('token') }   
     });
