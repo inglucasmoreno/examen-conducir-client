@@ -28,8 +28,8 @@ export class PreguntasEstadisticasComponent implements OnInit {
 
   // Ordenar
   public ordenar = {
-    direccion: 1,  // Asc (1) | Desc (-1)
-    columna: 'porcentaje_incorrectas'
+    direccion: -1,  // Asc (1) | Desc (-1)
+    columna: 'cantidad_incorrectas'
   }
 
   constructor(private estadisticasService: EstadisticasService,

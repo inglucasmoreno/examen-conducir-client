@@ -88,26 +88,26 @@
                                     </div>
                                 </th>
                                 <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-xs font-semibold text-gray-600 tracking-wider">
-                                    <div (click)="ordenarPorColumna('porcentaje_correctas')" class="cursor-pointer w-max flex items-center justify-center focus:outline-none">
+                                    <div (click)="ordenarPorColumna('cantidad_correctas')" class="cursor-pointer w-max flex items-center justify-center focus:outline-none">
                                         <span>
                                             Correctamente                                                
                                         </span>
                                         <span class="ml-2">
-                                            <svg *ngIf="ordenar.columna == 'porcentaje_correctas' && ordenar.direccion == 1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>                                   
-                                            <svg *ngIf="ordenar.columna == 'porcentaje_correctas' && ordenar.direccion == -1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
-                                            <svg *ngIf="ordenar.columna != 'porcentaje_correctas'" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                            <svg *ngIf="ordenar.columna == 'cantidad_correctas' && ordenar.direccion == 1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>                                   
+                                            <svg *ngIf="ordenar.columna == 'cantidad_correctas' && ordenar.direccion == -1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                                            <svg *ngIf="ordenar.columna != 'cantidad_correctas'" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                                         </span>
                                     </div>
                                 </th>
                                 <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 tracking-wider">
-                                    <div (click)="ordenarPorColumna('porcentaje_incorrectas')" class="cursor-pointer w-max flex items-center justify-center focus:outline-none">
+                                    <div (click)="ordenarPorColumna('cantidad_incorrectas')" class="cursor-pointer w-max flex items-center justify-center focus:outline-none">
                                         <span>
                                             Incorrectamente                                                
                                         </span>
                                         <span class="ml-2">
-                                            <svg *ngIf="ordenar.columna == 'porcentaje_incorrectas' && ordenar.direccion == 1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>                                   
-                                            <svg *ngIf="ordenar.columna == 'porcentaje_incorrectas' && ordenar.direccion == -1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
-                                            <svg *ngIf="ordenar.columna != 'porcentaje_incorrectas'" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                            <svg *ngIf="ordenar.columna == 'cantidad_incorrectas' && ordenar.direccion == 1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>                                   
+                                            <svg *ngIf="ordenar.columna == 'cantidad_incorrectas' && ordenar.direccion == -1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                                            <svg *ngIf="ordenar.columna != 'cantidad_incorrectas'" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                                         </span>
                                     </div>
                                 </th>
@@ -142,9 +142,6 @@
                                         <span class="font-semibold">
                                             {{ estadistica.cantidad_correctas }}
                                         </span>
-                                        <span class="text-gray-500 text-xs">
-                                            ({{ estadistica.porcentaje_correctas }}%)
-                                        </span>
                                     </p>
                                 </td>
                                 <td class="px-5 py-2 border-b border-gray-200 text-sm">
@@ -152,13 +149,10 @@
                                         <span class="font-semibold">
                                             {{ estadistica.cantidad_incorrectas }}
                                         </span>
-                                        <span class="text-gray-500 text-xs">
-                                            ({{ estadistica.porcentaje_incorrectas }}%)
-                                        </span>
                                     </p>
                                 </td>
                                 <td class="px-5 py-2 border-b border-gray-200 text-sm font-semibold">
-                                    <p class="text-gray-900 whitespace-no-wrap text-center capitalize">
+                                    <p class="text-gray-900 whitespace-no-wrap capitalize">
                                         {{ estadistica.cantidad_total }}
                                     </p>
                                 </td>
