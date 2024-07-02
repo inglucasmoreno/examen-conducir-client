@@ -13,7 +13,7 @@
         <div *ngIf="previsualizacion">
             <img class="w-40 h-40 border border-gray-300 shadow rounded mt-4" [src]="previsualizacion" alt="previsualizacion">
         </div>
-        <button (click)="nuevaImagen()" *ngIf="previsualizacion" class="w-full bg-primaryColor text-white hover:bg-secondaryColor rounded p-2 mt-3">
+        <button (click)="nuevaImagen()" *ngIf="previsualizacion" class="boton-crear w-full mt-4">
             Subir imagen
         </button>
     </div>
@@ -70,7 +70,11 @@
             <option value="50"> 50 elementos </option>
             <option value="100"> 100 elementos </option>
         </select>
-        <button *ngIf="permisos.all" (click)="modalNuevaImagen()" title="Nueva imagen" class="border rounded border-gray-300 shadow focus:outline-none bg-white p-2 ml-3 hover:text-secondaryColor">
+        <button 
+            *ngIf="permisos.all" 
+            (click)="modalNuevaImagen()" 
+            title="Nueva imagen" 
+            class="boton-crear ml-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
@@ -78,7 +82,7 @@
     </div>
     <div *ngIf="imagenes" class="flex flex-wrap mt-2">
         <div class="p-2 w-1/2 md:w-1/3 lg:w-1/4 2xl:w-1/6" *ngFor="let imagen of imagenes | filtroImagenes:descripcion:activo | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActual}">
-            <img (click)="detallesImagen(imagen)" class="h-40 w-40 mr-auto ml-auto shadow cursor-pointer border-2 border-gray-300 hover:border-secondaryColor rounded" [src]="urlBase + '/img/' + imagen.url" [alt]="imagen.descripcion">
+            <img (click)="detallesImagen(imagen)" class="h-40 w-40 mr-auto ml-auto shadow cursor-pointer border-2 border-gray-300 hover:border-thirdColor rounded" [src]="urlBase + '/img/' + imagen.url" [alt]="imagen.descripcion">
             <p class="text-center text-xs font-semibold p-1 text-gray-500"> {{ imagen.descripcion }} </p>
         </div>
     </div>

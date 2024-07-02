@@ -1,6 +1,6 @@
-<nav [ngClass]="{'-translate-x-0 ease-in opacity-100' : this.dataService.showMenu === true, '-translate-x-full ease-out opacity-0':this.dataService.showMenu === false}" class="absolute inset-0 transform text-sm duration-200 lg:transform-none lg:opacity-100 ease-in -translate-x-full lg:relative z-10 w-72 bg-primaryColor text-white h-full border-r-4 border-secondaryColor p-3">
+<nav [ngClass]="{'-translate-x-0 ease-in opacity-100' : this.dataService.showMenu === true, '-translate-x-full ease-out opacity-0':this.dataService.showMenu === false}" class="absolute inset-0 transform text-sm duration-200 lg:transform-none lg:opacity-100 ease-in -translate-x-full lg:relative z-10 w-72 bg-primaryColor text-white h-full border-r-4 border-thirdColor p-3">
     <div class="flex justify-between">
-        <div routerLink="perfil" class="flex hover:text-blue-200 cursor-pointer">
+        <div routerLink="perfil" class="flex hover:text-blue-100 cursor-pointer">
             <div *ngIf="authService.usuario.role === 'ADMIN_ROLE'" class="bg-blue-100 flex items-center justify-center w-14 h-14 rounded-full shadow border border-blue-200">
                 <p class="text-3xl font-semibold text-secondaryColor"> A </p>
             </div>
@@ -19,8 +19,8 @@
         </button>
     </div>
     <ul class="mt-5">
-        <div class="flex text-xs items-center justify-center border-b pb-2 mb-2 text-blue-200">
-            <div class="ml-1 font-semibold flex">
+        <div class="flex text-xs items-center justify-center border-b pb-2 mb-2">
+            <div class="ml-1 flex">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                   </svg>
@@ -29,7 +29,7 @@
                 </span>
             </div>
         </div>
-        <li routerLinkActive="bg-secondaryColor rounded" routerLink="home" class="flex transform hover:translate-x-2 duration-500 items-center outline-none cursor-pointer p-2">
+        <li routerLinkActive="bg-thirdColor rounded" routerLink="home" class="flex transform hover:translate-x-2 duration-500 items-center outline-none cursor-pointer p-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
               </svg>
@@ -40,7 +40,7 @@
             <app-items *appPermisos="item.permiso" [svg]="item.svg" [route]="item.route" [item]="item.item"></app-items>
         </ng-container>
 
-        <li (click)="logout()" class="flex outline-none transform hover:translate-x-2 duration-500 items-center cursor-pointer p-2">
+        <li (click)="logout()" class="flex outline-none transform hover:translate-x-2 duration-500 items-center cursor-pointer bg-red-600 rounded p-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
               </svg>

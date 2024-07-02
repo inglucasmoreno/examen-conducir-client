@@ -10,7 +10,7 @@ export class ItemsComponent implements OnInit {
 
   @Input() item: string;
   @Input() route: string;
-  @Input() routerLinkActive: string = 'bg-secondaryColor rounded';
+  @Input() routerLinkActive: string = 'bg-thirdColor rounded';
   @Input() svg: string;
 
   constructor() { }

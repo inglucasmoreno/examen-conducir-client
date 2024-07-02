@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
 import { AuthService } from '../../services/auth.service';
 import { items } from './items';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
   selector: 'app-header',
@@ -18,6 +19,7 @@ export class HeaderComponent implements OnInit {
   public permiso_usuarios = true;
 
   constructor( public authService: AuthService,
+               public alertService: AlertService,
                public dataService: DataService ) { }
 
   ngOnInit(): void {
@@ -25,6 +27,13 @@ export class HeaderComponent implements OnInit {
   }
 
   // Metodo: Cerrar sesion
-  logout(): void{ this.authService.logout(); }
+  logout(): void{ 
+    this.alertService.question({ msg: 'Cerrando sesion', buttonText: 'Aceptar' })
+    .then(({isConfirmed}) => {  
+      if (isConfirmed) {
+        this.authService.logout(); 
+      }
+    });
+  }
 
 }
