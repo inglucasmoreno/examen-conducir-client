@@ -36,3 +36,7 @@ i {
 .boton-detalles {
     @apply p-2 bg-indigo-600 focus:outline-none hover:opacity-90 text-sm text-white rounded shadow
 }
+
+.boton-eliminar {
+    @apply p-2 bg-red-600 focus:outline-none hover:opacity-90 text-sm text-white rounded shadow
+}

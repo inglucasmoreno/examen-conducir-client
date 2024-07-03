@@ -135,7 +135,7 @@ export class FormulariosComponent implements OnInit {
     this.idFormulario = formulario._id;
     this.formulariosPracticaService.getFormulario(formulario._id).subscribe(({formulario, totalItems}) => {
       this.formulario = formulario;
-      this.totalItems = totalItems;
+      // this.totalItems = totalItems;
       this.formularioForm.patchValue({
         nro_tramite: formulario.nro_tramite,
         persona: formulario.persona,
